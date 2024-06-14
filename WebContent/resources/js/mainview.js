@@ -1,0 +1,27 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+function changeSideMenu(item){
+    var oui0= document.getElementById("homepane");  
+    var oui1 = document.getElementById("reportpane");
+    var oui2 = document.getElementById("settingpane");
+     var maincontentwidow = document.getElementById("maincontentwidow");
+    if(item.id == 'home_tab'){     
+        oui0.style.display="block";
+        oui1.style.display="none";
+        oui2.style.display="none";
+        maincontentwidow.src="calendar.jsp";
+    }else if(item.id == 'report_tab'){
+        oui0.style.display="none";
+        oui1.style.display="block";
+        oui2.style.display="none";
+        maincontentwidow.src="regularisationHistory.jsp";
+    }else if(item.id == 'setting_tab'){
+        oui0.style.display="none";
+        oui1.style.display="none";
+        oui2.style.display="block";
+         maincontentwidow.src="personalsettings.jsp";
+    }
+}

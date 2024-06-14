@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+
+@media only screen and (min-width:1000px)and (max-width:1199px)
+{
+.header {width: 95% !important;}
+.menu ul li a {padding: 36px 18px !important; font-size: 15px;}
+.content_section {width: 93% !important; padding: 1% !important;}
+.left_content {width: 24% !important;}
+.left_content ul li a {padding: 5%; width: 90%; font-size: 15px;}
+.right_content {width: 73% !important;}
+.caln {width:70% !important;}
+.week_sec {width: 100% !important;}
+.w1 {width: 14.029% !important;}
+.days_box {width: 100% !important;}
+.d1 {width: 14.029%;}
+.mmyy {font-size:14px !important;}
+.mmyy2 {font-size:14px;}
+.status_box {width: 28% !important;}
+.st_list ul li span {font-size:12px !important;}
+.up_br_head {font-size: 13px !important;}
+.n_list ul li {font-size: 13px !important;}
+}

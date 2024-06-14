@@ -1,0 +1,63 @@
+@page { height: 1024px;   width: 595px;   margin-left: auto;   margin-right: auto; margin-bottom:0px;margin-top:2em;} 
+@media print { body {-webkit-print-color-adjust: exact;font-family:"Calibri", sans-serif;}
+ footer {
+    position: fixed;
+    bottom: 0;
+    padding-bottom:0px;
+    border-top: 1px solid black;
+    min-width:100%;
+  }
+ body:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: url('../images/fjwatermark.PNG');
+  opacity: 0.3;
+  pointer-events: none;
+ background-position: center; 
+ background-repeat: no-repeat;
+ 
+}
+.page-header { color: #065685; font-weight: bold;  border-bottom: 2px solid #065685 !important; text-transform:uppercase; letter-spacing: 0.1em;}
+.payslip{position: relative; background: #fff;border: 1px solid #b9b8b8; padding: 20px;margin: 10px 25px;}.payslip-info{ }
+.pay-subtitle-parent{    margin-top: -15px;}.payslip-col>.sub-title{background: #daf0f3;padding:7px 5px;}.info-box-content{margin-top: 20%;}
+.info-box-text { text-transform: uppercase;font-weight: bold;}.pay-total-title{color:red; font-weight:bold;text-align:center;}.pay-total-amount{font-weight:bold;}
+.summary{color:#009688; font-weight:bold;border-bottom:1px dashed #bbc5f1;}.sub-title{color:#000;font-size:24px; font-weight:bold;text-align:left;letter-spacing: 0.05em;width:100%}.small{color: #607D8B; !important}
+.payslip-info{width:100% !important;}
+#payslipSUmmary{width: 41%  !important;display: block; float: left;}
+#salarycertSummary{width: 100%  !important;display: block; float: left;}
+.table-responsive{ width:auto; max-width: 100%;height: auto; display: block;float: left; margin-right: 6em;}
+.payslipDate{float: right !important;    color: #777 !important;}
+.table-striped>tbody>tr:nth-of-type(odd) { background-color: #f9f9f9 !important;} 
+hr {border: none;border-top: 1px double #333;color: #333;padding-left:15px;padding-right:15px;min-width:100%}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: middle; 
+}
+th {
+    text-align: left;
+}
+td, th {
+    padding: 0;
+}
+.table {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+#footer{
+   
+    margin-bottom:-5px;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+table {
+    background-color: transparent;
+}
+}

@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://127.0.0.1:8090/fjtco/calendar.jsp -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">   
+<link href="../css/style.css" rel="stylesheet" type="text/css">
+<link href="../css/responsive.css" rel="stylesheet" type="text/css"> 
+
+<script src="./calendar.js.download"></script>
+    </head>
+    <body> 
+        
+        <div id="requestformdiv" class="requestformdiv"><div id="formheading"></div><img src="./Closebutton.png" style="float: right" onclick="closeRequestWindow();"><br>
+            <form method="get" id="requestform" action="http://127.0.0.1:8090/fjtco/regularisationRequest.jsp"> Reason:&nbsp;&nbsp;&nbsp;&nbsp; <textarea name="reason" id="thereason" maxlength="45" style="width:14em;height: 2em"></textarea>
+                
+                <input type="hidden" name="iYear" value="">
+                <input type="hidden" name="idate" value="" id="idate">
+                <input type="hidden" name="ichkin" value="" id="ichkin">
+                <input type="hidden" name="regularise_date" value="" id="regularise_date">
+            <br><br>
+            <input type="button" class="sbt_btn3" onclick="Apply(this);" name="actn" value="Apply"></form>
+        </div>
+      
+        <div class="att_searchbox">       
+            	<h1>Attendance Details</h1>
+                <div class="search_section">
+                    <form name="frm" method="post">
+                        <select class="select_usr" name="cur_usr">
+                            
+                                    <option value="E001090">Biju Varghese</option>     
+                           
+                                <option value="E000030">Simon Karyankal Chummar</option>
+                                
+                                <option value="E001301">Rajesh Kodarmban</option>
+                                
+                    </select>  
+                    <select class="select_month" name="iMonth">
+                                
+                                <option value="0">January</option>
+                                
+                                <option value="1">February</option>
+                                
+                                <option value="2">March</option>
+                                
+                                <option value="3">April</option>
+                                
+                                <option value="4">May</option>
+                                
+                                <option value="5">June</option>
+                                
+                                <option value="6">July</option>
+                                
+                                <option value="7">August</option>
+                                
+                                <option value="8">September</option>
+                                
+                                <option value="9">October</option>
+                                
+                                <option value="10" selected="selected">November</option>
+                                
+                                <option value="11">December</option>
+                                
+                      </select>                        
+                    <select class="text_sm" name="iYear">
+                        
+
+                             <option value="2016" selected="selected">2016</option>
+                            
+                            <option value="2017">2017</option>
+                            
+                            <option value="2018">2018</option>
+                            
+                            <option value="2019">2019</option>
+                            
+                            <option value="2020">2020</option>
+                            
+                            <option value="2021">2021</option>
+                            
+                            <option value="2022">2022</option>
+                            
+                            <option value="2023">2023</option>
+                            
+                            <option value="2024">2024</option>
+                            
+                            <option value="2025">2025</option>
+                            
+                            <option value="2026">2026</option>
+                            
+                            <option value="2027">2027</option>
+                            
+                            <option value="2028">2028</option>
+                            
+                            <option value="2029">2029</option>
+                            
+                            <option value="2030">2030</option>
+                            
+                    </select>   
+                     <input name="calendar_submit" type="submit" value="Details" class="search_btn">
+                     </form>
+                </div>
+            </div>
+            <div class="rest_box mrl0">
+            	<div class="caln">
+                <div class="mmyy">November - 2016</div>
+                    <div class="week_sec">
+                    <div class="w1">SUN</div>
+                    <div class="w1">MON</div>
+                    <div class="w1">TUE</div>
+                    <div class="w1">WED</div>
+                    <div class="w1">THU</div>
+                    <div class="w1">FRI</div>
+                    <div class="w1">SAT</div>
+                    </div>
+                        <div class="days_box">
+                             
+                                    <div class="d1">
+                                      <div class="date">&nbsp;</div>
+                                      <div class="cen_icon"></div>
+                                    </div>
+                              
+                                    <div class="d1">
+                                      <div class="date">&nbsp;</div>
+                                      <div class="cen_icon"></div>
+                                    </div>
+                              
+                                    <div class="d1">
+                                    <div class="date">1</div>
+                                    
+                                         <div id="day_1" class="cen_icon" onclick="showRegularisationRequest(event, &#39;01/11/2016&#39; , 1 , &#39;Absent&#39; );"><img src="./absent.gif"></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">2</div>
+                                    
+                                         <div id="day_2" class="cen_icon" onclick="showRegularisationRequest(event, &#39;02/11/2016&#39; , 2 , &#39;Absent&#39; );"><img src="./absent.gif"></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">3</div>
+                                    
+                                         <div id="day_3" class="cen_icon" onclick="showRegularisationRequest(event, &#39;03/11/2016&#39; , 3 , &#39;Absent&#39; );"><img src="./absent.gif"></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">4</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">5</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">6</div>
+                                    
+                                         <div id="day_6" class="cen_icon" onclick="showRegularisationRequest(event, &#39;06/11/2016&#39; , 6 , &#39;Absent&#39; );"><img src="./absent.gif"></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="dtoday">
+                                    <div class="date">7</div>
+                                      
+                                         <div class="cen_icon">&nbsp;</div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">8</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">9</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">10</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">11</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">12</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">13</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">14</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">15</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">16</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">17</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">18</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">19</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">20</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">21</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">22</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">23</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">24</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">25</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">26</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">27</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">28</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">29</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                    <div class="date">30</div>
+                                    
+                                         <div class="cen_icon">&nbsp;<br></div>
+                                         
+                                      
+                                    </div>
+                                      
+                                    <div class="d1">
+                                      <div class="date">&nbsp;</div>
+                                      <div class="cen_icon"></div>
+                                    </div>
+                              
+                                    <div class="d1">
+                                      <div class="date">&nbsp;</div>
+                                      <div class="cen_icon"></div>
+                                    </div>
+                              
+                                    <div class="d1">
+                                      <div class="date">&nbsp;</div>
+                                      <div class="cen_icon"></div>
+                                    </div>
+                              
+            
+                        </div>
+                </div>
+            <div class="status_box">
+                	<div class="mmyy2">Attendance Status</div>
+                    <div class="st_list">
+                    	<ul>
+                        	<li><img src="./Leave.gif"><span> Leave</span></li>
+                                <li><img src="./present.gif"><span> Present</span></li>
+                                <li><img src="./ss1.gif"><span> Single swipe</span></li>
+                                <li><img src="./outduty.gif"><span>Regularisation request sent</span></li>
+                                <li><img src="./late.gif"><span> Late</span></li>
+                                <li><img src="./holiday.gif"><span> Holiday</span></li>
+                                <li><img src="./absent.gif"><span>Absent</span></li>
+                                <li><img src="./regularised.gif"><span>Regularised</span></li>
+                                <li><img src="./rejected.gif"><span>Regulariation request rejected</span></li>
+                           
+                        </ul>
+                    </div>
+                    
+            </div>
+            </div>
+            
+
+ 
+
+</body></html>

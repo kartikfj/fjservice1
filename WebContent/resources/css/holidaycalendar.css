@@ -1,0 +1,12 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jun 24, 2016, 11:06:07 AM
+    Author     : Mamatha
+*/
+
+.cal_box{width:100%; float:left; background:#eeeeee; margin:1em 0 1em 0;}
+.cal_box h1{width:98%; float:left; margin:0; padding:8px 0 8px 2%; font-size:1em; font-family:Arial, Helvetica, sans-serif; color:#011928; border-bottom:#95a4a6 1px dotted;}

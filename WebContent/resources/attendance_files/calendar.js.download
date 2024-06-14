@@ -1,0 +1,107 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
+
+function showRegularisationRequest(event,theDayStr,theDate,swipeDetails){
+   
+    var msgbox = document.getElementById("requestformdiv");
+    if(msgbox ==null) return;
+    var outerdiv = document.getElementById("day_"+theDate);   
+    if(outerdiv == null)return;
+    msgbox.style.display="block";
+    document.getElementById("thereason").value="";
+    var prjdetail = document.getElementById("prjdetail");
+    if(prjdetail!=null)
+        prjdetail.value="";
+     var theform = document.getElementById("requestform");
+     theform.style.display = "block";
+    var heading = document.getElementById("formheading");
+    heading.innerHTML="Regularisation request for "+theDayStr;
+    var dtfld = document.getElementById("regularise_date");
+    dtfld.value=theDayStr;
+    document.getElementById("idate").value=theDate;
+    document.getElementById("ichkin").value=swipeDetails;
+    msgbox.style.position="absolute";     
+    msgbox.style.left =event.clientX+"px";
+    msgbox.style.top=event.clientY+"px";
+}
+
+function closeRequestWindow(){
+    var msgbox = document.getElementById("requestformdiv");
+    msgbox.style.display="none";
+}
+
+function Apply(button){
+   // event.preventDefault();
+    var theUrl= button.form.action;
+    var thedate = document.getElementById("regularise_date").value;
+    var encoded_dt = encodeURI(thedate);
+    var thereason = document.getElementById("thereason").value;
+    var thechkin = document.getElementById("ichkin").value;
+    var prjdetailtxt = document.getElementById("prjdetail");
+    var prjdetail=null;
+    if(prjdetailtxt!=null)
+        prjdetail = prjdetailtxt.value;
+    if(thedate=null || thereason == null){
+        alert("Please fill the details");
+        return;
+    }
+    thereason=thereason.trim();
+     if(thereason == ""){
+        alert("Please fill the details");
+        return;
+    }
+    if(prjdetail!=null)
+        theUrl+="?regularise_date="+encoded_dt+"&reason="+thereason+"&prjdetail="+prjdetail+"&chkin="+thechkin;
+    else
+        theUrl+="?regularise_date="+encoded_dt+"&reason="+thereason+"&chkin="+thechkin;
+    var heading = document.getElementById("formheading");
+    var xhttp;
+    if (window.XMLHttpRequest) {
+        xhttp = new XMLHttpRequest();
+        } else {
+        // code for IE6, IE5
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhttp.onreadystatechange = function() {
+    if (xhttp.readyState == 4 && xhttp.status == 200) {
+     if(xhttp.responseText != null){
+        var start = xhttp.responseText.lastIndexOf('<body>')+7;
+        var end = xhttp.responseText.lastIndexOf('</body>');
+        var bodytxt = xhttp.responseText.substring(start,end);
+        heading.innerHTML=bodytxt;
+        var msgbox = document.getElementById("requestform");
+        msgbox.style.display="none";
+        document.getElementById("thereason").value="";
+        if(prjdetail!=null)
+        document.getElementById("prjdetail").value="";
+        var idate=document.getElementById("idate").value;
+        var outerdiv = document.getElementById("day_"+idate);
+      
+        outerdiv.getElementsByTagName("img")[0].src="resources/images/outduty.gif";
+        outerdiv.id= outerdiv.id+"_done";
+        /////////
+         if (outerdiv.removeEventListener) {                   
+            outerdiv.removeEventListener("click", showRegularisationRequest,false);
+        } else if (outerdiv.detachEvent) {                    // For IE 8 and earlier versions
+            outerdiv.detachEvent("onclick", showRegularisationRequest);
+        }
+        //////////
+    }
+    }else{
+      // maindiv.innerHTML="Error in processing." ;
+    }
+  };
+  heading.innerHTML="Being processed.."
+  xhttp.open("get", theUrl, true);
+  xhttp.send();
+ 
+}
+function Apply1(button){
+    if(document.getElementById("thereason").value == null){
+        return false;
+    }
+}

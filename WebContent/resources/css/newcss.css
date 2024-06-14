@@ -1,0 +1,23 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Apr 26, 2016, 11:24:20 AM
+    Author     : Mamatha
+*/
+body{margin:0; padding:0; background:#eeeeee;height:100%;width:96%;}
+.leave_textmsg{width:45%; float:left; margin:0 0 0 0; padding:5px 1%; border:#B7B7B7 1px solid; border-radius:3px; -webkit-border-radius:3px; -moz-border-radius:3px;}
+.n_text_msg{width:60%; float:left; font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000; padding: 0.5em 0.5em 0.5em 0.5em; border:#B4B4B4 1px solid; line-height: 1.0em}
+.radiobutton{float: left;  font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;}
+.n_text_left{width:49%; float:left;border-right:#B4B4B4 1px dotted; font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;}
+.n_text_right{width:49%; float:left;border-left:#B4B4B4 1px dotted;font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;}
+.n_radiobutton_box{width:70%; float:left; font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000; padding: 0.3em 0.3em 0.3em 0.3em; border:#B4B4B4 1px solid; margin: 0em 0em 0em 0em; }
+.n_text_narrow{width:30%; float:left; font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;margin: 4px 0 0 0;}
+.n_text_narrow span{color:#c10101;}
+.n_text_narrow_hd{width:30%; float:left; font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;margin: 4px 0 0 0; display: inline-block}
+.short_label{font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;}
+.n_text_lvdetails{width:100%; float:left; font-size:0.9em; font-family:Arial, Helvetica, sans-serif; color:#000000;margin: 4px 0 0 0;}
+.disabled_input{background-color:#eeeeee; border:0;width:8em;}
+.enabled_input{font-size:1em; font-family:Arial, Helvetica, sans-serif; border:1px solid;width:5em;}

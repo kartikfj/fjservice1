@@ -1,0 +1,35 @@
+/*main page layout management start*/
+		.container { padding-right: 0px !important; padding-left: 0px !important; }.navbar {  margin-bottom: 8px !important; }
+		.wrapper { margin-top: -8px; } .row { margin-left: 0px !important; margin-right: 0px; }
+		.main-header{z-index: 851 !important; }
+/*main page layout management end*/
+
+/*tool tip override settings  start */
+		svg>g:last-child>g:last-child { pointer-events: none }
+		div.google-visualization-tooltip { pointer-events: none }
+		div.google-visualization-tooltip {padding: 0 !important;margin: 0 !important;border: none !important;height: auto !important; overflow: hidden !important; }
+/*tool tip override settings  start */
+
+/* top ten lowest and highest orders start */
+        #lowestOrder_table_wrapper  div.dt-buttons,#highestOrder_table_wrapper div.dt-buttons {position: relative; float: right;  margin-top: -40px;  right: 40px; }
+		#lowestOrder_table{  border: 1px solid red;    table-layout: fixed;}
+		#lowestOrder_table th{  border-bottom: 1px solid red;}
+		#lowestOrder_table th,#lowestOrder_table td{padding: 3px !important; order-right: 1px solid red;font-size:75%;overflow:hidden; white-space:nowrap}
+		#highestOrder_table {    border: 1px solid #86a53e; table-layout: fixed;}
+		#highestOrder_table th{  border-bottom: 1px solid #86a53e;}
+		#highestOrder_table th,#highestOrder_table td{padding: 3px !important; border-right: 1px solid #86a53e;font-size:75%;overflow:hidden; white-space:nowrap;}
+/* top ten lowest and highest orders  end*/			
+/*budget Expense table start*/
+        #expense-table th,#expense-table td{padding: 3px !important; order-right: 1px solid red;font-size:75%;}
+        #expense-List{    margin-top: -10px; border: 1px solid #607D8B;  padding: 5px;}
+        #expense-List .dt-buttons{left: 1%;  margin-top: -4px;    padding: 0.2em 0.5em;}
+        #expense-List .dataTables_wrapper .dataTables_paginate .paginate_button{padding: 0.0em 0.0em !important;}
+        #expense-List .dataTables_filter{color:red;}
+        #expense-List .dataTables_wrapper .dataTables_filter input {height: 11px; }
+        #expnse_header{z-index: 50; width: 100%;}
+        #expnstitle{margin-top:-10px;}
+        #acnttype_list{width:50%;}
+        #beeMessage{color:red;}
+        #beError h4{color:blue;}
+/*budget Expense table end*/
+			

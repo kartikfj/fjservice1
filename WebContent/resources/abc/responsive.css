@@ -1,0 +1,150 @@
+@media only screen and (max-width: 1199px)
+{ 
+.header {    width: 100% !important;}
+.content_section {
+width: 90%;}
+}
+@media only screen and (max-width: 991px)
+{ 
+.header {width: 100%  !important;}
+.logout a {margin: 8px 15px 5px 0 !important;}
+.left_content ul li a {padding: 10px 3% !important; font-size: 13px !important;}
+.content_section {width: 90% !important;}
+.att_searchbox {margin: 0 0 1em 0 !important;}
+.rest_box{margin:0 !important;}
+.week_sec {width: 100% !important;}
+.days_box {width: 100% !important;}
+
+
+.header_left{width:100% !important;}
+.menu {width: 100% !important;}
+.logo {width: 217px  !important; float: none !important; margin: 0 auto !important;}
+.menu ul li {width:100%; background-image:none;}
+ul.topnav li a {width: 90% !important; padding: 10px 5% !important;}
+ul.topnav.responsive li a {text-align: center !important;}
+
+
+
+}
+
+
+@media only screen and (max-width: 640px)
+{ 
+.left_content {width: 100% !important; position: static !important;}
+.right_content {width: 100% !important;}
+.content_section {width: 90% !important; float: left; height: auto !important;}
+.search_section {width: 96% !important; padding: 5px 2% !important; margin: 0 !important;}
+.select_usr {padding: 3px 2% !important; width: 100% !important; margin: 0 0 10px 0  !important;}
+.w1 {width: 13.9% !important;}
+.d1 {width: 13.9% !important;}
+.logout a {margin: 4px 15px 4px 0 !important; padding: 6px 15px !important; font-size: 11px !important;}
+.n_text_msg{width:100% !important;}
+.login_box {width: 80% !important; padding: 10px 5%;}
+.n_text2 {width: 100% !important;}
+.leave_text {width: 98% !important;}
+.n_text_msg_login {width: 100% !important;}
+.text_area{width:96% !important;}
+.attendance-info{display:none;}
+#requestformdiv{width: 320px !important;left:20px !important;}
+#timeBlock{display:flex;} #toDiv{left:10px;} 
+.remove-clmn{display:none;}
+#vst-entry-block .form-group { margin-bottom: 0px !important;}
+} 
+@media only screen and (max-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
+#requestformdiv{left:20px !important;}
+#timeBlock{display:flex;} #toDiv{left:10px;} 
+.remove-clmn{display:none;}
+#vst-entry-block .form-group { margin-bottom: 0px !important;}
+}
+@media only screen and (max-width: 900px)
+{
+.caln {width: 100% !important;}
+.status_box {width: 100% !important; margin-top: 15px;} 
+}
+
+@media screen and (max-width:991px) {
+  ul.topnav li:not(:first-child) {display: none;}
+  ul.topnav li.icon {
+    display: inline-block;
+width: 6% !important;
+position: absolute;
+right: 0;
+border-left: #065685 1px solid;
+  }
+  
+  ul.left_content li:not(:first-child) {display: none;}
+  ul.left_content li.icon {
+    float: right;
+    display: inline-block;
+	width: 8% !important;
+  }
+}
+
+@media screen and (max-width:991px) {
+	
+	.login_box {width: 55% !important;}
+	
+	ul.topnav li a {font-size:13px;}
+  ul.topnav.responsive {position: relative;}
+  ul.topnav.responsive li.icon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.topnav.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.topnav.responsive li a {
+    display: block;
+    text-align: left;
+  }
+ .n_text_msg { width: 100% !important;}
+.right_content {width: 100%;}
+ .left_content {width: 100% !important; position: static !important; margin-bottom:15px;}
+.left_content ul{position:relative;}
+.icon a{text-align:center !important; padding: 8px 3% !important; line-height: 16px;}
+.left_content ul li{width:92% !important;} 
+  ul.left_content li a {font-size:13px;}
+  ul.left_content.responsive {position: relative !important;left: 0;top: 0;}
+  
+  ul.left_content.responsive li.icon {
+    float: right;
+display: inline-block;
+width: 8% !important;
+position: absolute;
+right: 0;
+top: 0;
+text-align:center !important;
+  }
+  ul.left_content.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.left_content.responsive li a {
+    display: block;
+    text-align: left;
+  }
+}
+
+@media only screen and (max-width: 767px)
+{
+.login_box {width: 65% !important;}
+.l_left {width: 99% !important; float: left; border-right: none !important; padding-right: 1%;}
+.n_text_narrow {width: 100%  !important;}
+.select_box {width: 100%  !important;}
+.select_box2 {width: 96% !important;}
+.n_text_narrow_hd {width: 100% !important;}
+.radio_box{width:100% !important;}
+.n_radiobutton_box {width: 96% !important;}
+.area_box2 {width: 98% !important;}
+.l_right {width: 100% !important;}
+.n_text_msg_login {width: 100% !important;}
+.sbt_btn2 {width: 44px !important;}
+.sbt_btn{margin-bottom:4px;}
+.n_text_msg_sh{width:100% !important;}
+.table-responsive{width:100%;margin-bottom:15px;overflow-y:hidden;-ms-overflow-style:-ms-autohiding-scrollbar;border:1px solid #ddd}
+.scrollable {width: 100%;float: left;overflow-x: scroll;}
+.text_area{width:96% !important;}
+.mybox{width:100%}
+}
