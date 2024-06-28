@@ -26,7 +26,7 @@
              <jsp:forward page="index.jsp"/>
         </c:if>
         <c:if test="${!empty fjtuser}">
-            <c:if test="${pageContext.request.method ne 'POST'}">
+            <c:if test="${pageContext.request.method != 'POST'}">
    
 <div class="wrapper" id="choicebox">
 <div class="login_box">

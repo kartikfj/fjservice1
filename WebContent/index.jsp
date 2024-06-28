@@ -37,7 +37,7 @@
 
     </head>
     <c:choose>
-        <c:when test="${pageContext.request.method ne 'POST'}"> 
+        <c:when test="${pageContext.request.method != 'POST'}"> 
             <body align="center" onload="return setFields();" class="fjportal">
                 <div class="container">
                     <div class="login_box"><img alt="FJTCO" src="resources/images/logo.jpg" />

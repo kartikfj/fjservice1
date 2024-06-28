@@ -688,7 +688,7 @@ public class MarketingLeadsDbUtil {
 			myCon = con.getMysqlConn();
 
 			// Execute sql stamt
-			String sql = " SELECT distinct division,divn_name FROM  mkt_products  "
+			String sql = " SELECT division,divn_name,displayorder FROM  mkt_products  "
 					+ "  WHERE frz_status = ?  order by  displayorder asc";
 			myStmt = myCon.prepareStatement(sql);
 

@@ -441,15 +441,27 @@ input.right {
                <div class="row">  
                <div class="col-md-8">
                 <div class="form-group">
-                  <label for="newConsltnt">Consultant</label>
-<!--                   <input type="text" class="form-control" id="newConsltnt" placeholder="Enter Consultant Details" name="newConsltnt" required> -->
-				 <select class="form-control" name="newConsltnt" id="newConsltnt" required>
-                    <option value="">Select Consultant</option>             
-                    <c:forEach var="consultLst"  items="${CLFCL}" >
-                    <option value="${consultLst.conslt_name}">${consultLst.conslt_name}</option>
-                    </c:forEach>
-                    
-                  </select>
+                <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+                
+                 <label for="newConsltnt">Consultant</label>
+    <select class="form-control" name="newConsltnt" id="newConsltnt" required>
+        <option value="">Select Consultant</option>
+        <c:forEach var="consultLst" items="${CLFCL}">
+            <option value="${consultLst.conslt_name}">${consultLst.conslt_name}</option>
+        </c:forEach>
+    </select>
+
+    <!-- Initialize Select2 on the dropdown -->
+    <script>
+        $(document).ready(function() {
+            $('#newConsltnt').select2({
+                placeholder: 'Search for a Consultant',
+                allowClear: true
+            });
+        });
+    </script>
              
                 </div>
 <!--                  <div class="col-xs-12"  style="margin-bottom:15px;"> -->
