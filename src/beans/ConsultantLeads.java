@@ -25,6 +25,20 @@ public class ConsultantLeads {
 	private String updateStatus = null;
 	private String isUpdateByBDM = null;
 	private String consultantType = null;
+	private String isUpdateByEVM = null;
+
+	public String getIsUpdateByEVM() {
+		return isUpdateByEVM;
+	}
+
+	public void setIsUpdateByEVM(String isUpdateByEVM) {
+		this.isUpdateByEVM = isUpdateByEVM;
+	}
+
+	@Override
+	public String toString() {
+		return "ConsultantLeads [isUpdateByEVM=" + isUpdateByEVM + "]";
+	}
 
 	private HashMap<String, ArrayList<String>> divnProductList = null;
 
@@ -165,7 +179,8 @@ public class ConsultantLeads {
 	}
 
 	public ConsultantLeads(String conslt_name, String product, String status, String division, String remarks,
-			String cyr, String cby, String contactDetails, String isUpdateByBDM, String consultantType) {
+			String cyr, String cby, String contactDetails, String isUpdateByBDM, String isUpdateByEVM,
+			String consultantType) {
 		// Constructor for creating new consultant leads
 		super();
 		this.conslt_name = conslt_name;
@@ -177,6 +192,7 @@ public class ConsultantLeads {
 		this.cby = cby;
 		this.contactDetails = contactDetails;
 		this.isUpdateByBDM = isUpdateByBDM;
+		this.isUpdateByEVM = isUpdateByEVM;
 		this.consultantType = consultantType;
 	}
 
@@ -198,8 +214,8 @@ public class ConsultantLeads {
 
 	public ConsultantLeads(String cnslt_id, String conslt_name, String product, String status, String division,
 			String remarks, String created_date, String updated_date, String updateStatus,
-			HashMap<String, ArrayList<String>> divnProductList, String contact_details, String byBDM, String createdBy,
-			String consultantType) {
+			HashMap<String, ArrayList<String>> divnProductList, String contact_details, String byBDM, String byEVM,
+			String createdBy, String consultantType) {
 		// View all consultant leads
 		super();
 		this.cnslt_id = cnslt_id;
@@ -214,6 +230,7 @@ public class ConsultantLeads {
 		this.divnProductList = divnProductList;
 		this.contactDetails = contact_details;
 		this.isUpdateByBDM = byBDM;
+		this.isUpdateByBDM = byEVM;
 		this.createdBy = createdBy;
 		this.consultantType = consultantType;
 	}

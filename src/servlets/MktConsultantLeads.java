@@ -236,11 +236,12 @@ public class MktConsultantLeads extends HttpServlet {
 		String div = request.getParameter("newDiv");
 		String consultantDetails = request.getParameter("newConsDetails");
 		String isUpdateByBDM = request.getParameter("bybdmyorno");
+		String isUpdateByEVM = request.getParameter("bybdmyorno1");
 		String consultantType = request.getParameter("consultantType");
 		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
 
 		ConsultantLeads consultant_Leads_Dtls = new ConsultantLeads(consult_name, products, status, div, remark, year,
-				employee_Code, consultantDetails, isUpdateByBDM, consultantType);
+				employee_Code, consultantDetails, isUpdateByBDM, isUpdateByBDM, consultantType);
 		int successVal = marketingLeadsDbUtil.createnewConsultantLeads(consultant_Leads_Dtls);
 		if (successVal == 1) {
 			request.setAttribute("MSG", "New Consultant Leads  Created  Successfully.");

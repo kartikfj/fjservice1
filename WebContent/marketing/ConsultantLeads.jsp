@@ -51,7 +51,10 @@
 	<script type="text/javascript" src="././resources/datatables/ajax/excelmake/jszip.min.js"></script>
 	<script type="text/javascript" src="././resources/datatables/buttons-fjtco/js/buttons.html5.min.js"></script>
 	<script type="text/javascript" src="././resources/datatables/buttons-fjtco/js/buttons.print.min.js"></script>
- 
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <!--   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  
   <!-- Theme style -->
   <link rel="stylesheet" href="././resources/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="././resources/dist/css/skins/_all-skins.min.css">
@@ -59,6 +62,24 @@
    
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+ <style>
+        /* Custom CSS to match Bootstrap styling */
+        .select2-container--bootstrap .select2-selection--single {
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            border-radius: .25rem;
+            border: 1px solid #ced4da;
+        }
+        
+        .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+            line-height: normal;
+        }
+        
+        /* Ensure the select2 container has full width */
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
  <style>
 .navbar-brand {
   padding: 0px;
@@ -441,10 +462,7 @@ input.right {
                <div class="row">  
                <div class="col-md-8">
                 <div class="form-group">
-                <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-                
+              
                  <label for="newConsltnt">Consultant</label>
     <select class="form-control" name="newConsltnt" id="newConsltnt" required>
         <option value="">Select Consultant</option>
@@ -480,7 +498,7 @@ input.right {
 		                     
 <!-- 				     </div>        	 -->
 <!--                 </div> -->
-					 <div class="btn-group" style="margin-bottom:15px;">
+		<!-- 			 <div class="btn-group" style="margin-bottom:15px;">
 	                  <label>Status</label>
 	                  <select class="form-control" name="newstatus" id="newstatus" required>
 	                    <option value="">Select Status</option>
@@ -489,7 +507,105 @@ input.right {
 	                    <option value="Not Yet Approved">Not Yet Approved</option>
 	                    <option value="Not Initiated">Not Initiated</option>                               
 	                  </select>
-	                </div>   
+	                </div>  
+	                <style>
+  .input-group-text {
+    min-width: 120px; /* Adjust the width of the label if needed */
+  }
+  .form-control {
+    flex: 1; /* Makes the select elements take up available space */
+  }
+</style>
+   <div class="container">
+  <div class="row">
+    Column for Status Dropdown
+    <div class="col-md-2" style="margin-bottom:15px;">
+      <div class="form-group">
+        <label for="newstatus">Status</label>
+        <select class="form-control" name="newstatus" id="newstatus" required>
+          <option value="">Select Status</option>
+          <option value="Currently Working">Currently Working</option>
+          <option value="Approved">Approved</option>
+          <option value="Not Yet Approved">Not Yet Approved</option>
+          <option value="Not Initiated">Not Initiated</option>
+        </select>
+      </div>
+    </div>
+    Column for Evidence of Approval Dropdown
+    <div class="col-md-2">
+      <div class="form-group">
+        <label for="bybdmyorno">Evidence of Approval</label>
+        <select class="form-control" name="bybdmyorno" id="bybdmyorno" required>
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+	      -->           
+	      
+	<!--       <div class="btn-group" style="margin-bottom:15px;">
+    <label>Status</label>
+    <select class="form-control" name="newstatusss" id="newstatusss" required>
+        <option value="">Select Status</option>
+        <option value="Currently Working">Currently Working</option>
+        <option value="Approved">Approved</option>
+        <option value="Not Yet Approved">Not Yet Approved</option>
+        <option value="Not Initiated">Not Initiated</option>
+    </select>
+</div>
+ -->
+<div class="container">
+    <div class="row">
+        <!-- Column for Status Dropdown -->
+        <div class="col-md-2" style="margin-bottom:15px;">
+            <div class="form-group">
+                <label for="newstatus">Status</label>
+                <select class="form-control" name="newstatus" id="newstatus" required>
+                    <option value="">Select Status</option>
+                    <option value="Currently Working">Currently Working</option>
+                    <option value="Approved">Approved</option>
+                    <option value="Not Yet Approved">Not Yet Approved</option>
+                    <option value="Not Initiated">Not Initiated</option>
+                </select>
+            </div>
+        </div>
+        <!-- Column for Evidence of Approval Dropdown -->
+        <div class="col-md-2">
+            <div class="form-group">
+                <label for="bybdmyorno">Evidence of Approval</label>
+                <select class="form-control" name="bybdmyorno1" id="bybdmyorno1" required disabled>
+                    <option value="">Select</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+ <script>
+      $(document).ready(function() {
+        $('#newstatus').change(function() {
+          if ($(this).val() === 'Approved') {
+            $('#bybdmyorno1').prop('disabled', false);
+          } else {
+            $('#bybdmyorno1').prop('disabled', true);
+          }
+        });
+      });
+    </script>
+
+	                 
+	            <!--       <div class="form-group">
+                  <label>Evidence of Approval</label>
+                  <select class="form-control" name="bybdmyorno" id="bybdmyorno" required>
+                    <option value="">Select</option>
+                    <option value="Yes">Yes</option> 
+                    <option value="No">No</option>
+                  </select>
+                </div>      -->  
                     
                          
                 </div>
@@ -663,6 +779,9 @@ $(document).ready(function() {
 	   
 	   $('#bdmfltr select.filter > option:first-child')
 	    .text('Select By BDM');
+	   
+	   $('#bdmfltr select.filter > option:first-child')
+	    .text('Select By EVE');
 	   
 	   $('#cbdmfltr select.filter > option:first-child')
 	    .text('Created By');

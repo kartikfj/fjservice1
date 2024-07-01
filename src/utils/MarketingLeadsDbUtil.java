@@ -24,6 +24,8 @@ import beans.OrclDBConnectionPool;
 
 public class MarketingLeadsDbUtil {
 
+	private String byEVM;
+
 	public void insertNewMarketingLeads(MarketingLeads theMLData) throws SQLException {
 
 		Connection myCon = null;
@@ -482,6 +484,7 @@ public class MarketingLeadsDbUtil {
 			myStmt.setString(8, consultant_Leads_Dtls.getContactDetails());
 			myStmt.setString(9, consultant_Leads_Dtls.getIsUpdateByBDM());
 			myStmt.setString(10, consultant_Leads_Dtls.getConsultantType());
+			myStmt.setString(11, consultant_Leads_Dtls.getIsUpdateByEVM());
 			// execute sql query
 			logType = myStmt.executeUpdate();
 
@@ -594,7 +597,7 @@ public class MarketingLeadsDbUtil {
 
 				ConsultantLeads tempConsultantLeadsList = new ConsultantLeads(cnsltid, cnslt_name_temp, product_temp,
 						status_temp, division_temp, remarks_temp, created_date_temp, updated_date_temp, oppStatus,
-						hashmap, contact_details, byBDM, createdBy, consultantType);
+						hashmap, contact_details, byBDM, byEVM, createdBy, consultantType);
 
 				consultantLeads.add(tempConsultantLeadsList);
 
@@ -688,7 +691,7 @@ public class MarketingLeadsDbUtil {
 			myCon = con.getMysqlConn();
 
 			// Execute sql stamt
-			String sql = " SELECT division,divn_name,displayorder FROM  mkt_products  "
+			String sql = " SELECT distinct division,divn_name,displayorder FROM  mkt_products  "
 					+ "  WHERE frz_status = ?  order by  displayorder asc";
 			myStmt = myCon.prepareStatement(sql);
 

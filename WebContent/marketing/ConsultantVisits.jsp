@@ -51,7 +51,10 @@
 	<script type="text/javascript" src="././resources/datatables/ajax/excelmake/jszip.min.js"></script>
 	<script type="text/javascript" src="././resources/datatables/buttons-fjtco/js/buttons.html5.min.js"></script>
 	<script type="text/javascript" src="././resources/datatables/buttons-fjtco/js/buttons.print.min.js"></script>
- 
+   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <!--   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  
   <!-- Theme style -->
   <link rel="stylesheet" href="././resources/dist/css/AdminLTE.min.css">
   <link rel="stylesheet" href="././resources/dist/css/skins/_all-skins.min.css">
@@ -309,6 +312,24 @@ color:#008ac1;
                         
   					<form role="form" action="ConsultantVisits" id="processOne" method="POST"  >
   					<input type="hidden" value="cnclfpad" name="octjf" />
+  					 <style>
+        /* Custom CSS to match Bootstrap styling */
+        .select2-container--bootstrap .select2-selection--single {
+            height: calc(1.5em + .75rem + 2px);
+            padding: .375rem .75rem;
+            border-radius: .25rem;
+            border: 1px solid #ced4da;
+        }
+        
+        .select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+            line-height: normal;
+        }
+        
+        /* Ensure the select2 container has full width */
+        .select2-container {
+            width: 100% !important;
+        }
+    </style>
               <div class="box-body">
                <div class="row">  
                <div class="col-md-8">
@@ -321,7 +342,15 @@ color:#008ac1;
                     </c:forEach>
                     
                   </select>
-             
+           <script>
+        $(document).ready(function() {
+            $('#newConsltnt').select2({
+                placeholder: 'Search for a Consultant',
+                allowClear: true,
+                theme: 'bootstrap' // Use Bootstrap theme for Select2
+            });
+        });
+    </script>
                 </div>               
                 <div class="form-group">
                   <label>Reason for visit</label>
