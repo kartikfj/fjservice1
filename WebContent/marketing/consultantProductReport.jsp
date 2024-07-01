@@ -239,14 +239,23 @@ color:#008ac1;
     
            
 <div  class="fjtco-table" ><br/>
-	<form  class="form-inline" method="post" action="ConsultantProductReport"> 
+	<form  class="form-inline" id="myForm" method="post" action="ConsultantProductReport"> 
 	
 	             <i class="fa fa-filter" style="font-size: 24px;color: #065685;"></i>
-	                 <input type="hidden" id="fjtco" name="fjtco" value="rpeotrpad" />
+<!-- 	                 <input type="hidden" id="fjtco" name="fjtco" value="rpeotrpad" /> -->
+					  <input type="hidden" id="fjtco" name="fjtco" value="consultlist" />
 	                  <input type="hidden" id="uid" name="uid" value="E001090" />
-	         
+	<div class="form-group" id="nmlstforrprt">
+		<select class="form-control form-control-sm"  id="consultant_type" multiple="multiple" name="consultantType">
+              <option value="PRIMARY CONSULTANT">Primary Consultant</option> 
+              <option value="SECONDARY CONSULTANT">Secondary Consultant</option>
+              <option value="PRIMARY CLIENT">Primary Client</option>
+              <option value="SECONDARY CLIENT">Secondary Client</option>
+              <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>                                       
+       </select>
+	</div>      
 	 <div class="form-group" id="nmlstforrprt"> 	
-		<select class="form-control"  id="consultant_list" multiple="multiple" name="consltList" required>
+		<select class="form-control"  id="consultant_list" multiple="multiple" name="consltList">
 		   <c:forEach var="consultLst"  items="${CLFCL}" >
 				<c:choose>
 			 		<c:when test="${selectedConsultCheckBoxes.contains(consultLst.conslt_name)}">	 					
@@ -260,9 +269,8 @@ color:#008ac1;
 		</select>
 	</div>
 	
-	<div class="form-group" id="nmlstforrprt">  
-	  
-	<select class="form-control form-control-sm"  id="product_list" multiple="multiple" name="productList" required>
+	<div class="form-group" id="nmlstforrprt">
+	<select class="form-control form-control-sm"  id="product_list" multiple="multiple" name="productList">
 	   	<c:forEach var="productLst"  items="${PLFCL}" >
 			<c:choose>
 		 		<c:when test="${selectedProdcutCheckBoxes.contains(productLst.product)}">	 					
@@ -274,7 +282,6 @@ color:#008ac1;
 		 </c:choose>
 	</c:forEach>
 	</select>
-	
 	</div>
 	<div class="form-group">
 	<button type="submit" class="btn btn-primary"  onclick="getSeletedval();">Details</button></div>
@@ -340,8 +347,18 @@ $(function () {
     });
 });
 
-
-function getSeletedval(){
+$(function () {
+	
+    $('#consultant_type').multiselect({
+    	nonSelectedText: 'Select Consultant Type',
+        includeSelectAllOption: true,
+        onChange: function(option, checked, select) {
+            $('#myForm').submit();
+        }
+    });
+   
+});
+/*function getSeletedval(){alert("consl list");
 	
 	    var selectedValues = [];    
 	    $("#consultant_list :selected").each(function(){
@@ -351,13 +368,13 @@ function getSeletedval(){
 	    //alert(selectedValues);
 	   
 	
-}
+}*/
  function selectAll(box) {
         for(var i=0; i<box.length; i++) {
             box.options[i].selected = true;
         }
     }
- function getSeletedval(){
+ function getSeletedval(){alert("product list");
 		
 	    var selectedValues = [];    
 	    $("#product_list :selected").each(function(){

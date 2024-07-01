@@ -722,12 +722,12 @@ public class MarketingLeadsDbUtil {
 		Connection myCon = null;
 		PreparedStatement myStmt = null;
 		OrclDBConnectionPool orcl = new OrclDBConnectionPool();
-
+		System.out.print(updatedtls.getIsUpdateByEVM());
 		ResultSet myRes = null;
 		try {
 			myCon = orcl.getOrclConn();
 
-			String sql = "update CONSULTANT_LEADS set  cnslt_status =?, remarks=?, updated_date = SYSDATE,contact_details=?,product=?,EOA=?  "
+			String sql = "update CONSULTANT_LEADS set  cnslt_status =?, remarks=?, updated_date = SYSDATE,contact_details=?,product=?,eoa=?"
 					+ " where id = ? ";
 
 			// very important
@@ -737,8 +737,9 @@ public class MarketingLeadsDbUtil {
 			myStmt.setString(2, updatedtls.getRemarks());
 			myStmt.setString(3, updatedtls.getContactDetails());
 			myStmt.setString(4, updatedtls.getProduct());
-			myStmt.setString(5, updatedtls.getCnslt_id());
-			myStmt.setString(6, updatedtls.getIsUpdateByEVM());
+			myStmt.setString(5, updatedtls.getIsUpdateByEVM());
+			myStmt.setString(6, updatedtls.getCnslt_id());
+
 			// execute sql query
 			myStmt.execute();
 
@@ -933,7 +934,7 @@ public class MarketingLeadsDbUtil {
 		try {
 			myCon = con.getMysqlConn();
 
-			String sql = "SELECT distinct prduct from mkt_products  order by displayorder,division,prduct ";
+			String sql = "SELECT  prduct from mkt_products  order by displayorder,division,prduct ";
 			myStmt = myCon.createStatement();
 			myRes = myStmt.executeQuery(sql);
 			while (myRes.next()) {

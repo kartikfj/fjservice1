@@ -170,13 +170,14 @@ public class ConsultantVisitsController extends HttpServlet {
 		String status = request.getParameter("ud1");
 		String id = request.getParameter("ud3");
 		String contactDetails = request.getParameter("ud4");
+		String eoa = request.getParameter("ud6");
 		String[] product_lists = request.getParameterValues("ud5");
 		if (product_lists.length > 0) {
 			products = String.join(",", product_lists);
 		}
 		System.out.println("ID : " + id + " status : " + status);
 
-		ConsultantLeads updatedtls = new ConsultantLeads(id, status, remark, contactDetails, products, "");
+		ConsultantLeads updatedtls = new ConsultantLeads(id, status, remark, contactDetails, products, "", eoa);
 		marketingLeadsDbUtil.editUpdateConsultantLeads(updatedtls);
 
 		goToConsultantLeads(request, response, userRole);

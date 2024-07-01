@@ -352,6 +352,17 @@ input.right {
 		              </div>
 		            </div>
 		             <div class="col-md-4">
+    <div class="form-group">
+        <label for="ud7">Evidence of Approval</label>
+        <select class="form-control" name="ud7" id="ud7" required>
+            <option value="">Select</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+    </div>
+</div>
+		             
+		             <div class="col-md-4">
 		 				<div class="form-group" id="productDiv">
 		             		 <label>Product</label><br/>
 					        <select  class="form-control form-control-sm dropdown-toggle"  id="editproductsOpt${cnsltLst.cnslt_id}"  multiple="multiple" required>
@@ -953,10 +964,15 @@ function editSeletedval(id){
     });
      $('#product').val(selectedValues);
      $('#ud3').val(id);
+     
 	 if(editConsDetails == null || editConsDetails == ''){
 		 alert("Enter contact details");
 		 return false;
 	 }
+	 var eoaValue = $('#ud7').val();
+
+	    // Set EOA value to hidden input 'ud7'
+	    $('#ud7').val(eoaValue);
 	$('#updateDetails').submit();
     return true;
    

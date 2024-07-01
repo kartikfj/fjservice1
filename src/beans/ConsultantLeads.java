@@ -35,8 +35,6 @@ public class ConsultantLeads {
 		this.isUpdateByEVM = isUpdateByEVM;
 	}
 
-	
-
 	private HashMap<String, ArrayList<String>> divnProductList = null;
 
 	public String getCreated_date() {
@@ -274,7 +272,7 @@ public class ConsultantLeads {
 	}
 
 	public ConsultantLeads(String cnslt_id, String status, String remarks, String contactDetails, String product,
-			String sdfsd) {
+			String sdfsd, String isUpdateByEVM) {
 		// update consultant leads
 		super();
 		this.cnslt_id = cnslt_id;
@@ -282,6 +280,7 @@ public class ConsultantLeads {
 		this.remarks = remarks;
 		this.contactDetails = contactDetails;
 		this.product = product;
+		this.isUpdateByEVM = isUpdateByEVM;
 	}
 
 	public ConsultantLeads(String conslt_code, String conslt_name, String test1) {
