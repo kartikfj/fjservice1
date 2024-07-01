@@ -165,7 +165,9 @@ public class MktConsultantLeads extends HttpServlet {
 		String remark = request.getParameter("ud2");
 		String status = request.getParameter("ud1");
 		String id = request.getParameter("ud3");
+
 		String contactDetails = request.getParameter("ud4");
+
 		String[] product_lists = request.getParameterValues("ud5");
 		if (product_lists.length > 0) {
 			products = String.join(",", product_lists);
@@ -241,7 +243,7 @@ public class MktConsultantLeads extends HttpServlet {
 		String year = Calendar.getInstance().get(Calendar.YEAR) + "";
 
 		ConsultantLeads consultant_Leads_Dtls = new ConsultantLeads(consult_name, products, status, div, remark, year,
-				employee_Code, consultantDetails, isUpdateByBDM, isUpdateByBDM, consultantType);
+				employee_Code, consultantDetails, isUpdateByBDM, isUpdateByEVM, consultantType);
 		int successVal = marketingLeadsDbUtil.createnewConsultantLeads(consultant_Leads_Dtls);
 		if (successVal == 1) {
 			request.setAttribute("MSG", "New Consultant Leads  Created  Successfully.");

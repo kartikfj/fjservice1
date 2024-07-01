@@ -35,10 +35,7 @@ public class ConsultantLeads {
 		this.isUpdateByEVM = isUpdateByEVM;
 	}
 
-	@Override
-	public String toString() {
-		return "ConsultantLeads [isUpdateByEVM=" + isUpdateByEVM + "]";
-	}
+	
 
 	private HashMap<String, ArrayList<String>> divnProductList = null;
 
@@ -230,7 +227,7 @@ public class ConsultantLeads {
 		this.divnProductList = divnProductList;
 		this.contactDetails = contact_details;
 		this.isUpdateByBDM = byBDM;
-		this.isUpdateByBDM = byEVM;
+		this.isUpdateByEVM = byEVM;
 		this.createdBy = createdBy;
 		this.consultantType = consultantType;
 	}

@@ -468,7 +468,7 @@ public class MarketingLeadsDbUtil {
 		try {
 			myCon = orcl.getOrclConn();
 
-			String sql = "insert into CONSULTANT_LEADS(consultant,product,cnslt_status,division,remarks,create_year,created_by,created_date,updated_date,contact_details,byBDM,CONSULTANT_TYPE) values(?,?,?,?,?,?,?,SYSDATE,SYSDATE,?,?,?)";
+			String sql = "insert into CONSULTANT_LEADS(consultant,product,cnslt_status,division,remarks,create_year,created_by,created_date,updated_date,contact_details,byBDM,CONSULTANT_TYPE,EOA) values(?,?,?,?,?,?,?,SYSDATE,SYSDATE,?,?,?,?)";
 
 			// very important
 			myStmt = myCon.prepareStatement(sql);
@@ -563,7 +563,7 @@ public class MarketingLeadsDbUtil {
 			myCon = orcl.getOrclConn();
 
 			// Execute sql stamt
-			String sql = " SELECT id,consultant,product,cnslt_status,division,remarks,created_date,updated_date,contact_details,byBDM,(select EMP_NAME from FJPORTAL.PM_EMP_KEY where EMP_CODE = CREATED_BY and EMP_END_OF_SERVICE_DT is null) AS CREATED_BY,CONSULTANT_TYPE FROM CONSULTANT_LEADS  order by updated_date desc ";
+			String sql = " SELECT id,consultant,product,cnslt_status,division,remarks,created_date,updated_date,contact_details,byBDM,(select EMP_NAME from FJPORTAL.PM_EMP_KEY where EMP_CODE = CREATED_BY and EMP_END_OF_SERVICE_DT is null) AS CREATED_BY,CONSULTANT_TYPE,EOA FROM CONSULTANT_LEADS  order by updated_date desc ";
 			myStmt = myCon.prepareStatement(sql);
 			// Execute a SQL query
 			myRes = myStmt.executeQuery(sql);
@@ -586,6 +586,7 @@ public class MarketingLeadsDbUtil {
 				String byBDM = myRes.getString(10);
 				String createdBy = myRes.getString(11);
 				String consultantType = myRes.getString(12);
+				String byEOA = myRes.getString(13);
 				try {
 					oppStatus = dateDiffStatus(updated_date_temp, created_date_temp);
 
@@ -597,7 +598,7 @@ public class MarketingLeadsDbUtil {
 
 				ConsultantLeads tempConsultantLeadsList = new ConsultantLeads(cnsltid, cnslt_name_temp, product_temp,
 						status_temp, division_temp, remarks_temp, created_date_temp, updated_date_temp, oppStatus,
-						hashmap, contact_details, byBDM, byEVM, createdBy, consultantType);
+						hashmap, contact_details, byBDM, byEOA, createdBy, consultantType);
 
 				consultantLeads.add(tempConsultantLeadsList);
 
@@ -726,7 +727,7 @@ public class MarketingLeadsDbUtil {
 		try {
 			myCon = orcl.getOrclConn();
 
-			String sql = "update CONSULTANT_LEADS set  cnslt_status =?, remarks=?, updated_date = SYSDATE,contact_details=?,product=?  "
+			String sql = "update CONSULTANT_LEADS set  cnslt_status =?, remarks=?, updated_date = SYSDATE,contact_details=?,product=?,EOA=?  "
 					+ " where id = ? ";
 
 			// very important
@@ -737,6 +738,7 @@ public class MarketingLeadsDbUtil {
 			myStmt.setString(3, updatedtls.getContactDetails());
 			myStmt.setString(4, updatedtls.getProduct());
 			myStmt.setString(5, updatedtls.getCnslt_id());
+			myStmt.setString(6, updatedtls.getIsUpdateByEVM());
 			// execute sql query
 			myStmt.execute();
 

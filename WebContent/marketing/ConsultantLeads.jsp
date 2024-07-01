@@ -247,7 +247,7 @@ input.right {
 		             <div class="table-responsive" id="cnslt-table">
 		             <table id="displayCnsltnt" class="table table-hover small marketing-dtls-table"   style="border-top: 1px solid #4a46465e !important;border-right: 1px solid #4a46465e !important;">
 		             <thead><tr> <th>Consultant</th><th>Consultant Type</th><th>Product</th>   <th  width="100px">Status</th>
-		             <th  width="100px">Division</th><th>By BDM</th><th>Created By</th><th>Remarks</th><th  width="93px">Last Updated</th>
+		             <th  width="100px">Division</th><th>By BDM</th><th>EOA</th><th>Created By</th><th>Remarks</th><th  width="93px">Last Updated</th>
 		            <c:if test="${fjtuser.role eq 'mkt'  }"> <th  width="65px">Action</th></c:if> </tr>
 		             </thead> <tbody> <c:forEach var="cnsltLst"  items="${VACLD}" > <tr>
 		             <td><p class="long-letters">${cnsltLst.conslt_name}</p><span class='highlight'>${cnsltLst.updateStatus}</span></td>
@@ -268,6 +268,7 @@ input.right {
 		            </c:forEach>		             		             
 		             </td>
 		             <td><p class="long-letters">${cnsltLst.isUpdateByBDM} </p></td>
+		              <td><p class="long-letters">${cnsltLst.isUpdateByEVM}</p></td>
 		             <td><p class="long-letters">${cnsltLst.createdBy} </p></td>
 		             <td><p class="long-letters">${cnsltLst.remarks} </p></td>
 					<td>
@@ -384,6 +385,7 @@ input.right {
 		                </div>
 		             
 		             </div>
+		             
 		             </div>
 		            
 		                </div>
@@ -414,7 +416,7 @@ input.right {
 		              <tfoot>
 		            <tr>
 		              <th id="cnslttntfoot" >Consultant</th> <th id="cnslttntTypefoot" >Consultant Type</th><th  class="tfoot1"   id="pdctfoot">Product</th>   <th id="statusfoot">Status</th>
-		             <th id="dvnfltr">Division</th><th id="bdmfltr">By BDM</th><th id="cbdmfltr">By BDM</th><th  class="tfoot1" >Remarks</th><th  width="93px"  class="tfoot1" >Last Updated</th>
+		             <th id="dvnfltr">Division</th><th id="bdmfltr">By BDM</th><th id="eoafltr">EOA</th><th id="cbdmfltr">By BDM</th><th  class="tfoot1" >Remarks</th><th  width="93px"  class="tfoot1" >Last Updated</th>
 		            <c:if test="${fjtuser.role eq 'mkt'  }"> <th  width="65px"  class="tfoot1" >Action</th></c:if> 
 		            </tr>
 		        </tfoot>
@@ -780,7 +782,7 @@ $(document).ready(function() {
 	   $('#bdmfltr select.filter > option:first-child')
 	    .text('Select By BDM');
 	   
-	   $('#bdmfltr select.filter > option:first-child')
+	   $('#eoafltr select.filter > option:first-child')
 	    .text('Select By EVE');
 	   
 	   $('#cbdmfltr select.filter > option:first-child')
