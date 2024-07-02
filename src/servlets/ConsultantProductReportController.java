@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
 
 import beans.ConsultantLeads;
 import beans.MktSalesLeads;
@@ -37,6 +40,9 @@ public class ConsultantProductReportController extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
+		System.out.println("Received parameters:");
+		request.getParameterMap().forEach((key, value) -> System.out.println(key + " = " + Arrays.toString(value)));
+
 		fjtcouser fjtuser = (fjtcouser) request.getSession().getAttribute("fjtuser");
 
 		if (fjtuser.getEmp_code() == null) {
@@ -75,6 +81,14 @@ public class ConsultantProductReportController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
+
+		case "rpeotrpad1":
+			try {
+				goToFilterConsultantType(request, response);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			break;
 		default:
 
 			try {
@@ -92,6 +106,42 @@ public class ConsultantProductReportController extends HttpServlet {
 		RequestDispatcher dispatcher = request.getRequestDispatcher("/marketing/consultantProductReport.jsp");
 		dispatcher.forward(request, response);
 
+	}
+
+	private void goToFilterConsultantType(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, ServletException, IOException {
+		// Log all parameters for debugging
+		System.out.println("Received parameters:");
+		request.getParameterMap().forEach((key, value) -> System.out.println(key + " = " + Arrays.toString(value)));
+
+		// Correct parameter name check
+		String[] consultantTypes = request.getParameterValues("consultantTypeList1");
+
+		// Log the received data to the server console
+		if (consultantTypes != null) {
+			System.out.println("Received Consultant Types: " + Arrays.toString(consultantTypes));
+		} else {
+			System.out.println("No Consultant Types were received.");
+		}
+		List<ConsultantLeads> filteredConsultants = new ArrayList<>();
+		if (consultantTypes != null) {
+			filteredConsultants = marketingLeadsDbUtil.getFilteredConsultantList(consultantTypes);
+		}
+
+		// Convert the filtered list to JSON
+		Gson gson = new Gson();
+		String json = gson.toJson(filteredConsultants);
+
+		// Set the response type to JSON and send the response
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		response.getWriter().write(json);
+
+		// Log the JSON response for debugging
+		System.out.println("Filtered Consultants JSON: " + json);
+		// Optionally, you can send a response back to the client
+		response.setContentType("text/plain");
+		response.getWriter().write("Consultant Types received: " + Arrays.toString(consultantTypes));
 	}
 
 	private void goToConsultantProductReport(HttpServletRequest request, HttpServletResponse response)
@@ -208,7 +258,13 @@ public class ConsultantProductReportController extends HttpServlet {
 			if (fjtuser == null) {
 				response.sendRedirect("logout.jsp");
 			} else {
-				processRequest(request, response);
+				if ("rpeotrpad1".equals(request.getParameter("fjtco"))) {
+					// Directly handle the consultant type submission
+					goToFilterConsultantType(request, response);
+				} else {
+					// Process other types of requests
+					processRequest(request, response);
+				}
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

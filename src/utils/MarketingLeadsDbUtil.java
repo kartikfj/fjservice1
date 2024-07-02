@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
@@ -458,6 +459,81 @@ public class MarketingLeadsDbUtil {
 	 * 
 	 * return logType; }
 	 */
+	public List<ConsultantLeads> getFilteredConsultantList(String[] selectedTypes) throws SQLException {
+		List<ConsultantLeads> filteredConsultants = new ArrayList<>();
+
+		// Check if selectedTypes is not null and not empty
+		if (selectedTypes == null || selectedTypes.length == 0) {
+			System.out.println("No consultant types provided for filtering.");
+			return filteredConsultants;
+		}
+
+		// Prepare the base SQL query
+		String query = "SELECT CONSULTANT, CONSULTANT_TYPE FROM consultant_leads WHERE CONSULTANT_TYPE IN (";
+		StringBuilder typePlaceholders = new StringBuilder();
+
+		// Dynamically build the placeholders for the query
+		for (int i = 0; i < selectedTypes.length; i++) {
+			typePlaceholders.append("?");
+			if (i < selectedTypes.length - 1) {
+				typePlaceholders.append(",");
+			}
+		}
+		query += typePlaceholders.toString() + ")";
+
+		// Log the final query for debugging
+		System.out.println("Executing Query: " + query);
+
+		// Open the database connection
+		try (Connection conn = new OrclDBConnectionPool().getOrclConn();
+				PreparedStatement stmt = conn.prepareStatement(query)) {
+
+			// Set the values for the placeholders and log them for debugging
+			for (int i = 0; i < selectedTypes.length; i++) {
+				stmt.setString(i + 1, selectedTypes[i]);
+				System.out.println("Setting parameter " + (i + 1) + ": " + selectedTypes[i]);
+			}
+
+			// Execute the query and process the result set
+			try (ResultSet rs = stmt.executeQuery()) {
+				// Get and print column names from the ResultSet metadata
+				ResultSetMetaData rsmd = rs.getMetaData();
+				int columnCount = rsmd.getColumnCount();
+				System.out.print("Column names in the result set: ");
+				for (int i = 1; i <= columnCount; i++) {
+					System.out.print(rsmd.getColumnName(i) + " ");
+				}
+				System.out.println();
+
+				// Process the result set
+				while (rs.next()) {
+					// Fetch only the required columns
+					String consultant = rs.getString("CONSULTANT");
+					String consultantType = rs.getString("CONSULTANT_TYPE");
+
+					// Create a new ConsultantLeads object (adjust the constructor to match your
+					// class structure)
+					ConsultantLeads consultantLead = new ConsultantLeads(consultant, consultantType, "");
+					filteredConsultants.add(consultantLead);
+				}
+			}
+		} catch (SQLException e) {
+			// Log the error for debugging
+			System.out.println("SQL Exception: " + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		}
+
+		// Log the result for debugging
+		System.out.println("Filtered Consultants: " + filteredConsultants.size());
+		/*
+		 * for (ConsultantLeads consultant : filteredConsultants) {
+		 * System.out.println("Consultant: " + consultant + ", Type: " +
+		 * consultant.getType()); }
+		 */
+		return filteredConsultants;
+	}
+
 	public int createnewConsultantLeads(ConsultantLeads consultant_Leads_Dtls) throws SQLException {
 
 		int logType = 0;
@@ -934,7 +1010,7 @@ public class MarketingLeadsDbUtil {
 		try {
 			myCon = con.getMysqlConn();
 
-			String sql = "SELECT  prduct from mkt_products  order by displayorder,division,prduct ";
+			String sql = "SELECT prduct from mkt_products  order by displayorder,division,prduct ";
 			myStmt = myCon.createStatement();
 			myRes = myStmt.executeQuery(sql);
 			while (myRes.next()) {

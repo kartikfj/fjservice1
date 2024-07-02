@@ -239,21 +239,33 @@ color:#008ac1;
     
            
 <div  class="fjtco-table" ><br/>
-	<form  class="form-inline" id="myForm" method="post" action="ConsultantProductReport"> 
+  <form class="form-inline" id="consultantTypeForm" method="post" action="ConsultantProductReport">
+    <input type="hidden" name="fjtco" value="rpeotrpad1" />
+    <div class="form-group" id="consultant_type_section">
+        <label for="consultant_type1">Consultant Type:</label>
+        <select class="form-control" id="consultant_type1" multiple="multiple" name="consultantTypeList1">
+            <option value="Primary">Primary Consultant</option>
+            <option value="Secondary">Secondary Consultant</option>
+            <option value="PRIMARY CLIENT">Primary Client</option>
+            <option value="SECONDARY CLIENT">Secondary Client</option>
+            <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>
+        </select>
+        <!-- Button to trigger AJAX submission -->
+        <button type="button" class="btn btn-primary" onclick="submitConsultantTypeForm();">Submit Consultant Type</button>
+    </div>
+</form>
+  
+<form class="form-inline" id="myForm" method="post" action="ConsultantProductReport">
+        <i class="fa fa-filter" style="font-size: 24px; color: #065685;"></i>
+        
+        <input type="hidden" id="fjtco" name="fjtco" value="consultlist" />
+        <input type="hidden" id="uid" name="uid" value="E001090" />
+
+        <!-- Consultant Type Section -->
+
+   
 	
-	             <i class="fa fa-filter" style="font-size: 24px;color: #065685;"></i>
-<!-- 	                 <input type="hidden" id="fjtco" name="fjtco" value="rpeotrpad" /> -->
-					  <input type="hidden" id="fjtco" name="fjtco" value="consultlist" />
-	                  <input type="hidden" id="uid" name="uid" value="E001090" />
-	<div class="form-group" id="nmlstforrprt">
-		<select class="form-control form-control-sm"  id="consultant_type" multiple="multiple" name="consultantType">
-              <option value="PRIMARY CONSULTANT">Primary Consultant</option> 
-              <option value="SECONDARY CONSULTANT">Secondary Consultant</option>
-              <option value="PRIMARY CLIENT">Primary Client</option>
-              <option value="SECONDARY CLIENT">Secondary Client</option>
-              <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>                                       
-       </select>
-	</div>      
+	
 	 <div class="form-group" id="nmlstforrprt"> 	
 		<select class="form-control"  id="consultant_list" multiple="multiple" name="consltList">
 		   <c:forEach var="consultLst"  items="${CLFCL}" >
@@ -330,7 +342,13 @@ color:#008ac1;
 <!-- page script start -->
 <script>
 
-
+$(function () {
+    // Initialize multiselect for consultant_type1
+    $('#consultant_type1').multiselect({
+        nonSelectedText: 'Select Consultant Type',
+        includeSelectAllOption: true
+    });
+});
 $(function () {
     $('#product_list').multiselect({
     	nonSelectedText: 'Select Product',
@@ -347,7 +365,8 @@ $(function () {
     });
 });
 
-$(function () {
+
+/* $(function () {
 	
     $('#consultant_type').multiselect({
     	nonSelectedText: 'Select Consultant Type',
@@ -357,7 +376,7 @@ $(function () {
         }
     });
    
-});
+}); */
 /*function getSeletedval(){alert("consl list");
 	
 	    var selectedValues = [];    
@@ -369,22 +388,34 @@ $(function () {
 	   
 	
 }*/
- function selectAll(box) {
-        for(var i=0; i<box.length; i++) {
-            box.options[i].selected = true;
+function submitConsultantTypeForm() {
+    var selectedValues = [];
+    $("#consultant_type1 :selected").each(function() {
+        selectedValues.push($(this).val());
+    });
+    console.log("Submitting Consultant Types:", selectedValues);
+
+    // AJAX call to send the consultant type data
+    $.ajax({
+        type: "POST",
+        url: "ConsultantProductReport",
+        data: {
+            fjtco: "rpeotrpad1",
+            consultantTypeList1: selectedValues // Keep this consistent
+        },
+        traditional: true,
+        success: function(response) {
+            console.log("Success:", response);
+            alert("Consultant Types submitted successfully.");
+        },
+        error: function(error) {
+            console.log("Error:", error);
+            alert("Error in submitting consultant types.");
         }
-    }
- function getSeletedval(){alert("product list");
-		
-	    var selectedValues = [];    
-	    $("#product_list :selected").each(function(){
-	        selectedValues.push($(this).val()); 
-	    });
-	    return true;
-	    //alert(selectedValues);
-	   
-	
+    });
 }
+
+
 function preLoader(){ $('#laoding').show();}
 
 function exportToExcel() {
