@@ -279,7 +279,7 @@ color:#008ac1;
 		
 		</select>
 	</div>
-	<div class="form-group" id="filtered_consultant_section">
+	<div class="form-group" id="nmlstforrprt">
     <label for="filtered_consultant_list">Filtered Consultants:</label>
     <select class="form-control" id="filtered_consultant_list" multiple="multiple" name="filteredConsultantList">
         <!-- Options will be populated dynamically -->

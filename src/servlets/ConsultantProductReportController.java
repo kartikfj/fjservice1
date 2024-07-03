@@ -185,9 +185,17 @@ public class ConsultantProductReportController extends HttpServlet {
 
 	private void goToConsultantProductReport(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		/* final String[] consultantList = request.getParameterValues("consltList"); */
-		final String[] consultantList = request.getParameterValues("filteredConsultantList");
+		final String[] consultantList1 = request.getParameterValues("consltList");
+		String[] consultantList = request.getParameterValues("filteredConsultantList");
 		String[] productList = request.getParameterValues("productList");
+
+		if (consultantList1 != null && consultantList1.length > 0) {
+			List<String> combinedConsultantList = new ArrayList<>(
+					Arrays.asList(consultantList != null ? consultantList : new String[0]));
+			combinedConsultantList.addAll(Arrays.asList(consultantList1));
+			consultantList = combinedConsultantList.toArray(new String[0]);
+		}
+
 		List<String> selectedConsltCheckboxes = null;
 		List<String> selectedProductCheckboxes = null;
 		int totalSelectedConsulCnt = (consultantList.length) / 10;
