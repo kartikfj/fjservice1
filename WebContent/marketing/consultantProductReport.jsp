@@ -239,7 +239,7 @@ color:#008ac1;
     
            
 <div  class="fjtco-table" ><br/>
-  <form class="form-inline" id="consultantTypeForm" method="post" action="ConsultantProductReport">
+<form class="form-inline" id="consultantTypeForm" method="post" action="ConsultantProductReport">
     <input type="hidden" name="fjtco" value="rpeotrpad1" />
     <div class="form-group" id="consultant_type_section">
         <label for="consultant_type1">Consultant Type:</label>
@@ -254,19 +254,17 @@ color:#008ac1;
         <button type="button" class="btn btn-primary" onclick="submitConsultantTypeForm();">Submit Consultant Type</button>
     </div>
 </form>
-  
-<form class="form-inline" id="myForm" method="post" action="ConsultantProductReport">
-        <i class="fa fa-filter" style="font-size: 24px; color: #065685;"></i>
-        
-        <input type="hidden" id="fjtco" name="fjtco" value="consultlist" />
-        <input type="hidden" id="uid" name="uid" value="E001090" />
 
-        <!-- Consultant Type Section -->
 
-   
+	<form  class="form-inline" id="myForm" method="post" action="ConsultantProductReport"> 
 	
+	             <i class="fa fa-filter" style="font-size: 24px;color: #065685;"></i>
+                 <input type="hidden" id="fjtco" name="fjtco" value="rpeotrpad" /> 
+				<!-- 	  <input type="hidden" id="fjtco" name="fjtco" value="consultlist" /> -->
+	                  <input type="hidden" id="uid" name="uid" value="E001090" />
 	
-	 <div class="form-group" id="nmlstforrprt"> 	
+	 <div class="form-group" id="nmlstforrprt">
+	  	
 		<select class="form-control"  id="consultant_list" multiple="multiple" name="consltList">
 		   <c:forEach var="consultLst"  items="${CLFCL}" >
 				<c:choose>
@@ -278,9 +276,15 @@ color:#008ac1;
 			 		</c:otherwise>
 			 </c:choose>
 		</c:forEach>
+		
 		</select>
 	</div>
-	
+	<div class="form-group" id="filtered_consultant_section">
+    <label for="filtered_consultant_list">Filtered Consultants:</label>
+    <select class="form-control" id="filtered_consultant_list" multiple="multiple" name="filteredConsultantList">
+        <!-- Options will be populated dynamically -->
+    </select>
+</div>
 	<div class="form-group" id="nmlstforrprt">
 	<select class="form-control form-control-sm"  id="product_list" multiple="multiple" name="productList">
 	   	<c:forEach var="productLst"  items="${PLFCL}" >
@@ -342,13 +346,7 @@ color:#008ac1;
 <!-- page script start -->
 <script>
 
-$(function () {
-    // Initialize multiselect for consultant_type1
-    $('#consultant_type1').multiselect({
-        nonSelectedText: 'Select Consultant Type',
-        includeSelectAllOption: true
-    });
-});
+
 $(function () {
     $('#product_list').multiselect({
     	nonSelectedText: 'Select Product',
@@ -356,6 +354,12 @@ $(function () {
     });
 });
 
+$(function () {
+    $('#filtered_consultant_list').multiselect({
+        nonSelectedText: 'Select Filtered Consultant',
+        includeSelectAllOption: true
+    });
+});
 
 $(function () {
 	
@@ -365,18 +369,15 @@ $(function () {
     });
 });
 
-
-/* $(function () {
+$(function () {
 	
-    $('#consultant_type').multiselect({
+    $('#consultant_type1').multiselect({
     	nonSelectedText: 'Select Consultant Type',
         includeSelectAllOption: true,
-        onChange: function(option, checked, select) {
-            $('#myForm').submit();
-        }
+       
     });
    
-}); */
+});
 /*function getSeletedval(){alert("consl list");
 	
 	    var selectedValues = [];    
@@ -394,7 +395,6 @@ function submitConsultantTypeForm() {
         selectedValues.push($(this).val());
     });
     console.log("Submitting Consultant Types:", selectedValues);
-
     // AJAX call to send the consultant type data
     $.ajax({
         type: "POST",
@@ -406,6 +406,7 @@ function submitConsultantTypeForm() {
         traditional: true,
         success: function(response) {
             console.log("Success:", response);
+            updateFilteredConsultantList(response);
             alert("Consultant Types submitted successfully.");
         },
         error: function(error) {
@@ -414,7 +415,46 @@ function submitConsultantTypeForm() {
         }
     });
 }
+function updateFilteredConsultantList(response) {
+    var consultants;
 
+    // Check if the response needs parsing
+    if (typeof response === 'string') {
+        try {
+            consultants = JSON.parse(response);
+        } catch (e) {
+            console.error("Error parsing JSON response:", e);
+            return;
+        }
+    } else {
+        consultants = response;
+    }
+
+    // Ensure consultants is an array
+    if (!Array.isArray(consultants)) {
+        console.error("Expected an array but got:", consultants);
+        return;
+    }
+
+    var $filteredConsultantList = $("#filtered_consultant_list");
+    $filteredConsultantList.empty(); // Clear existing options
+
+    if (consultants.length > 0) {
+        consultants.forEach(function(consultant) {
+            // Use both `cnslt_id` as the value and `conslt_name` as the display text
+            $filteredConsultantList.append(
+                $("<option></option>").val(consultant.cnslt_id).text(consultant.cnslt_id)
+            );
+        });
+    } else {
+        $filteredConsultantList.append(
+            $("<option></option>").text("No consultants found for selected types")
+        );
+    }
+
+    // Reinitialize the multiselect if using a plugin
+    $filteredConsultantList.multiselect('rebuild');
+}
 
 function preLoader(){ $('#laoding').show();}
 

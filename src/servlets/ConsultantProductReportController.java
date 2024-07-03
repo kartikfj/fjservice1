@@ -40,20 +40,31 @@ public class ConsultantProductReportController extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		System.out.println("Received parameters:");
-		request.getParameterMap().forEach((key, value) -> System.out.println(key + " = " + Arrays.toString(value)));
-
 		fjtcouser fjtuser = (fjtcouser) request.getSession().getAttribute("fjtuser");
 
 		if (fjtuser.getEmp_code() == null) {
 			response.sendRedirect("logout.jsp");
 
 		} else {
+			String consultypeforQuery = "";
+			String[] selconsultantType = request.getParameterValues("consultantType");
+			StringBuilder contypebuilder = new StringBuilder();
+			if (selconsultantType != null && selconsultantType.length > 0) {
 
+				for (String selcontypelist : selconsultantType) {
+					contypebuilder.append("'" + selcontypelist + "',");
+				}
+				consultypeforQuery = contypebuilder.deleteCharAt(contypebuilder.length() - 1).toString();
+				System.out.println("consultypeforQuery==" + consultypeforQuery);
+			} else {
+				consultypeforQuery = "''";
+			}
 			List<MktSalesLeads> productList = marketingLeadsDbUtil.getProductList();
 			List<ConsultantLeads> consultantList = marketingLeadsDbUtil.getAllConsultantList();
 			request.setAttribute("PLFCL", productList);
 			request.setAttribute("CLFCL", consultantList);
+			// request.setAttribute("selectedConsultTypeCheckBoxes",
+			// selectedConsltCheckboxes);
 
 		}
 		String theDataFromHr = request.getParameter("fjtco");
@@ -72,19 +83,22 @@ public class ConsultantProductReportController extends HttpServlet {
 				e.printStackTrace();
 			}
 			break;
-
-		case "rpeotrpad":
+		case "consultlist":
 
 			try {
-				goToConsultantProductReport(request, response);
+				goToConsultantProductPage(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			break;
-
 		case "rpeotrpad1":
+			goToFilterConsultantType(request, response);
+			break;
+		case "rpeotrpad":
+
 			try {
-				goToFilterConsultantType(request, response);
+				goToConsultantProductReport(request, response);
+				goToConsultantProductPage(request, response);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -108,45 +122,71 @@ public class ConsultantProductReportController extends HttpServlet {
 
 	}
 
+	/*
+	 * private void goToFilterConsultantType(HttpServletRequest request,
+	 * HttpServletResponse response) throws SQLException, ServletException,
+	 * IOException { // Log all parameters for debugging
+	 * System.out.println("Received parameters:");
+	 * request.getParameterMap().forEach((key, value) -> System.out.println(key +
+	 * " = " + Arrays.toString(value)));
+	 * 
+	 * // Correct parameter name check String[] consultantTypes =
+	 * request.getParameterValues("consultantTypeList1");
+	 * 
+	 * // Log the received data to the server console if (consultantTypes != null) {
+	 * System.out.println("Received Consultant Types: " +
+	 * Arrays.toString(consultantTypes)); } else {
+	 * System.out.println("No Consultant Types were received."); }
+	 * List<ConsultantLeads> filteredConsultants = new ArrayList<>(); if
+	 * (consultantTypes != null) { filteredConsultants =
+	 * marketingLeadsDbUtil.getFilteredConsultantList(consultantTypes); }
+	 * 
+	 * // Convert the filtered list to JSON Gson gson = new Gson(); String json =
+	 * gson.toJson(filteredConsultants); request.setAttribute("filteredConsultants",
+	 * filteredConsultants); // Set the response type to JSON and send the response
+	 * response.setContentType("application/json");
+	 * response.setCharacterEncoding("UTF-8"); response.getWriter().write(json);
+	 * 
+	 * // Log the JSON response for debugging
+	 * System.out.println("Filtered Consultants JSON: " + json); // Optionally, you
+	 * can send a response back to the client response.setContentType("text/plain");
+	 * response.getWriter().write("Consultant Types received: " +
+	 * Arrays.toString(consultantTypes)); }
+	 */
+
 	private void goToFilterConsultantType(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, ServletException, IOException {
-		// Log all parameters for debugging
 		System.out.println("Received parameters:");
 		request.getParameterMap().forEach((key, value) -> System.out.println(key + " = " + Arrays.toString(value)));
 
-		// Correct parameter name check
 		String[] consultantTypes = request.getParameterValues("consultantTypeList1");
 
-		// Log the received data to the server console
 		if (consultantTypes != null) {
 			System.out.println("Received Consultant Types: " + Arrays.toString(consultantTypes));
 		} else {
 			System.out.println("No Consultant Types were received.");
 		}
+
 		List<ConsultantLeads> filteredConsultants = new ArrayList<>();
 		if (consultantTypes != null) {
 			filteredConsultants = marketingLeadsDbUtil.getFilteredConsultantList(consultantTypes);
 		}
 
-		// Convert the filtered list to JSON
 		Gson gson = new Gson();
 		String json = gson.toJson(filteredConsultants);
 
-		// Set the response type to JSON and send the response
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		response.getWriter().write(json);
 
-		// Log the JSON response for debugging
+		// Debugging log to ensure only JSON is sent
 		System.out.println("Filtered Consultants JSON: " + json);
-		// Optionally, you can send a response back to the client
-		response.setContentType("text/plain");
-		response.getWriter().write("Consultant Types received: " + Arrays.toString(consultantTypes));
 	}
 
 	private void goToConsultantProductReport(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		final String[] consultantList = request.getParameterValues("consltList");
+		/* final String[] consultantList = request.getParameterValues("consltList"); */
+		final String[] consultantList = request.getParameterValues("filteredConsultantList");
 		String[] productList = request.getParameterValues("productList");
 		List<String> selectedConsltCheckboxes = null;
 		List<String> selectedProductCheckboxes = null;
@@ -162,6 +202,7 @@ public class ConsultantProductReportController extends HttpServlet {
 		if (productList != null && productList.length > 0) {
 			selectedProductCheckboxes = Arrays.asList(productList);
 		}
+
 		request.setAttribute("selectedConsultCheckBoxes", selectedConsltCheckboxes);
 		request.setAttribute("selectedProdcutCheckBoxes", selectedProductCheckboxes);
 		int count = 1;
@@ -257,15 +298,13 @@ public class ConsultantProductReportController extends HttpServlet {
 			fjtcouser fjtuser = (fjtcouser) request.getSession().getAttribute("fjtuser");
 			if (fjtuser == null) {
 				response.sendRedirect("logout.jsp");
+			} else if ("rpeotrpad1".equals(request.getParameter("fjtco"))) {
+				// Directly handle the consultant type submission
+				goToFilterConsultantType(request, response);
 			} else {
-				if ("rpeotrpad1".equals(request.getParameter("fjtco"))) {
-					// Directly handle the consultant type submission
-					goToFilterConsultantType(request, response);
-				} else {
-					// Process other types of requests
-					processRequest(request, response);
-				}
+				processRequest(request, response);
 			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
