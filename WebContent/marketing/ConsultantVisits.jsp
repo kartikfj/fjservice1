@@ -315,7 +315,7 @@ color:#008ac1;
   					 <style>
         /* Custom CSS to match Bootstrap styling */
         .select2-container--bootstrap .select2-selection--single {
-            height: calc(1.5em + .75rem + 2px);
+            height: calc(1.5em + .75rem + 10px);
             padding: .375rem .75rem;
             border-radius: .25rem;
             border: 1px solid #ced4da;
@@ -330,18 +330,19 @@ color:#008ac1;
             width: 100% !important;
         }
     </style>
-              <div class="box-body">
+              
+                  <div class="box-body">
                <div class="row">  
                <div class="col-md-8">
                 <div class="form-group">
-                  <label for="newConsltnt">Consultant</label>
-				 <select class="form-control" name="newConsltnt" id="newConsltnt" required>
-                    <option value="">Select Consultant</option>             
-                    <c:forEach var="consultLst"  items="${CLFCL}" >
-                    <option value="${consultLst.conslt_name}">${consultLst.conslt_name}</option>
-                    </c:forEach>
-                    
-                  </select>
+              
+                 <label for="newConsltnt">Consultant</label>
+    <select class="form-control" name="newConsltnt" id="newConsltnt" required>
+        <option value="">Select Consultant</option>
+        <c:forEach var="consultLst" items="${CLFCL}">
+            <option value="${consultLst.conslt_name}">${consultLst.conslt_name}</option>
+        </c:forEach>
+    </select>
            <script>
         $(document).ready(function() {
             $('#newConsltnt').select2({

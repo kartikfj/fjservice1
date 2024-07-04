@@ -505,7 +505,36 @@ input.right {
 		                    <option value="${dvnLst.divn_code}">${dvnLst.divn_name}</option>
 		                    </c:forEach>
 		                  </select>
-		                </div>   
+		                </div> 
+		                <div class="container">
+                           <div class="row" style="margin-right:45px;">
+        <!-- Column for Status Dropdown -->
+                                 <div class="col-md-2" style="margin-bottom:15px;" style="margin-right:2px;">
+		                  <div class="form-group">
+                                        <label for="newstatus">Status</label>
+                                        <select class="form-control" name="newstatus" id="newstatus" required>
+                                            <option value="">Select Status</option>
+                                            <option value="Currently Working">Currently Working</option>
+                                            <option value="Approved">Approved</option>
+                                            <option value="Not Yet Approved">Not Yet Approved</option>
+                                            <option value="Not Initiated">Not Initiated</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="bybdmyorno1">Evidence of Approval</label>
+                                        <select class="form-control" name="bybdmyorno1" id="bybdmyorno1" required disabled>
+                                            <option value="">Select</option>
+                                            <option value="Yes">Yes</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                    </div>
+                                    </div>
+                                     </div>
+                                    
+                                 
 <!-- 	                </div>   -->
 <!-- 	                 <div class="col-md-5" style="padding: 0px;!important;float:right;">     -->
 		                     
@@ -570,9 +599,9 @@ input.right {
     </select>
 </div>
  -->
-<div class="container">
+<!-- <div class="container">
     <div class="row">
-        <!-- Column for Status Dropdown -->
+        Column for Status Dropdown
         <div class="col-md-2" style="margin-bottom:15px;">
             <div class="form-group">
                 <label for="newstatus">Status</label>
@@ -585,7 +614,7 @@ input.right {
                 </select>
             </div>
         </div>
-        <!-- Column for Evidence of Approval Dropdown -->
+        Column for Evidence of Approval Dropdown
         <div class="col-md-2">
             <div class="form-group">
                 <label for="bybdmyorno">Evidence of Approval</label>
@@ -597,7 +626,7 @@ input.right {
             </div>
         </div>
     </div>
-</div>
+</div> -->
  <script>
       $(document).ready(function() {
         $('#newstatus').change(function() {
@@ -636,8 +665,8 @@ input.right {
 			       <select  class="form-control form-control-sm"  id="productsOpt" multiple="multiple"  name="newProduct" required>
 			        </select>
 			     </div>	 
-                      
-			     <div class="form-group">
+                      <br>
+			     <div class="form-group" style="margin-top:15px;">
                   <label>By BDM</label>
                   <select class="form-control" name="bybdmyorno" id="bybdmyorno" required>
                     <option value="">Select</option>
@@ -855,6 +884,7 @@ $(document).ready(function() {
 	    });
 	   
 	   getProducts();
+	   getConsultantType();
 });
 
 function loadMultiSelect(id){
@@ -991,6 +1021,39 @@ function getSeletedval(){
   
 }
 function preLoader(){ $('#laoding').show();}	
+function getConsultantType(){
+
+    $('select[name=newConsltnt]').change(function(){
+          var consultant = $(this).val();
+             if(consultant  != ''){  
+                   $.ajax({                      
+
+                          'async': false,
+                          type: 'POST',
+                          url: 'ConsultantVisits',
+                          data: {octjf: "consultantType", cd1:consultant},
+                          beforeSend: function() {
+                                 $('#consultantType').empty();
+                             },
+                                 success: function(data) {
+                                        console.log("propf "+data.product);
+                                       var product = data.product || "Not Assigned";  
+                                       var  toAppend = '<option value="'+product+'">'+product+'</option>';
+                                             //$('#consultantType').html(data.product);
+
+                                     $('#consultantType').append(toAppend);
+                               // $('#consultantType').multiselect('rebuild');   
+                                       },
+                                 error:function(data,status,er) { 
+                                   console.log("NO Products");
+                                  }
+                        });
+           }
+
+             else{$('#consultantType').empty();}
+        });
+
+}
 </script>
 <!-- page Script  end -->
 
