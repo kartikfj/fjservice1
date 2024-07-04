@@ -239,21 +239,20 @@ color:#008ac1;
     
            
 <div  class="fjtco-table" ><br/>
-<form class="form-inline" id="consultantTypeForm" method="post" action="ConsultantProductReport">
-    <input type="hidden" name="fjtco" value="rpeotrpad1" />
-    <div class="form-group" id="consultant_type_section">
-        <label for="consultant_type1">Consultant Type:</label>
-        <select class="form-control" id="consultant_type1" multiple="multiple" name="consultantTypeList1">
-            <option value="PRIMARY CONSULTANT">Primary Consultant</option>
-            <option value="SECONDARY CONSULTANT">Secondary Consultant</option>
-            <option value="PRIMARY CLIENT">Primary Client</option>
-            <option value="SECONDARY CLIENT">Secondary Client</option>
-            <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>
-        </select>
-        <!-- Button to trigger AJAX submission -->
-        <button type="button" class="btn btn-primary" onclick="submitConsultantTypeForm();">Submit Consultant Type</button>
-    </div>
-</form>
+ <form class="form-inline" id="consultantTypeForm" method="post" action="ConsultantProductReport">
+        <input type="hidden" name="fjtco" value="rpeotrpad1" />
+        <div class="form-group" id="consultant_type_section">
+            <label for="consultant_type1">Consultant Type:</label>
+            <select class="form-control" id="consultant_type1" multiple="multiple" name="consultantTypeList1">
+                <option value="PRIMARY CONSULTANT">Primary Consultant</option>
+                <option value="SECONDARY CONSULTANT">Secondary Consultant</option>
+                <option value="PRIMARY CLIENT">Primary Client</option>
+                <option value="SECONDARY CLIENT">Secondary Client</option>
+                <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>
+                 <option value=" ">Not Any Type</option>
+            </select>
+        </div>
+    </form>
 
 
 	<form  class="form-inline" id="myForm" method="post" action="ConsultantProductReport"> 
@@ -265,12 +264,12 @@ color:#008ac1;
 	
 	
 	<div class="form-group" id="nmlstforrprt" style="display: none;">
-    <label for="filtered_consultant_list">Filtered Consultants:</label>
+    <label for="filtered_consultant_list"></label>
     <select class="form-control" id="filtered_consultant_list" multiple="multiple" name="filteredConsultantList">
         <!-- Options will be populated dynamically -->
     </select>
 </div>
-	 <div class="form-group" id="nmlstforrprt">
+	<%--  <div class="form-group" id="nmlstforrprt">
 	  	
 		<select class="form-control"  id="consultant_list" multiple="multiple" name="consltList">
 		   <c:forEach var="consultLst"  items="${CLFCL}" >
@@ -285,10 +284,10 @@ color:#008ac1;
 		</c:forEach>
 		
 		</select>
-	</div>
+	</div> --%>
 	
 	<div class="form-group" id="nmlstforrprt">
-	<select class="form-control form-control-sm"  id="product_list" multiple="multiple" name="productList">
+	<select class="form-control form-control-sm"  id="product_list" multiple="multiple" name="productList" required>
 	   	<c:forEach var="productLst"  items="${PLFCL}" >
 			<c:choose>
 		 		<c:when test="${selectedProdcutCheckBoxes.contains(productLst.product)}">	 					
@@ -347,119 +346,101 @@ color:#008ac1;
 <script src="././resources/dist/js/adminlte.min.js"></script>
 <!-- page script start -->
 <script>
-
-
+$(function() {
+    // Initialize multiselect plugins
+    
 $(function () {
     $('#product_list').multiselect({
     	nonSelectedText: 'Select Product',
         includeSelectAllOption: true
     });
 });
+    $('#consultant_type1').multiselect({
+        nonSelectedText: 'Select Consultant Type',
+        includeSelectAllOption: true,
+    });
 
-$(function () {
     $('#filtered_consultant_list').multiselect({
         nonSelectedText: 'Select Filtered Consultant',
         includeSelectAllOption: true
     });
-});
 
-$(function () {
-	
     $('#consultant_list').multiselect({
-    	nonSelectedText: 'Select Consultant',
+        nonSelectedText: 'Select Consultant',
         includeSelectAllOption: true
     });
-});
 
-$(function () {
-	
-    $('#consultant_type1').multiselect({
-    	nonSelectedText: 'Select Consultant Type',
-        includeSelectAllOption: true,
-       
+    // Event listener for consultant type selection change
+    $('#consultant_type1').change(function() {
+        var selectedValues = $(this).val();
+        console.log("Selected Consultant Types:", selectedValues);
+
+        // AJAX call to fetch filtered consultant list
+        $.ajax({
+            type: "POST",
+            url: "ConsultantProductReport",
+            data: {
+                fjtco: "rpeotrpad1",
+                consultantTypeList1: selectedValues
+            },
+            traditional: true,
+            success: function(response) {
+                console.log("Success:", response);
+                updateFilteredConsultantList(response);
+            },
+            error: function(error) {
+                console.log("Error:", error);
+                alert("Error in fetching filtered consultants.");
+            }
+        });
     });
-   
-});
-/*function getSeletedval(){alert("consl list");
-	
-	    var selectedValues = [];    
-	    $("#consultant_list :selected").each(function(){
-	        selectedValues.push($(this).val()); 
-	    });
-	    return true;
-	    //alert(selectedValues);
-	   
-	
-}*/
-function submitConsultantTypeForm() {
-    var selectedValues = [];
-    $("#consultant_type1 :selected").each(function() {
-        selectedValues.push($(this).val());
-    });
-    console.log("Submitting Consultant Types:", selectedValues);
-    // AJAX call to send the consultant type data
-    $.ajax({
-        type: "POST",
-        url: "ConsultantProductReport",
-        data: {
-            fjtco: "rpeotrpad1",
-            consultantTypeList1: selectedValues // Keep this consistent
-        },
-        traditional: true,
-        success: function(response) {
-            console.log("Success:", response);
-            updateFilteredConsultantList(response).show();
-            alert("Consultant Types submitted successfully.");
-        },
-        error: function(error) {
-            console.log("Error:", error);
-            alert("Error in submitting consultant types.");
+
+    // Function to update the filtered consultants list
+    function updateFilteredConsultantList(response) {
+        var consultants;
+
+        // Check if the response needs parsing
+        if (typeof response === 'string') {
+            try {
+                consultants = JSON.parse(response);
+            } catch (e) {
+                console.error("Error parsing JSON response:", e);
+                return;
+            }
+        } else {
+            consultants = response;
         }
-    });
-}
-function updateFilteredConsultantList(response) {
-    var consultants;
 
-    // Check if the response needs parsing
-    if (typeof response === 'string') {
-        try {
-            consultants = JSON.parse(response);
-        } catch (e) {
-            console.error("Error parsing JSON response:", e);
+        // Ensure consultants is an array
+        if (!Array.isArray(consultants)) {
+            console.error("Expected an array but got:", consultants);
             return;
         }
-    } else {
-        consultants = response;
-    }
 
-    // Ensure consultants is an array
-    if (!Array.isArray(consultants)) {
-        console.error("Expected an array but got:", consultants);
-        return;
-    }
+        var $filteredConsultantList = $("#filtered_consultant_list");
+        $filteredConsultantList.empty(); // Clear existing options
 
-    var $filteredConsultantList = $("#filtered_consultant_list");
-    $filteredConsultantList.empty(); // Clear existing options
-
-    if (consultants.length > 0) {
-        consultants.forEach(function(consultant) {
-            // Use both `cnslt_id` as the value and `conslt_name` as the display text
+        if (consultants.length > 0) {
+            consultants.forEach(function(consultant) {
+                // Use both `cnslt_id` as the value and `conslt_name` as the display text
+                $filteredConsultantList.append(
+                    $("<option></option>").val(consultant.cnslt_id).text(consultant.cnslt_id)
+                );
+            });
+        } else {
             $filteredConsultantList.append(
-                $("<option></option>").val(consultant.cnslt_id).text(consultant.cnslt_id)
+                $("<option></option>").text("No consultants found for selected types")
             );
-        });
-    } else {
-        $filteredConsultantList.append(
-            $("<option></option>").text("No consultants found for selected types")
-        );
+        }
+
+        // Reinitialize the multiselect if using a plugin
+        $filteredConsultantList.multiselect('rebuild');
+        $('#nmlstforrprt').show();
+        $('#filtered_consultant_list').prop('disabled', false);
     }
-
-    // Reinitialize the multiselect if using a plugin
-    $filteredConsultantList.multiselect('rebuild');
-    $('#nmlstforrprt').show();
-    $('#filtered_consultant_list').prop('disabled', false);
-}
-
+});
+</script>
+<script>
 function preLoader(){ $('#laoding').show();}
 
 function exportToExcel() {
