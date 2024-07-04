@@ -551,6 +551,7 @@ $(document).ready(function() {
 	    });
 	   
 	   getProducts();
+	   getConsultantType();
 });
 
 function validate(evt) {
@@ -654,6 +655,39 @@ function getProducts(){
 	       }
 	  	  else{$('#productsOpt').empty();}
 	    });
+}
+function getConsultantType(){
+
+    $('select[name=newConsltnt]').change(function(){
+          var consultant = $(this).val();
+             if(consultant  != ''){  
+                   $.ajax({                      
+
+                          'async': false,
+                          type: 'POST',
+                          url: 'ConsultantVisits',
+                          data: {octjf: "consultantType", cd1:consultant},
+                          beforeSend: function() {
+                                 $('#consultantType').empty();
+                             },
+                                 success: function(data) {
+                                        console.log("propf "+data.product);
+                                       var product = data.product || "Not Assigned";  
+                                       var  toAppend = '<option value="'+product+'">'+product+'</option>';
+                                             //$('#consultantType').html(data.product);
+
+                                     $('#consultantType').append(toAppend);
+                               // $('#consultantType').multiselect('rebuild');   
+                                       },
+                                 error:function(data,status,er) { 
+                                   console.log("NO Products");
+                                  }
+                        });
+           }
+
+             else{$('#consultantType').empty();}
+        });
+
 }
 </script>
 <!-- page Script  end -->

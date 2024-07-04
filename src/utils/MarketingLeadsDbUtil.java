@@ -459,6 +459,7 @@ public class MarketingLeadsDbUtil {
 	 * 
 	 * return logType; }
 	 */
+
 	public List<ConsultantLeads> getFilteredConsultantList(String[] selectedTypes) throws SQLException {
 		List<ConsultantLeads> filteredConsultants = new ArrayList<>();
 
@@ -468,15 +469,17 @@ public class MarketingLeadsDbUtil {
 			return filteredConsultants;
 		}
 
-		// Prepare the base SQL query
-		String query = "SELECT CONSULTANT, CONSULTANT_TYPE FROM consultant_leads WHERE CONSULTANT_TYPE IN (";
+		String frz_value = "CONSULT";
+		// Prepare the base SQL query with a placeholder for VSSV_VS_CODE and dynamic
+		// placeholders for selected types
+		String query = "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IN (";
 		StringBuilder typePlaceholders = new StringBuilder();
 
 		// Dynamically build the placeholders for the query
 		for (int i = 0; i < selectedTypes.length; i++) {
 			typePlaceholders.append("?");
 			if (i < selectedTypes.length - 1) {
-				typePlaceholders.append(",");
+				typePlaceholders.append(", ");
 			}
 		}
 		query += typePlaceholders.toString() + ")";
@@ -488,10 +491,15 @@ public class MarketingLeadsDbUtil {
 		try (Connection conn = new OrclDBConnectionPool().getOrclConn();
 				PreparedStatement stmt = conn.prepareStatement(query)) {
 
-			// Set the values for the placeholders and log them for debugging
+			// Set the value for the VSSV_VS_CODE placeholder (first parameter)
+			stmt.setString(1, frz_value);
+			System.out.println("Setting parameter 1: " + frz_value);
+
+			// Set the values for the placeholders for consultant types and log them for
+			// debugging
 			for (int i = 0; i < selectedTypes.length; i++) {
-				stmt.setString(i + 1, selectedTypes[i]);
-				System.out.println("Setting parameter " + (i + 1) + ": " + selectedTypes[i]);
+				stmt.setString(i + 2, selectedTypes[i]); // Starts from index 2 because index 1 is already used
+				System.out.println("Setting parameter " + (i + 2) + ": " + selectedTypes[i]);
 			}
 
 			// Execute the query and process the result set
@@ -508,8 +516,8 @@ public class MarketingLeadsDbUtil {
 				// Process the result set
 				while (rs.next()) {
 					// Fetch only the required columns
-					String consultant = rs.getString("CONSULTANT");
-					String consultantType = rs.getString("CONSULTANT_TYPE");
+					String consultant = rs.getString("VSSV_NAME");
+					String consultantType = rs.getString("VSSV_BL_SHORT_NAME");
 
 					// Create a new ConsultantLeads object (adjust the constructor to match your
 					// class structure)
@@ -533,6 +541,65 @@ public class MarketingLeadsDbUtil {
 		 */
 		return filteredConsultants;
 	}
+
+	/*
+	 * 
+	 * public List<ConsultantLeads> getFilteredConsultantList(String[]
+	 * selectedTypes) throws SQLException { List<ConsultantLeads>
+	 * filteredConsultants = new ArrayList<>();
+	 * 
+	 * // Check if selectedTypes is not null and not empty if (selectedTypes == null
+	 * || selectedTypes.length == 0) {
+	 * System.out.println("No consultant types provided for filtering."); return
+	 * filteredConsultants; } String frz_value = "CONSULT"; // Prepare the base SQL
+	 * query String query =
+	 * "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IN ("
+	 * ; StringBuilder typePlaceholders = new StringBuilder();
+	 * 
+	 * // Dynamically build the placeholders for the query for (int i = 0; i <
+	 * selectedTypes.length; i++) { typePlaceholders.append("?"); if (i <
+	 * selectedTypes.length - 1) { typePlaceholders.append(","); } } query +=
+	 * typePlaceholders.toString() + ")";
+	 * 
+	 * // Log the final query for debugging System.out.println("Executing Query: " +
+	 * query);
+	 * 
+	 * // Open the database connection try (Connection conn = new
+	 * OrclDBConnectionPool().getOrclConn(); PreparedStatement stmt =
+	 * conn.prepareStatement(query)) {
+	 * 
+	 * // Set the values for the placeholders and log them for debugging for (int i
+	 * = 0; i < selectedTypes.length; i++) { stmt.setString(i + 1,
+	 * selectedTypes[i]); System.out.println("Setting parameter " + (i + 1) + ": " +
+	 * selectedTypes[i]); }
+	 * 
+	 * // Execute the query and process the result set try (ResultSet rs =
+	 * stmt.executeQuery()) { // Get and print column names from the ResultSet
+	 * metadata ResultSetMetaData rsmd = rs.getMetaData(); int columnCount =
+	 * rsmd.getColumnCount(); System.out.print("Column names in the result set: ");
+	 * for (int i = 1; i <= columnCount; i++) {
+	 * System.out.print(rsmd.getColumnName(i) + " "); } System.out.println();
+	 * 
+	 * // Process the result set while (rs.next()) { // Fetch only the required
+	 * columns String consultant = rs.getString("VSSV_NAME"); String consultantType
+	 * = rs.getString("VSSV_BL_SHORT_NAME");
+	 * 
+	 * // Create a new ConsultantLeads object (adjust the constructor to match your
+	 * // class structure) ConsultantLeads consultantLead = new
+	 * ConsultantLeads(consultant, consultantType, "");
+	 * filteredConsultants.add(consultantLead); } } } catch (SQLException e) { //
+	 * Log the error for debugging System.out.println("SQL Exception: " +
+	 * e.getMessage()); e.printStackTrace(); throw e; }
+	 * 
+	 * // Log the result for debugging System.out.println("Filtered Consultants: " +
+	 * filteredConsultants.size());
+	 * 
+	 * for (ConsultantLeads consultant : filteredConsultants) {
+	 * System.out.println("Consultant: " + consultant + ", Type: " +
+	 * consultant.getType()); }
+	 * 
+	 * return filteredConsultants; }
+	 */
 
 	public int createnewConsultantLeads(ConsultantLeads consultant_Leads_Dtls) throws SQLException {
 
@@ -1096,32 +1163,90 @@ public class MarketingLeadsDbUtil {
 
 	}
 
+	/*
+	 * public String[][] getConsultantProductReport(String consulList, String
+	 * productList, String[] consultantListUI, String[] prodListUI) throws
+	 * SQLException {
+	 * 
+	 * Connection myCon = null; PreparedStatement myStmt = null; ResultSet myRes =
+	 * null; String[][] consultantProduct = new String[consultantListUI.length +
+	 * 2][prodListUI.length + 1]; OrclDBConnectionPool con = new
+	 * OrclDBConnectionPool(); System.out.println("products" + productList);
+	 * System.out.println("consulList" + consulList); try { String sql =
+	 * "SELECT  * FROM   CONSULTANT_LEADS WHERE " + consulList;
+	 * System.out.println("sql query " + sql); myCon = con.getOrclConn(); myStmt =
+	 * myCon.prepareStatement(sql); myRes = myStmt.executeQuery(); int consCtr = 0;
+	 * String cnslt_name_temp, cnslt_product_temp, EOA;
+	 * 
+	 * ArrayList<String> divisionListDB = getDivisionNameForProducts(productList);
+	 * 
+	 * String[] dbProductsStringArry = divisionListDB.toArray(new String[0]);
+	 * 
+	 * for (int i = 0; i < consultantListUI.length; i++) { consultantProduct[i +
+	 * 2][0] = consultantListUI[i]; } for (int j = 0; j < prodListUI.length; j++) {
+	 * consultantProduct[0][j + 1] = dbProductsStringArry[j]; consultantProduct[1][j
+	 * + 1] = prodListUI[j]; }
+	 * 
+	 * while (myRes.next()) { consCtr = -1; cnslt_name_temp = myRes.getString(2);
+	 * cnslt_product_temp = myRes.getString(3); EOA = myRes.getString(16);
+	 * System.out.println("EPA" + EOA); for (int i = 0; i <
+	 * consultantProduct.length; i++) {
+	 * 
+	 * System.out.println("DB Consultant" + cnslt_name_temp +
+	 * " For loop consultant:" + i + " : " + consultantProduct[i][0]); if
+	 * (cnslt_name_temp.equalsIgnoreCase(consultantProduct[i][0])) { consCtr = i;
+	 * break; } }
+	 * 
+	 * ArrayList<String> consPrdlistDB = new
+	 * ArrayList<>(Arrays.asList(cnslt_product_temp.split(","))); for (int j = 0; j
+	 * < prodListUI.length; j++) { if (EOA == "Yes") {
+	 * System.out.println("prodList:" + j + ":" + prodListUI[j]); if
+	 * (consPrdlistDB.contains(prodListUI[j])) { consultantProduct[consCtr][j + 1] =
+	 * "Yes+EOA"; } else { consultantProduct[consCtr][j + 1] = "Yes"; }
+	 * 
+	 * } } }
+	 * 
+	 * for (int i = 0; i < consultantListUI.length + 1; i++) { for (int j = 0; j <
+	 * prodListUI.length + 1; j++) { System.out.println("prodList in for loop:" + j
+	 * + ":" + consultantProduct[i][j]); if (i != 0 && (j != 0 || j != 1)) if
+	 * (consultantProduct[i][j] == null) { consultantProduct[i][j] = ""; }
+	 * 
+	 * } } return consultantProduct;
+	 * 
+	 * } finally { // close jdbc objects close(myStmt, myRes);
+	 * con.closeConnection();
+	 * 
+	 * } }
+	 */
 	public String[][] getConsultantProductReport(String consulList, String productList, String[] consultantListUI,
+
 			String[] prodListUI) throws SQLException {
 
 		Connection myCon = null;
 		PreparedStatement myStmt = null;
 		ResultSet myRes = null;
+
 		String[][] consultantProduct = new String[consultantListUI.length + 2][prodListUI.length + 1];
 		OrclDBConnectionPool con = new OrclDBConnectionPool();
 		System.out.println("products" + productList);
 		System.out.println("consulList" + consulList);
+
 		try {
-			String sql = "SELECT  * FROM   CONSULTANT_LEADS WHERE " + consulList;
+			String sql = "SELECT  CONSULTANT,PRODUCT,EOA FROM   CONSULTANT_LEADS WHERE " + consulList;
 			System.out.println("sql query " + sql);
 			myCon = con.getOrclConn();
 			myStmt = myCon.prepareStatement(sql);
 			myRes = myStmt.executeQuery();
 			int consCtr = 0;
-			String cnslt_name_temp, cnslt_product_temp;
+			String cnslt_name_temp, cnslt_product_temp, eoa, eoaString;
 
 			ArrayList<String> divisionListDB = getDivisionNameForProducts(productList);
-
 			String[] dbProductsStringArry = divisionListDB.toArray(new String[0]);
 
 			for (int i = 0; i < consultantListUI.length; i++) {
 				consultantProduct[i + 2][0] = consultantListUI[i];
 			}
+
 			for (int j = 0; j < prodListUI.length; j++) {
 				consultantProduct[0][j + 1] = dbProductsStringArry[j];
 				consultantProduct[1][j + 1] = prodListUI[j];
@@ -1129,8 +1254,18 @@ public class MarketingLeadsDbUtil {
 
 			while (myRes.next()) {
 				consCtr = -1;
-				cnslt_name_temp = myRes.getString(2);
-				cnslt_product_temp = myRes.getString(3);
+				cnslt_name_temp = myRes.getString(1);
+				cnslt_product_temp = myRes.getString(2);
+				eoa = myRes.getString(3);
+
+				if (eoa != null && eoa.equals("Yes")) {
+					eoaString = " + EA";
+				} else if (eoa != null && eoa.equals("No")) {
+					eoaString = " + NEA";
+				} else {
+					eoaString = "";
+				}
+
 				for (int i = 0; i < consultantProduct.length; i++) {
 					System.out.println("DB Consultant" + cnslt_name_temp + " For loop consultant:" + i + " : "
 							+ consultantProduct[i][0]);
@@ -1144,9 +1279,10 @@ public class MarketingLeadsDbUtil {
 				for (int j = 0; j < prodListUI.length; j++) {
 					System.out.println("prodList:" + j + ":" + prodListUI[j]);
 					if (consPrdlistDB.contains(prodListUI[j])) {
-						consultantProduct[consCtr][j + 1] = "Yes";
+						consultantProduct[consCtr][j + 1] = "Yes" + eoaString;
 					}
 				}
+
 			}
 
 			for (int i = 0; i < consultantListUI.length + 1; i++) {
@@ -1156,17 +1292,19 @@ public class MarketingLeadsDbUtil {
 						if (consultantProduct[i][j] == null) {
 							consultantProduct[i][j] = "";
 						}
-
 				}
 			}
+
 			return consultantProduct;
 
 		} finally {
 			// close jdbc objects
+
 			close(myStmt, myRes);
 			con.closeConnection();
 
 		}
+
 	}
 
 	public List<ConsultantVisits> getAllConsultantVisitDetails(String currYear) throws SQLException {
@@ -1259,5 +1397,35 @@ public class MarketingLeadsDbUtil {
 		}
 
 		return logType;
+	}
+
+	public MktSalesLeads getConsultantType(String consultant) throws SQLException {
+
+		MktSalesLeads consultantType = null;
+		String frz_value = "CONSULT";
+		Connection myCon = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRes = null;
+		OrclDBConnectionPool orcl = new OrclDBConnectionPool();
+
+		try {
+			myCon = orcl.getOrclConn();
+			String sql = " SELECT VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE=? AND VSSV_NAME=? ORDER BY VSSV_NAME ";
+			myStmt = myCon.prepareStatement(sql);
+			myStmt.setString(1, frz_value);
+			myStmt.setString(2, consultant);
+			myRes = myStmt.executeQuery();
+			while (myRes.next()) {
+				String product_tmp = myRes.getString(1);
+				System.out.println("product_tmp== " + product_tmp);
+				consultantType = new MktSalesLeads(product_tmp);
+			}
+			return consultantType;
+
+		} finally {
+			close(myStmt, myRes);
+			orcl.closeConnection();
+		}
+
 	}
 }

@@ -244,8 +244,8 @@ color:#008ac1;
     <div class="form-group" id="consultant_type_section">
         <label for="consultant_type1">Consultant Type:</label>
         <select class="form-control" id="consultant_type1" multiple="multiple" name="consultantTypeList1">
-            <option value="Primary">Primary Consultant</option>
-            <option value="Secondary">Secondary Consultant</option>
+            <option value="PRIMARY CONSULTANT">Primary Consultant</option>
+            <option value="SECONDARY CONSULTANT">Secondary Consultant</option>
             <option value="PRIMARY CLIENT">Primary Client</option>
             <option value="SECONDARY CLIENT">Secondary Client</option>
             <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>
@@ -263,6 +263,13 @@ color:#008ac1;
 				<!-- 	  <input type="hidden" id="fjtco" name="fjtco" value="consultlist" /> -->
 	                  <input type="hidden" id="uid" name="uid" value="E001090" />
 	
+	
+	<div class="form-group" id="nmlstforrprt" style="display: none;">
+    <label for="filtered_consultant_list">Filtered Consultants:</label>
+    <select class="form-control" id="filtered_consultant_list" multiple="multiple" name="filteredConsultantList">
+        <!-- Options will be populated dynamically -->
+    </select>
+</div>
 	 <div class="form-group" id="nmlstforrprt">
 	  	
 		<select class="form-control"  id="consultant_list" multiple="multiple" name="consltList">
@@ -279,12 +286,7 @@ color:#008ac1;
 		
 		</select>
 	</div>
-	<div class="form-group" id="nmlstforrprt">
-    <label for="filtered_consultant_list">Filtered Consultants:</label>
-    <select class="form-control" id="filtered_consultant_list" multiple="multiple" name="filteredConsultantList">
-        <!-- Options will be populated dynamically -->
-    </select>
-</div>
+	
 	<div class="form-group" id="nmlstforrprt">
 	<select class="form-control form-control-sm"  id="product_list" multiple="multiple" name="productList">
 	   	<c:forEach var="productLst"  items="${PLFCL}" >
@@ -406,7 +408,7 @@ function submitConsultantTypeForm() {
         traditional: true,
         success: function(response) {
             console.log("Success:", response);
-            updateFilteredConsultantList(response);
+            updateFilteredConsultantList(response).show();
             alert("Consultant Types submitted successfully.");
         },
         error: function(error) {
@@ -454,6 +456,8 @@ function updateFilteredConsultantList(response) {
 
     // Reinitialize the multiselect if using a plugin
     $filteredConsultantList.multiselect('rebuild');
+    $('#nmlstforrprt').show();
+    $('#filtered_consultant_list').prop('disabled', false);
 }
 
 function preLoader(){ $('#laoding').show();}

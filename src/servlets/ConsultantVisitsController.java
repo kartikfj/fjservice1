@@ -16,8 +16,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
+
 import beans.ConsultantLeads;
 import beans.ConsultantVisits;
+import beans.MktSalesLeads;
 import beans.fjtcouser;
 import utils.MarketingLeadsDbUtil;
 
@@ -105,6 +109,9 @@ public class ConsultantVisitsController extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case "consultantType":
+				getConsultantType(request, response);
+				break;
 			default:
 				try {
 					goToConsultantLeads(request, response, userRole);
@@ -160,6 +167,16 @@ public class ConsultantVisitsController extends HttpServlet {
 		String cid = request.getParameter("dd1");
 		marketingLeadsDbUtil.deleteUpdateConsultantLeads(cid);
 		goToConsultantLeads(request, response, userRole);
+
+	}
+
+	private void getConsultantType(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, JsonIOException, IOException {
+		// get consultantType based on selected consultant
+		String consultant = request.getParameter("cd1");
+		MktSalesLeads consultType = marketingLeadsDbUtil.getConsultantType(consultant);
+		response.setContentType("application/json");
+		new Gson().toJson(consultType, response.getWriter());
 
 	}
 
