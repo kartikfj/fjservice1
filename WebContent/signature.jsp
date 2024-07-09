@@ -1,95 +1,70 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page import="java.io.*"%>
-
-<%@page import="javax.activation.DataHandler" %>
-<%@page import="javax.activation.DataSource"%>
-<%@page import="javax.activation.FileDataSource" %>
+<%@ page import="java.io.*" %>
 
 <%@ page trimDirectiveWhitespaces="true" %>
-<% 			 
-     response.setHeader("Cache-Control","no-cache"); //Forces caches to obtain a new copy of the page from the origin server
-     response.setHeader("Cache-Control","no-store"); //Directs caches not to store the page under any circumstance
-     response.setDateHeader("Expires", 0); //Causes the proxy cache to see the page as "stale"
-     response.setHeader("Pragma","no-cache"); //HTTP 1.0 backward compatibility
-  %>
-  <jsp:useBean id="fjtuser" class="beans.fjtcouser" scope="session"/>     
-  <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-  <%
-  InputStream is=null;
-  OutputStream os = response.getOutputStream();     
-  int len = 0;
-  DataSource fds;	    
-  byte[] b = new byte[1024];
-  try{	 
-		 
-	     String signtype =  request.getParameter("signtype");
-	     String compCode =  request.getParameter("compCode");
-	    
-	     
-	    
-	     if(signtype.equals("header")){	    	 
-			  File f = new File("D://SIGNATURES/HEADERS/fjlogo.jpg");
-			  if(f.exists()){
-				  fds = new FileDataSource("D://SIGNATURES/HEADERS/fjlogo.jpg");
-			  }
-			  else{
-				  fds = new FileDataSource("D://SIGNATURES/HEADERS/001.jpg");
-			  }	  
-			  is = fds.getInputStream(); 
-			  if(is !=null){
-				  while ((len = is.read(b)) > 0) {
-				        os.write(b, 0, len);
-				  }
-				  os.flush();
-			 	 } 
-	     }else if(signtype.equals("footer")){
-	    	 File f = new File("D://SIGNATURES/FOOTERS/"+compCode+".png");
-	    	 
-			  if(f.exists()){ 
-				  fds = new FileDataSource("D://SIGNATURES/FOOTERS/"+compCode+".png");
-				  System.out.println("in footer"+compCode);
-			  }
-			  else{
-				  fds = new FileDataSource("D://SIGNATURES/FOOTERS/001.png");
-			  }	  
-			  is = fds.getInputStream(); 
-			  if(is !=null){
-				  while ((len = is.read(b)) > 0) {
-				        os.write(b, 0, len);
-				  }
-				  os.flush();
-			 	 } 
-	    	 
-	     }
-	     else if(signtype.equals("hrsign")){
-	    	 File f = new File("D://SIGNATURES/HRSIGN/hrsign.png");
-			  if(f.exists()){
-				  fds = new FileDataSource("D://SIGNATURES/HRSIGN/hrsign.png");
-			  }
-			  else{
-				  fds = new FileDataSource("D://SIGNATURES/HRSIGN/hrsign.png");
-			  }	  
-			  is = fds.getInputStream(); 
-			  if(is !=null){
-				  while ((len = is.read(b)) > 0) {
-				        os.write(b, 0, len);
-				  }
-				  os.flush();
-			 	 } 
-	    	 
-	     }
-	  }catch (Exception e) {
-	   }
-      finally {
-	    	  try {
-	    		  is.close();
-	    	      os.close();
-	             
-	          } catch (Exception e) {
-	        	  System.out.print("Error in Finally block of profileimage"+e);
-	          }
-	        
+<%
+    response.setHeader("Cache-Control", "no-cache");
+    response.setHeader("Cache-Control", "no-store");
+    response.setDateHeader("Expires", 0);
+    response.setHeader("Pragma", "no-cache");
 
-	      }
-  %>
+    InputStream is = null;
+    OutputStream os = response.getOutputStream();
+    byte[] buffer = new byte[1024];
+    int bytesRead;
+
+    try {
+        String signtype = request.getParameter("signtype");
+        String compCode = request.getParameter("compCode");
+        
+        // Determine the file path based on the signtype and compCode
+        String filePath = null;
+        if ("header".equalsIgnoreCase(signtype)) {
+            filePath = "D://SIGNATURES/HEADERS/fjlogo.jpg";
+            if (!new File(filePath).exists()) {
+                filePath = "D://SIGNATURES/HEADERS/001.jpg";
+            }
+        } else if ("footer".equalsIgnoreCase(signtype)) {
+            filePath = "D://SIGNATURES/FOOTERS/" + compCode + ".png";
+            if (!new File(filePath).exists()) {
+                filePath = "D://SIGNATURES/FOOTERS/001.png";
+            }
+        } else if ("hrsign".equalsIgnoreCase(signtype)) {
+            filePath = "D://SIGNATURES/HRSIGN/hrsign.png";
+            if (!new File(filePath).exists()) {
+                filePath = "D://SIGNATURES/HRSIGN/default.png"; // Fallback to a default file
+            }
+        }
+
+        // Check if the file path is set and the file exists
+        if (filePath != null && new File(filePath).exists()) {
+            is = new FileInputStream(filePath);
+            
+            // Set the response content type based on file extension (basic handling)
+            if (filePath.endsWith(".jpg") || filePath.endsWith(".jpeg")) {
+                response.setContentType("image/jpeg");
+            } else if (filePath.endsWith(".png")) {
+                response.setContentType("image/png");
+            } else {
+                response.setContentType("application/octet-stream");
+            }
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + new File(filePath).getName() + "\"");
+
+            // Write file content to the response output stream
+            while ((bytesRead = is.read(buffer)) != -1) {
+                os.write(buffer, 0, bytesRead);
+            }
+            os.flush();
+        } else {
+            response.setContentType("text/plain");
+            os.write("File not found.".getBytes());
+            os.flush();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        if (is != null) try { is.close(); } catch (IOException e) { e.printStackTrace(); }
+        if (os != null) try { os.close(); } catch (IOException e) { e.printStackTrace(); }
+    }
+%>

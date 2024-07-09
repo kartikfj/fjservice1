@@ -38,113 +38,94 @@
 			<script type="text/javascript" src="resources/datatables/datatables-fjtco/js/jquery.dataTables.min.js"></script>
 			<script type="text/javascript" src="resources/datatables/datatables-fjtco/js/dataTables.buttons.min.js"></script>
 			<script type="text/javascript" src="resources/datatables/datatables-fjtco/js/dataTables.select.min.js"></script> 
-            <style type="text/css">
-			.page-header { color: #065685; font-weight: bold;  border-bottom: 2px solid #065685 !important; text-transform:uppercase; letter-spacing: 0.1em;}
-			.payslip{position: relative; background: #fff;border: 1px solid #b9b8b8; padding: 20px;margin: 10px 25px;}.payslip-info{ }
-			.pay-subtitle-parent{    margin-top: -15px;}.payslip-col>.sub-title{background: #daf0f3;padding:7px 5px;}.info-box-content{margin-top: 20%;}
-			.info-box-text { text-transform: uppercase;font-weight: bold;}.pay-total-title{color:red; font-weight:bold;text-align:center;}.pay-total-amount{font-weight:bold;}
-			.summary{color:#009688; font-weight:bold;border-bottom:1px dashed #bbc5f1;}.sub-title{color:#000; font-weight:bold;text-align:left;letter-spacing: 0.05em;padding-left:15px;padding-right: 15px;}.small{color: #607D8B; !important}
-			hr {
-			    border: none;
-			    border-top: 1px double #333;
-			    color: #333;
-			    overflow: visible;
-			    text-align: center;
-			    height: 0px;
-			    padding-left:15px;
-			    padding-right:15px;
-			     margin-top: 0px;
-			} body{
-				   font-family:"Calibri", "sans-serif";
-				}
-				.watermark{
-				  background:url("resources/images/fjwatermark.PNG") center center ;opacity:0.6; 
-				  position: absolute;
-				  width: 90%;
-				  height: 100%;
-				  background-repeat: no-repeat;
-				  background-position: bottom; 
-				}
-			  .cmnFld, th.cmnFld>input{max-width:max-content !important; width:0px !important; }  
-			  .slid, th.slid>input{max-width:10px !important; width:10px !important; }
-			   .cmnFld, th.cmnFld>input{max-width:max-content !important; width:60px !important; }  
-			   .divnStyltd{width:30px !important;}  
-			   .dtlsHeader:hover span.dtlsContent, .dtlsHeader:hover span.lg_dtlsContent{
-					 display:block;   width: 250px;  word-wrap: break-word;white-space: normal
-					 } 
-			</style>       
-            <script>
-            function downloadSalaryCertificate(empCode){ 	   
-                
-                  		    var printArea = document.getElementById("experienceCertificate-Box").innerHTML;
-                            var printFrame = document.createElement('iframe');
-                            printFrame.name = "printFrame";                			
-                            printFrame.style.position = "absolute";
-                            printFrame.style.top = "-1000000px";
-                            document.body.appendChild(printFrame);
-                            var printFrameDoc = 
-            					    (printFrame.contentWindow) ? printFrame.contentWindow 
-            					    : (printFrame.contentDocument.document) ? printFrame.contentDocument.document : printFrame.contentDocument;
-                            printFrameDoc.document.open();
-                            printFrameDoc.document.write('<html><head><title></title>');
-                			printFrameDoc.document.write('<link rel="stylesheet" href="resources/css/certificates.css?v=1.1.11">');
-                            printFrameDoc.document.write('</head><body>');
-                            printFrameDoc.document.write(printArea);
-                            printFrameDoc.document.write('</body></html>');
-                            printFrameDoc.document.close();
-                            setTimeout(function () {
-                                window.frames["printFrame"].focus();
-                                window.frames["printFrame"].print();
-                                document.body.removeChild(printFrame);
-                 //printFrameDoc.document.close();
-                            }, 500);
-                            return false;
-            } 
+          <style type="text/css">
+    /* Original CSS styles */
+    .page-header { color: #065685; font-weight: bold; border-bottom: 2px solid #065685 !important; text-transform: uppercase; letter-spacing: 0.1em; }
+    .payslip { position: relative; background: #fff; border: 1px solid #b9b8b8; padding: 20px; margin: 10px 25px; }
+    .pay-subtitle-parent { margin-top: -15px; }
+    .payslip-col > .sub-title { background: #daf0f3; padding: 7px 5px; }
+    .info-box-content { margin-top: 20%; }
+    .info-box-text { text-transform: uppercase; font-weight: bold; }
+    .pay-total-title { color: red; font-weight: bold; text-align: center; }
+    .pay-total-amount { font-weight: bold; }
+    .summary { color: #009688; font-weight: bold; border-bottom: 1px dashed #bbc5f1; }
+    .sub-title { color: #000; font-weight: bold; text-align: left; letter-spacing: 0.05em; padding-left: 15px; padding-right: 15px; }
+    .small { color: #607D8B !important; }
+    hr {
+      /*   border: none;
+        border-top: 1px double #333;
+        color: #333;
+        overflow: visible;
+        text-align: center;
+        height: 0px;
+        padding-left: 15px;
+        padding-right: 15px;
+        margin-top: 0px; */
+    }
+    body {
+        font-family: "Calibri", "sans-serif";
+    }
+    .watermark {
+        background: url("resources/images/fjwatermark.PNG") center center; opacity: 0.6;
+        position: absolute;
+        width: 90%;
+        height: 100%;
+        background-repeat: no-repeat;
+        background-position: bottom;
+    }
+   /*  .cmnFld, th.cmnFld > input { max-width: max-content !important; width: 0px !important; }
+    .slid, th.slid > input { max-width: 10px !important; width: 10px !important; }
+    .cmnFld, th.cmnFld > input { max-width: max-content !important; width: 60px !important; }
+    .divnStyltd { width: 30px !important; } */
+    .dtlsHeader:hover span.dtlsContent, .dtlsHeader:hover span.lg_dtlsContent {
+        display: block; width: 250px; word-wrap: break-word; white-space: normal;
+    }
 
-            function formatNumber(num) {
-            	 if(typeof num !== 'undefined' && num !== '' && num != null){
-            		 return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
-            	 }else{ return 0;}
-            	
-            	 }
-         
-            var exportTable = "<table class='table' id='exclexprtTble'><thead>"; 
-            var table;
-            $(function(){ 
-            	 $('.loader').hide();
-            	  $('#displayPos thead tr')
-                  .clone(true)                 
-            	 $('#displayPos').DataTable({              		
-            		 'paging'      : true,
-         	        'lengthChange': false,
-         	        'searching'   : true,
-         	        'ordering'    : true,
-         	        'info'        : false,
-         	        "lengthMenu": [[10, 25, 50, -1], [10, 25, 50, "All"]],
-         	        "columnDefs" : [{className:"remove"}], 
-         	          responsive: true,
-         	    	  orderCellsTop: true,
-         	          fixedHeader: true, 
-         	          
-            } );     
-	            if(document.getElementById("displayPos") != null){
-	            	document.getElementById("displayPos").style.display='';
-	            }
-            });
+    /* Additional styles for printing */
+    @media print {
+        body {
+            font-family: "Calibri", "sans-serif";
+            color: #000 !important; /* Change font color to black for printing */
+        }
+        .page-header, .summary, .sub-title {
+            color: #000 !important; /* Change font color to black for headers and titles */
+        }
+        .payslip {
+            margin: 10mm; /* Increase margin for left side */
+            padding: 10mm; /* Increase padding for content */
+        }
+        .watermark {
+            display: none; /* Hide watermark for printing */
+        }
+    }
+</style>
+
+<script>
+function downloadSalaryCertificate(empCode) {
+    var printArea = document.getElementById("experienceCertificate-Box").innerHTML;
+    var printFrame = document.createElement('iframe');
+    printFrame.name = "printFrame";
+    printFrame.style.position = "absolute";
+    printFrame.style.top = "-1000000px";
+    document.body.appendChild(printFrame);
+    var printFrameDoc =
+        (printFrame.contentWindow) ? printFrame.contentWindow
+        : (printFrame.contentDocument.document) ? printFrame.contentDocument.document : printFrame.contentDocument;
+    printFrameDoc.document.open();
+    printFrameDoc.document.write('<html><head><title></title>');
+    printFrameDoc.document.write('</head><body>');
+    printFrameDoc.document.write(printArea);
+    printFrameDoc.document.write('</body></html>');
+    printFrameDoc.document.close();
+    setTimeout(function () {
+        window.frames["printFrame"].focus();
+        window.frames["printFrame"].print();
+        document.body.removeChild(printFrame);
+    }, 500);
+    return false;
+}
+</script>
           
-            
-            function openExperienceCert(emp_code,company_code) {
-            	try {            		
-            		document.getElementById("employee_code").value =  emp_code;
-            		document.getElementById("experienceCert").submit();
-            		
-            	}catch(e){
-            		console.log("Error in openExperienceCert : "+e);
-            	}
-            	
-            }
-            
-            </script>      
         </head>
         <div class="container">        
         	<section class="col-xs-12" style="width:90%;"> 		

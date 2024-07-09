@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.sql.Statement;
@@ -460,34 +459,119 @@ public class MarketingLeadsDbUtil {
 	 * return logType; }
 	 */
 
+	/*
+	 * public List<ConsultantLeads> getFilteredConsultantList(String[]
+	 * selectedTypes) throws SQLException { List<ConsultantLeads>
+	 * filteredConsultants = new ArrayList<>(); String frz_value = "CONSULT"; String
+	 * query = ""; // Check if selectedTypes is not null and not empty if
+	 * (selectedTypes == null || selectedTypes.length == 0) {
+	 * 
+	 * System.out.println("No consultant types provided for filtering."); return
+	 * filteredConsultants;
+	 * 
+	 * 
+	 * query =
+	 * "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IS NULL"
+	 * ;
+	 * 
+	 * } boolean isNotAnyTypeSelected = (selectedTypes != null &&
+	 * selectedTypes.length == 1 && selectedTypes[0].trim().equals("PA"));
+	 * System.out.println(selectedTypes[0]); if (isNotAnyTypeSelected) {
+	 * System.out.println("i inter"); // If "Not Any Type" is selected, query for
+	 * rows where VSSV_BL_SHORT_NAME is // NULL
+	 * 
+	 * query =
+	 * "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IS NULL"
+	 * ;
+	 * 
+	 * query =
+	 * "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND (VSSV_BL_SHORT_NAME IS NULL OR VSSV_BL_SHORT_NAME = ' ')"
+	 * ; } else {
+	 * 
+	 * // Prepare the base SQL query with a placeholder for VSSV_VS_CODE and dynamic
+	 * // placeholders for selected types query =
+	 * "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IN ("
+	 * ; StringBuilder typePlaceholders = new StringBuilder();
+	 * 
+	 * // Dynamically build the placeholders for the query for (int i = 0; i <
+	 * selectedTypes.length; i++) { typePlaceholders.append("?"); if (i <
+	 * selectedTypes.length - 1) { typePlaceholders.append(", "); } } query +=
+	 * typePlaceholders.toString() + ")"; } // Log the final query for debugging
+	 * System.out.println("Executing Query: " + query);
+	 * 
+	 * // Open the database connection try (Connection conn = new
+	 * OrclDBConnectionPool().getOrclConn(); PreparedStatement stmt =
+	 * conn.prepareStatement(query)) {
+	 * 
+	 * // Set the value for the VSSV_VS_CODE placeholder (first parameter)
+	 * stmt.setString(1, frz_value); System.out.println("Setting parameter 1: " +
+	 * frz_value);
+	 * 
+	 * // Set the values for the placeholders for consultant types and log them for
+	 * // debugging for (int i = 0; i < selectedTypes.length; i++) {
+	 * stmt.setString(i + 2, selectedTypes[i]); // Starts from index 2 because index
+	 * 1 is already used System.out.println("Setting parameter " + (i + 2) + ": " +
+	 * selectedTypes[i]); }
+	 * 
+	 * // Execute the query and process the result set try (ResultSet rs =
+	 * stmt.executeQuery()) { // Get and print column names from the ResultSet
+	 * metadata ResultSetMetaData rsmd = rs.getMetaData(); int columnCount =
+	 * rsmd.getColumnCount(); System.out.print("Column names in the result set: ");
+	 * for (int i = 1; i <= columnCount; i++) {
+	 * System.out.print(rsmd.getColumnName(i) + " "); } System.out.println();
+	 * 
+	 * // Process the result set while (rs.next()) { // Fetch only the required
+	 * columns String consultant = rs.getString("VSSV_NAME"); String consultantType
+	 * = rs.getString("VSSV_BL_SHORT_NAME");
+	 * 
+	 * // Create a new ConsultantLeads object (adjust the constructor to match your
+	 * // class structure) ConsultantLeads consultantLead = new
+	 * ConsultantLeads(consultant, consultantType, "");
+	 * filteredConsultants.add(consultantLead); } } } catch (SQLException e) { //
+	 * Log the error for debugging System.out.println("SQL Exception: " +
+	 * e.getMessage()); e.printStackTrace(); throw e; }
+	 * 
+	 * // Log the result for debugging System.out.println("Filtered Consultants: " +
+	 * filteredConsultants.size());
+	 * 
+	 * for (ConsultantLeads consultant : filteredConsultants) {
+	 * System.out.println("Consultant: " + consultant + ", Type: " +
+	 * consultant.getType()); }
+	 * 
+	 * return filteredConsultants; }
+	 */
+
 	public List<ConsultantLeads> getFilteredConsultantList(String[] selectedTypes) throws SQLException {
 		List<ConsultantLeads> filteredConsultants = new ArrayList<>();
-
-		// Check if selectedTypes is not null and not empty
-		if (selectedTypes == null || selectedTypes.length == 0) {
-			System.out.println("No consultant types provided for filtering.");
-			return filteredConsultants;
-		}
-
 		String frz_value = "CONSULT";
-		// Prepare the base SQL query with a placeholder for VSSV_VS_CODE and dynamic
-		// placeholders for selected types
-		String query = "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IN (";
-		StringBuilder typePlaceholders = new StringBuilder();
+		String query;
 
-		// Dynamically build the placeholders for the query
-		for (int i = 0; i < selectedTypes.length; i++) {
-			typePlaceholders.append("?");
-			if (i < selectedTypes.length - 1) {
-				typePlaceholders.append(", ");
+		// Check if selectedTypes contains a single entry that is "PA", indicating "Not
+		// Any Type"
+		boolean isNotAnyTypeSelected = (selectedTypes != null && selectedTypes.length == 1
+				&& selectedTypes[0].trim().equals("PA"));
+
+		if (isNotAnyTypeSelected) {
+			// If "Not Any Type" is selected, query for rows where VSSV_BL_SHORT_NAME is
+			// NULL or empty or space
+			query = "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND (VSSV_BL_SHORT_NAME IS NULL OR VSSV_BL_SHORT_NAME = ' ' OR VSSV_BL_SHORT_NAME = '')";
+		} else {
+			// Build the query with IN clause for provided types
+			StringBuilder typePlaceholders = new StringBuilder();
+			for (int i = 0; i < selectedTypes.length; i++) {
+				typePlaceholders.append("?");
+				if (i < selectedTypes.length - 1) {
+					typePlaceholders.append(", ");
+				}
 			}
+			query = "SELECT VSSV_CODE, VSSV_NAME, VSSV_BL_SHORT_NAME FROM IM_VS_STATIC_VALUE WHERE VSSV_VS_CODE = ? AND VSSV_BL_SHORT_NAME IN ("
+					+ typePlaceholders.toString() + ")";
 		}
-		query += typePlaceholders.toString() + ")";
 
 		// Log the final query for debugging
 		System.out.println("Executing Query: " + query);
 
-		// Open the database connection
+		// Open the database connection and prepare the statement
 		try (Connection conn = new OrclDBConnectionPool().getOrclConn();
 				PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -495,33 +579,28 @@ public class MarketingLeadsDbUtil {
 			stmt.setString(1, frz_value);
 			System.out.println("Setting parameter 1: " + frz_value);
 
-			// Set the values for the placeholders for consultant types and log them for
-			// debugging
-			for (int i = 0; i < selectedTypes.length; i++) {
-				stmt.setString(i + 2, selectedTypes[i]); // Starts from index 2 because index 1 is already used
-				System.out.println("Setting parameter " + (i + 2) + ": " + selectedTypes[i]);
+			// Set the values for the placeholders for consultant types, if they exist
+			if (!isNotAnyTypeSelected) {
+				for (int i = 0; i < selectedTypes.length; i++) {
+					stmt.setString(i + 2, selectedTypes[i].trim()); // Starts from index 2 because index 1 is already
+																	// used
+					System.out.println("Setting parameter " + (i + 2) + ": " + selectedTypes[i].trim());
+				}
 			}
 
 			// Execute the query and process the result set
 			try (ResultSet rs = stmt.executeQuery()) {
-				// Get and print column names from the ResultSet metadata
-				ResultSetMetaData rsmd = rs.getMetaData();
-				int columnCount = rsmd.getColumnCount();
-				System.out.print("Column names in the result set: ");
-				for (int i = 1; i <= columnCount; i++) {
-					System.out.print(rsmd.getColumnName(i) + " ");
-				}
-				System.out.println();
-
 				// Process the result set
 				while (rs.next()) {
 					// Fetch only the required columns
-					String consultant = rs.getString("VSSV_NAME");
+					String consultantCode = rs.getString("VSSV_CODE");
+					String consultantName = rs.getString("VSSV_NAME");
 					String consultantType = rs.getString("VSSV_BL_SHORT_NAME");
 
 					// Create a new ConsultantLeads object (adjust the constructor to match your
 					// class structure)
-					ConsultantLeads consultantLead = new ConsultantLeads(consultant, consultantType, "");
+					ConsultantLeads consultantLead = new ConsultantLeads(consultantName, consultantType,
+							consultantCode);
 					filteredConsultants.add(consultantLead);
 				}
 			}
@@ -534,11 +613,6 @@ public class MarketingLeadsDbUtil {
 
 		// Log the result for debugging
 		System.out.println("Filtered Consultants: " + filteredConsultants.size());
-		/*
-		 * for (ConsultantLeads consultant : filteredConsultants) {
-		 * System.out.println("Consultant: " + consultant + ", Type: " +
-		 * consultant.getType()); }
-		 */
 		return filteredConsultants;
 	}
 

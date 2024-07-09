@@ -59,7 +59,7 @@ hr {border: none;border-top: 1px double #333;color: #333;overflow: visible;text-
 .watermark{
   background:url("resources/images/fjwatermark.PNG") center center ;opacity:0.6; 
   position: absolute;
-  width: 90%;
+  width: 95%;
   height: 95%;
   background-repeat: no-repeat;
   background-position: bottom; 
@@ -98,7 +98,7 @@ function downloadSalaryCertificate(empCode){
     
       		    var printArea = document.getElementById("experienceCertificate-Box").innerHTML;
                 var printFrame = document.createElement('iframe');
-                printFrame.name = "printFrame";
+              printFrame.name = "printFrame";
                 printFrame.style.position = "absolute";
                 printFrame.style.top = "-1000000px";    			
                 document.body.appendChild(printFrame);
@@ -107,12 +107,14 @@ function downloadSalaryCertificate(empCode){
 					    : (printFrame.contentDocument.document) ? printFrame.contentDocument.document : printFrame.contentDocument;
                 printFrameDoc.document.open();
                 printFrameDoc.document.write('<html><head><title></title>');
-    			printFrameDoc.document.write('<link rel="stylesheet" href="resources/css/certificates.css?v=1.1.22">');    		
-                printFrameDoc.document.write('</head><body>');
-                printFrameDoc.document.write(printArea); 
-                printFrameDoc.document.write('</body>');    			
-                printFrameDoc.document.write('</html>');
-                printFrameDoc.document.close();
+    	    	printFrameDoc.document.write('<link rel="stylesheet" href="resources/css/certificates.css?v=1.1.27">');    		
+                printFrameDoc.document.write('</head>');
+         
+    printFrameDoc.document.write('<body style="margin-left: 50px;">');
+    printFrameDoc.document.write(printArea);
+    printFrameDoc.document.write('</body>');
+                printFrameDoc.document.write('</html>'); 
+                printFrameDoc.document.close(); 
                 setTimeout(function () {
                     window.frames["printFrame"].focus();
                     window.frames["printFrame"].print();
