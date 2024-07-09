@@ -360,7 +360,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 						        height: '100%',
 						        width: '100%'
 						      },
-						      bar: { groupWidth: "10%" },
+						      bar: { groupWidth: "25%" },
 						      'height': 240,
 						      'legend': {
 						        position: 'top'
@@ -415,7 +415,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 					        height: '100%',
 					        width: '100%'
 					      },
-					      bar: { groupWidth: "10%" },
+					      bar: { groupWidth: "25%" },
 					      'height': 240,
 					      'legend': {
 					        position: 'top'
@@ -521,7 +521,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 				        height: '100%',
 				        width: '100%'
 				      },
-				      bar: { groupWidth: "10%" },
+				      bar: { groupWidth: "25%" },
 				      'height': 240,
 				      'legend': {
 				        position: 'top'
@@ -701,7 +701,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 				        height: '100%',
 				        width: '100%'
 				      },
-				      bar: { groupWidth: "10%" },
+				      bar: { groupWidth: "25%" },
 				      'height': 240,
 				      'legend': {
 				        position: 'top'
@@ -931,10 +931,10 @@ $.ajax({
 	data: {fjtco: "s2_dt", d1:"${selected_salesman_code}"},
 	dataType: "json",
     success: function(data) { $('#laoding').hide();var output="<table id='jihvexport' style='height:500px;overflow-y: scroll;overflow-x: scroll;' class='table table-bordered small'><thead><tr>"+ "<th>#</th><th>Comp-Code</th><th>Week</th><th>Qtn-Date</th><th>Qtn-Code</th><th>Qtn-No</th>"+
-"<th>Customer Code</th><th>Customer Name</th><th>Project Name</th><th>Consultant</th>"+ " <th>Invoicing Year</th><th>Product Type</th>  <th>Product Classfctn</th><th>Zone</th><th>Profit (%)</th><th>Qtn Amount</th></tr></thead><tbody>";
+"<th>Customer Code</th><th>Customer Name</th><th>Project Name</th><th>Consultant</th>"+"<th>Qtn Amount</th>"+ " <th>Invoicing Year</th><th>Product Type</th>  <th>Product Classfctn</th><th>Zone</th><th>Profit (%)</th></tr></thead><tbody>";
 var j=0; for (var i in data) { j=j+1; output+="<tr><td>"+j+"</td><td>" + data[i].d3 + "</td>"+"<td>" + data[i].d4 + "</td><td>" + data[i].d5.substring(0, 10).split("-").reverse().join("/")+ "</td>"+ "<td>" + data[i].d6 + "</td><td>" + data[i].d7 + "</td>"+
-"<td>" + data[i].d8 + "</td><td>" + data[i].d9 + "</td>"+ "<td>" + data[i].d10 + "</td><td>" + data[i].d11 + "</td>"+ "<td>" + data[i].d12.substring(0, 10).split("-").reverse().join("/") + "</td><td>" + data[i].d13 + "</td>"+
-"<td>" + data[i].d14 + "</td><td>" + data[i].d15 + "</td>"+ "<td>" + data[i].d16 + "</td><td>" + data[i].d17 + "</td>"+ "</tr>"; }// output+="<tr><td colspan='15'><b>Total</b></td><td><b>"+str+"</b></td></tr>"; 
+"<td>" + data[i].d8 + "</td><td>" + data[i].d9 + "</td>"+ "<td>" + data[i].d10 + "</td><td>" + data[i].d11 + "</td><td>" + data[i].d17 + "</td>"+ "<td>" + data[i].d12.substring(0, 10).split("-").reverse().join("/") + "</td><td>" + data[i].d13 + "</td>"+
+"<td>" + data[i].d14 + "</td><td>" + data[i].d15 + "</td>"+ "<td>" + data[i].d16 + "</td>"+ "</tr>"; }// output+="<tr><td colspan='15'><b>Total</b></td><td><b>"+str+"</b></td></tr>"; 
 output+="</tbody></table>";
 
 $("#jihv-modal-graph .modal-body").html(output);$("#jihv-modal-graph").modal("show"); 
@@ -1367,7 +1367,7 @@ $('#s1dexport').DataTable( {
      
       <div class="box box-danger" style="margin-bottom: 8px;border-color:#607d8b;">
            <div class="box-header with-border">
-			<h3 class="box-title" >Booking Details  </h3>
+			<!-- <h3 class="box-title" >Booking Details  </h3> -->
 			</div>
             <div class="box-body">
               <div id="prf_summ_booking_ytd" style="height:230px;margin-top:-10px;"></div>  <br/>
@@ -1515,8 +1515,19 @@ $('#s1dexport').DataTable( {
 		 	</c:otherwise>
  		</c:choose>
       </h3>
-      <h6>YTD Booking Target : <fmt:formatNumber type="number"   value="${guage_bkng_ytd_target}"/>   || YTD Billing Target : <fmt:formatNumber type="number"   value="${guage_blng_ytd_target}"/>   </h6>
-      <h6>YTD Booking Actual : <fmt:formatNumber type="number"   value="${actual}"/>    || YTD Billing Actual : <fmt:formatNumber type="number"   value="${actualbl}"/>   </h6> 
+     <%--  <h6>YTD Booking Target : <fmt:formatNumber type="number"   value="${guage_bkng_ytd_target}"/>   || YTD Billing Target : <fmt:formatNumber type="number"   value="${guage_blng_ytd_target}"/>   </h6>
+      <h6>YTD Booking Actual : <fmt:formatNumber type="number"   value="${actual}"/>    || YTD Billing Actual : <fmt:formatNumber type="number"   value="${actualbl}"/>   </h6>  --%>
+     <h6>
+    YTD Booking Target : <fmt:formatNumber type="number" value="${guage_bkng_ytd_target}"/>   
+      &nbsp; &nbsp; &nbsp; ||&nbsp; &nbsp; &nbsp;
+    YTD Billing Target : <fmt:formatNumber type="number" value="${guage_blng_ytd_target}"/>
+</h6>
+<h6>
+    YTD Booking Actual : <fmt:formatNumber type="number" value="${actual}"/>    
+    &nbsp; &nbsp; ||&nbsp; &nbsp; &nbsp;
+    YTD Billing Actual : <fmt:formatNumber type="number" value="${actualbl}"/>
+</h6>
+     
       </div>		
 	   <div class="row">
 	   			 <div class="col-lg-1 col-xs-0" ></div>
@@ -1538,7 +1549,7 @@ $('#s1dexport').DataTable( {
           <div class="box box-success" style="margin-bottom: 8px;border-color:#607d8b;right:5px;">
                <div class="box-header with-border">
 						 
-						 <h3 class="box-title" id="blng-graph-title">Billing Target  Vs Actual Billing</h3>
+						<!--  <h3 class="box-title" id="blng-graph-title">Billing Target  Vs Actual Billing</h3> -->
               </div>
             <div class="box-body" id="blng_box_body">
               

@@ -253,10 +253,10 @@ div.dt-buttons{
 							     <label class="label-text">Status:</label>
 							     <select  class="form-control form-control-sm" id="statusUpdt"></select>
 							 </div>
-							 <div class="form-group form-group-sm">
-							     <label class="label-text">Priority:</label>
+						 <div class="form-group form-group-sm">
+							     <label class="label-text">Focus List:</label>
 							     <select  class="form-control form-control-sm" id="priorityUpdt"></select>
-							 </div>
+							 </div> 
 			        		<label class="label-text">Remarks:</label> <textarea name="remarks" rows="4" cols="50" id="remarks" maxlength="200" style="width:18em;height: 6em" required></textarea>                   
 			              	<br/><br/>
 			           	  	<input type="button" class="sbt_btn3"  onclick="Apply(event);" name="actn" value="Apply"/>
@@ -842,13 +842,13 @@ function getData(details){
 							 output += '<input type="radio" id="ExpBD'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'ExpBD\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\')>';
 						 }
 					  output +=  ' </td>';	
-					  output +=  ' <td>';
+					 /*  output +=  ' <td>';
 						 if(showUpdateBtn){   
 							 output += ' <button class="btn btn-xs btn-primary"  name="shortclose" id="SC'+$.trim(data[i].cqhSysId)+'" onClick=updateShortClose(\''+$.trim(data[i].cqhSysId)+'\')> Close </button>'
 							 output += ' <div id="shortc'+$.trim(data[i].cqhSysId)+'">'
 						    }
 							 output +=  ' </td>';
-					  output +=  ' <td>';
+					  output +=  ' <td>'; */
 						// if(showUpdateBtn){   
 							 output += ' <button class="btn btn-xs btn-success"  name="reminders" id="R'+$.trim(data[i].cqhSysId)+'" onClick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'R\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\''+encodeURIComponent($.trim(data[i].projectName))+'\',\''+$.trim(data[i].qtnCode)+-+$.trim(data[i].qtnNo)+'\')> Reminders </button>' 
 							 output += ' <div id="innerday'+$.trim(data[i].cqhSysId)+'" class="cen_icon" onclick="showRemindersForQtn(event,\''+$.trim(data[i].qtnCode)+-+$.trim(data[i].qtnNo)+'\');"> '     	
@@ -880,7 +880,7 @@ function getData(details){
 				 output += '<table id="stage_detail_tbl3" class="table table-bordered table-hover small">'+
 					'<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn No.-Code</th><th>Cons Win %</th> <th>Cont Win %</th><th>Tot Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Status</th><th>Priority</th><th>Remark</th>'+	
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn No.-Code</th><th>Cons Win %</th> <th>Cont Win %</th><th>Tot Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Status</th><th>Focus List</th><th>Remark</th>'+	
 		 			'<th>Exp.Order Date</th> <th>Exp. PODate</th><th>Exp. InvDate</th><th width="100px">Lost/Hold  Status</th> <th>Followup</th><th>Reminders</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
@@ -962,7 +962,7 @@ function getData(details){
 				 output += '<table id="stage_detail_tbl" class="table table-bordered table-hover small">'+
 					'<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn<br/> Code-No</th><th>Cons<br/> Win %</th> <th>Cont<br/> Win %</th><th>Tot<br/> Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Status</th><th>Priority</th><th>Remarks</th>'+	
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn<br/> Code-No</th><th>Cons<br/> Win %</th> <th>Cont<br/> Win %</th><th>Tot<br/> Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Status</th><th  width="40px">Focus List</th><th>Remarks</th>'+	
 		 			'<th>Exp.LOI Date</th><th  width="40px">Followup</th><th width="120px">Lost/Hold  Status</th><th>Submittal Status</th><th>Reminder</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
