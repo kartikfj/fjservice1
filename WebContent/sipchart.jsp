@@ -339,7 +339,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 
           // Set chart options
           var options = {
-						  'title':'Booking - Target Vs Actual - ${syrtemp}, ('+durationFltr+'). \r\n Total Yearly Target : <c:forEach var="ytm_tmp" items="${YTM_BOOK}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}"/>\r\n YTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/> , YTD Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/></c:forEach> ',
+						  'title':'Booking - Target Vs Actual - ${syrtemp}, ('+durationFltr+'). \r\n Total Yearly Target : <c:forEach var="ytm_tmp" items="${YTM_BOOK}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}"/>\r\n YTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/> , \r\n YTD Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/></c:forEach> ',
 						  'vAxis': {title: 'Amount boking(In Millions)',titleTextStyle: {italic: false},format: 'short'},
 		                  'is3D':true,
 		                  titleTextStyle: {

@@ -113,7 +113,7 @@ function downloadSalaryCertificate(empCode) {
         : (printFrame.contentDocument.document) ? printFrame.contentDocument.document : printFrame.contentDocument;
     printFrameDoc.document.open();
     printFrameDoc.document.write('<html><head><title></title>');
-    printFrameDoc.document.write('</head><body >');
+    printFrameDoc.document.write('</head><body style="margin-left: 50px;" >');
     printFrameDoc.document.write(printArea);
     printFrameDoc.document.write('</body></html>');
     printFrameDoc.document.close();
