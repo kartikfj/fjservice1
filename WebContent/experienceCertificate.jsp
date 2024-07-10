@@ -110,9 +110,9 @@ function downloadSalaryCertificate(empCode){
     	    	printFrameDoc.document.write('<link rel="stylesheet" href="resources/css/certificates.css?v=1.1.27">');    		
                 printFrameDoc.document.write('</head>');
          
-    printFrameDoc.document.write('<body style="margin-left: 50px;">');
-    printFrameDoc.document.write(printArea);
-    printFrameDoc.document.write('</body>');
+                printFrameDoc.document.write('<body style="margin-left: 50px;">');
+                printFrameDoc.document.write(printArea);
+                printFrameDoc.document.write('</body>');
                 printFrameDoc.document.write('</html>'); 
                 printFrameDoc.document.close(); 
                 setTimeout(function () {
