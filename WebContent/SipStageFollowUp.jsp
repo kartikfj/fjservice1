@@ -54,6 +54,7 @@
 .nav-tabs-custom>.nav-tabs>li.active { border-top: 2px solid #065685 !important;}
  svg:first-child > g > text[text-anchor~=middle]{ font-size: 18px;font-weight: bold; fill: #337ab7;}
 .requestWindow{display:none;padding:5px;border-radius:5px;border: rgb(121, 85, 72) 1px solid; border-radius:3px;font-size:0.8em; font-family:Arial, Helvetica, sans-serif; padding: 1em;width:20em;height:auto;background: rgb(121, 85, 72);}
+.requestWindowPriority{display:none;padding:5px;border-radius:5px;border: rgb(121, 85, 72) 1px solid; border-radius:3px;font-size:0.8em; font-family:Arial, Helvetica, sans-serif; padding: 1em;width:20em;height:auto;background: rgb(121, 85, 72);}
 .lostWindow{display:none;padding:5px;border-radius:5px;border: rgb(121, 85, 72) 1px solid; border-radius:3px;font-size:0.8em; font-family:Arial, Helvetica, sans-serif; padding: 1em;width:20em;height:auto;background: rgb(121, 85, 72);}
 .reasonheading{color:#ffffff;}.reasonbox{display:none; }
 .lostreasonheading{color:#ffffff;}.lostreasonbox{display:none; }
@@ -265,8 +266,8 @@ div.dt-buttons{
 			       </div>
 			       <div id="requestWindowPriority" class="requestWindow">
     <img src="resources/images/Closebutton.png" style="float: right" onclick="closeRequestWindow('requestWindowPriority');" /><br/>
-    <div id="reasonheading" class="reasonheading"></div> 
-    <div id="reasonbox" class="reasonbox">
+    <div id="reasonheadingPriority" class="reasonheading"></div> 
+    <div id="reasonboxPriority" class="reasonbox">
         <div class="form-group form-group-sm">
             <label class="label-text">Priority:</label>
             <select class="form-control form-control-sm" id="priorityUpdt"></select>
@@ -932,11 +933,12 @@ function getData(details){
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
 					 '<td  align ="right">'+$.trim(formatNumber(Math.round(data[i].qtnAmount)))+'</td>'+
 					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
-					  output +=  '<td>'+ $.trim(data[i].sewinper);		
-					  if($.trim(data[i].sewinper) !== '')
+					 
+					  output +=  '<td id="priority'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].priority);		
+					  if($.trim(data[i].priority) !== '')
 							 output += '% <br/>';
 						 if(showUpdateBtn){   
-							 output += '<input type="radio" id="SEWIN'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'SEWIN\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\'3\')>';
+							 output += '<button class="btn btn-xs btn-danger" id="'+$.trim(data[i].cqhSysId)+'" onclick=openRequestWindow1({seCode:\''+$.trim(data[i].seCode)+'\',row:'+i+',id:'+$.trim(data[i].cqhSysId)+',event})>Update</button>';
 						 }
 					  output +=  ' </td>'+					 
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
@@ -1643,6 +1645,30 @@ function openRequestWindow(data){
 			//	document.getElementById("remarks").value =''+table.cell({row:data.row, column:9}).data()+'' ; 
 	}   
 }
+function openRequestWindow1(data){
+	if(data.event.target.id == data.id){ 
+		        selectedSeCode = data.seCode;
+		        selectedRow = data.row;
+				selectedId = data.event.target.id; 
+				const singleFilteredRowItem = stage23List.filter(item=> selectedId === item.cqhSysId)[0]
+				const status = checkValue(singleFilteredRowItem.status);
+				const priority = checkValue(singleFilteredRowItem.priority);
+			 	const remarks = checkValue(singleFilteredRowItem.remarks);
+				var topDimn = ''+data.event.clientY-60+'px';
+				var msgbox = document.getElementById("requestWindowPriority");
+				var reasonbox = document.getElementById("reasonboxPriority");
+				if(msgbox ==null) return;
+				document.getElementById("remarks").value = remarks;
+				var heading = document.getElementById("reasonheadingPriority");
+			    heading.innerHTML="Stage-"+selectedStage+" followup";
+				$("#requestWindowPriority").css( {background:'#795548', opacity: 1,  display:'block', position:'absolute', top: topDimn, right:'6%'});	
+			    $("#reasonboxPriority").css( {display:'block'});	
+			    setFilterSelectorSub(selectedStage, "statusUpdt", status, 'Status');
+			    setFilterSelectorSub(selectedStage,"priorityUpdt", priority, 'Priority');
+				
+			//	document.getElementById("remarks").value =''+table.cell({row:data.row, column:9}).data()+'' ; 
+	}   
+}
 function checkValue(value){
 	if(typeof value === 'undefined' || value == 'undefined' || value === null || value === '' || value == ''){
 		return "";
@@ -1655,14 +1681,27 @@ function Apply(action){
 		  alert("Please select a status");
 	} 
 }
-function updatePriority(action) {
-    action.preventDefault();
-    const data = {
-        row: selectedRow,
-        id: selectedId,
-        priority: $.trim($('#priorityUpdt').val()),
-        seCode: selectedSeCode
-    };
+function updatePriority(action) {alert("updateprio");
+
+action.preventDefault();
+
+// Assuming selectedRow, selectedId, selectedStage, selectedSeCode are defined elsewhere
+const statusValue = $.trim($('#statusUpdt').val());
+const priorityValue = $.trim($('#priorityUpdt').val());
+const remarksValue = $.trim($('#remarks').val());
+
+// Defaulting priority to 'Focus List' if priorityValue is empty
+const priority = priorityValue ? priorityValue : 'Focus List';
+
+const data = {
+    row: selectedRow,
+    id: selectedId,
+    stage: $.trim(selectedStage),
+    status: statusValue,
+    priority: priority,
+    remarks: remarksValue,
+    seCode: selectedSeCode
+};
 
     updateStage(data);
 }

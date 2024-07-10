@@ -168,7 +168,7 @@ public class SipStageFollowUpController extends HttpServlet {
 	private void updateStage(HttpServletRequest request, HttpServletResponse response, String sales_eng_Emp_code)
 			throws JsonIOException, IOException {
 		int stage = 0;
-		// System.out.println("Stage "+request.getParameter("stage"));
+		System.out.println("Stage ");
 		if (!request.getParameter("stage").isEmpty() && request.getParameter("stage") != null) {
 			stage = Integer.parseInt(request.getParameter("stage"));
 		}
