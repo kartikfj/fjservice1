@@ -931,8 +931,14 @@ function getData(details){
 					 '<td>'+$.trim(data[i].projectName)+'</td>'+
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
 					 '<td  align ="right">'+$.trim(formatNumber(Math.round(data[i].qtnAmount)))+'</td>'+
-					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+
-					 '<td id="priority'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].priority)+'</td>'+
+					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
+					  output +=  '<td>'+ $.trim(data[i].sewinper);		
+					  if($.trim(data[i].sewinper) !== '')
+							 output += '% <br/>';
+						 if(showUpdateBtn){   
+							 output += '<input type="radio" id="SEWIN'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'SEWIN\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\'3\')>';
+						 }
+					  output +=  ' </td>'+					 
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
 					 totalAmount = totalAmount + Math.round(data[i].qtnAmount);
 					 
@@ -1334,7 +1340,7 @@ function getData(details){
 			               
 			                cell.attr('title', fullText);
 			            }
-			            for (var i = 7; i < 13; i++) {
+			            for (var i = 7; i < 12; i++) {
 			                var cell = $('td', row).eq(i);
 			                var fullText = data[i];			               
 			                var shortText = fullText != null ? fullText.substring(0, 10) : " ";
@@ -1645,9 +1651,9 @@ function checkValue(value){
 function Apply(action){
 	 action.preventDefault(); 
 	 const data = { row:selectedRow, id: selectedId , "stage":$.trim(selectedStage),"status":$.trim($('#statusUpdt').val()), "priority":$.trim($('#priorityUpdt').val()), remarks: $.trim($('#remarks').val()), seCode: selectedSeCode }
-	if(!data.status){ updateStage(data);}/* else{
+	if(data.status){ updateStage(data);} else{
 		  alert("Please select a status");
-	} */
+	} 
 }
 function updatePriority(action) {
     action.preventDefault();
