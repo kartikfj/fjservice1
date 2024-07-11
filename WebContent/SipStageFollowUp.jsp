@@ -248,17 +248,17 @@ div.dt-buttons{
 		       </div>
 		         <%--Reason Div Start --%>
 			        <div id="requestWindow" class="requestWindow"  >
-			      		<img src="resources/images/Closebutton.png" style="float: right" onclick="closeRequestWindow();"/><br/>
+			      		<img src="resources/images/Closebutton.png" style="float: right" onclick="closeRequestWindow(requestWindow);"/><br/>
 			        	<div id="reasonheading" class="reasonheading"></div> 
 			        	<div id="reasonbox" class="reasonbox">
 			        	    <div class="form-group form-group-sm">
 							     <label class="label-text">Status:</label>
 							     <select  class="form-control form-control-sm" id="statusUpdt"></select>
 							 </div>
-							 <div class="form-group form-group-sm">
+							 <!-- <div class="form-group form-group-sm">
 							     <label class="label-text">Priority:</label>
 							     <select  class="form-control form-control-sm" id="priorityUpdt"></select>
-							 </div>
+							 </div> -->
 			        		<label class="label-text">Remarks:</label> <textarea name="remarks" rows="4" cols="50" id="remarks" maxlength="200" style="width:18em;height: 6em"></textarea>                   
 			              	<br/><br/>
 			           	  	<input type="button" class="sbt_btn3"  onclick="Apply(event);" name="actn" value="Apply"/>
@@ -269,11 +269,11 @@ div.dt-buttons{
     <div id="reasonheadingPriority" class="reasonheading"></div> 
     <div id="reasonboxPriority" class="reasonbox">
         <div class="form-group form-group-sm">
-            <label class="label-text">Priority:</label>
+            <label class="label-text">Focus List:</label>
             <select class="form-control form-control-sm" id="priorityUpdt"></select>
         </div>
         <br/><br/>
-        <input type="button" class="sbt_btn3" onclick="updatePriority(event);" name="actn" value="Update Priority" />
+        <input type="button" class="sbt_btn3" onclick="update-FocusList(event);" name="actn" value="Update Priority" />
     </div>
 </div>
 			       <%-- Reason Div End --%> 
@@ -934,13 +934,20 @@ function getData(details){
 					 '<td  align ="right">'+$.trim(formatNumber(Math.round(data[i].qtnAmount)))+'</td>'+
 					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
 					 
-					  output +=  '<td id="priority'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].priority);		
-					  if($.trim(data[i].priority) !== '')
-							 output += '% <br/>';
-						 if(showUpdateBtn){   
-							 output += '<button class="btn btn-xs btn-danger" id="'+$.trim(data[i].cqhSysId)+'" onclick=openRequestWindow1({seCode:\''+$.trim(data[i].seCode)+'\',row:'+i+',id:'+$.trim(data[i].cqhSysId)+',event})>Update</button>';
-						 }
-					  output +=  ' </td>'+					 
+					 output += '<td id="priority' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].priority);
+
+					 if ($.trim(data[i].priority) !== '') {
+					     output += ' <i class="fa fa-circle" style="color:blue;" title="Update Priority"></i><br/>'; // Filled circle icon
+					 } else {
+					     output += ' <i class="fa fa-circle-o" style="color:blue;" title="Update Priority"></i><br/>'; // Empty circle icon
+					 }
+
+					 if (showUpdateBtn) {
+					     output += '<i class="fa fa-edit" style="cursor:pointer; color:red;" id="' + $.trim(data[i].cqhSysId) + '" onclick=openRequestWindow1({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})> Update</i>';
+					 }
+
+					 output += ' </td>'+
+					 
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
 					 totalAmount = totalAmount + Math.round(data[i].qtnAmount);
 					 
@@ -1041,8 +1048,21 @@ function getData(details){
 					 }
 					 output +=  ' </td>'+
 					 '<td  align ="right">'+formatNumber(Math.round(data[i].qtnAmount))+'</td>'+					 
-					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+
-					 '<td id="priority'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].priority)+'</td>'+
+					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
+					 output += '<td id="priority' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].priority);
+
+					 if ($.trim(data[i].priority) !== '') {
+					     output += ' <i class="fa fa-circle" style="color:blue;" title="Update Priority"></i><br/>'; // Filled circle icon
+					 } else {
+					     output += ' <i class="fa fa-circle-o" style="color:blue;" title="Update Priority"></i><br/>'; // Empty circle icon
+					 }
+
+					 if (showUpdateBtn) {
+					     output += '<i class="fa fa-edit" style="cursor:pointer; color:red;" id="' + $.trim(data[i].cqhSysId) + '" onclick=openRequestWindow1({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})> Update</i>';
+					 }
+
+					 output += ' </td>'+
+					 
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
 					 totalAmount = totalAmount+Math.round(data[i].qtnAmount);
 					 
@@ -1131,8 +1151,20 @@ function getData(details){
 					 '<td>'+$.trim(data[i].projectName)+'</td>'+
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
 					 '<td  align ="right">'+formatNumber(Math.round(data[i].qtnAmount))+'</td>'+					 
-					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+
-					 '<td id="priority'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].priority)+'</td>'+
+					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
+					 output += '<td id="priority' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].priority);
+
+					 if ($.trim(data[i].priority) !== '') {
+					     output += ' <i class="fa fa-circle" style="color:blue;" title="Update Priority"></i><br/>'; // Filled circle icon
+					 } else {
+					     output += ' <i class="fa fa-circle-o" style="color:blue;" title="Update Priority"></i><br/>'; // Empty circle icon
+					 }
+
+					 if (showUpdateBtn) {
+					     output += '<i class="fa fa-edit" style="cursor:pointer; color:red;" id="' + $.trim(data[i].cqhSysId) + '" onclick=openRequestWindow1({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})> Update</i>';
+					 }
+
+					 output += ' </td>'+
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
 					 totalAmount = totalAmount+Math.round(data[i].qtnAmount);
 					
@@ -1436,7 +1468,7 @@ function getData(details){
 	 						
 }
  
-function closeRequestWindow(){	   
+/* function closeRequestWindow(){	   
     const msgbox = document.getElementById("requestWindow");
     const reasonbox = document.getElementById("reasonbox");  	    		    
     reasonbox.style.display="none";
@@ -1445,7 +1477,20 @@ function closeRequestWindow(){
     selectedRow = -1;
     selectedSeCode = "";
 } 
- 
+  */
+  
+  function closeRequestWindow(windowId) {
+	    const msgbox = document.getElementById(windowId);
+	    if (msgbox) {
+	        msgbox.style.display = 'none';
+	    }
+	    reasonbox.style.display="none";
+	    selectedId = "";
+	    selectedRow = -1;
+	    selectedSeCode = "";
+	    
+	}
+  
 function updateStage(details){  
 	if ((confirm('Are You sure, You Want to update this details!'))) {
 		$('#laoding').show(); 
@@ -1676,12 +1721,12 @@ function checkValue(value){
 }
 function Apply(action){
 	 action.preventDefault(); 
-	 const data = { row:selectedRow, id: selectedId , "stage":$.trim(selectedStage),"status":$.trim($('#statusUpdt').val()), "priority":$.trim($('#priorityUpdt').val()), remarks: $.trim($('#remarks').val()), seCode: selectedSeCode }
+	 const data = { row:selectedRow, id: selectedId , "stage":$.trim(selectedStage),"status":$.trim($('#statusUpdt').val()), remarks: $.trim($('#remarks').val()), seCode: selectedSeCode }
 	if(data.status){ updateStage(data);} else{
 		  alert("Please select a status");
 	} 
 }
-function updatePriority(action) {alert("updateprio");
+function updatePriority(action) {
 
 action.preventDefault();
 
@@ -1704,6 +1749,7 @@ const data = {
 };
 
     updateStage(data);
+    closeRequestWindow('requestWindowPriority');
 }
 function setAttributes(el, attrs) {
 	  for(var key in attrs) {
