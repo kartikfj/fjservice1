@@ -48,6 +48,8 @@ public class SipStageFollowUp {
 	private String submittalcode = null;
 	private String submittalRemarks = null;
 
+	private String isApproved = null;
+
 	public String getStyle() {
 		return style;
 	}
@@ -360,6 +362,14 @@ public class SipStageFollowUp {
 		this.submittalRemarks = submittalRemarks;
 	}
 
+	public String getIsApproved() {
+		return isApproved;
+	}
+
+	public void setIsApproved(String isApproved) {
+		this.isApproved = isApproved;
+	}
+
 	public SipStageFollowUp(String status, int stage) {
 		super();
 		this.status = status;
@@ -509,5 +519,35 @@ public class SipStageFollowUp {
 		this.expLOIDate = expLOIDate;
 		this.sewinper = sewinper;
 		this.submittalcode = submittalcode;
+	}
+
+	public SipStageFollowUp(String cqhSysId, String seCode, String seName, String qtnDt, String qtnCode, String qtnNo,
+			String custName, String projectName, String consultant, double amount, String priority, String status,
+			String remarks, String updatedBy, String updatedOn, int reminderCount, int consltWin, int contractorWin,
+			int totalWin, String expLOIDate, String sewinper, String submittalcode, String isApproved) {
+		super();
+		this.cqhSysId = cqhSysId;
+		this.seCode = seCode;
+		this.seName = seName;
+		this.qtnDt = qtnDt;
+		this.qtnCode = qtnCode;
+		this.qtnNo = qtnNo;
+		this.custName = custName;
+		this.projectName = projectName;
+		this.consultant = consultant;
+		this.qtnAmount = amount;
+		this.priority = priority;
+		this.status = status;
+		this.remarks = remarks;
+		this.updatedBy = updatedBy;
+		this.updatedOn = updatedOn;
+		this.reminderCount = reminderCount;
+		this.consultWin = consltWin;
+		this.contractorWin = contractorWin;
+		this.totalWin = totalWin;
+		this.expLOIDate = expLOIDate;
+		this.sewinper = sewinper;
+		this.submittalcode = submittalcode;
+		this.isApproved = isApproved;
 	}
 }

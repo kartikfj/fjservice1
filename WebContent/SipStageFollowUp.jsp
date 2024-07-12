@@ -248,7 +248,7 @@ div.dt-buttons{
 		       </div>
 		         <%--Reason Div Start --%>
 			        <div id="requestWindow" class="requestWindow"  >
-			      		<img src="resources/images/Closebutton.png" style="float: right" onclick="closeRequestWindow(requestWindow);"/><br/>
+			      		<img src="resources/images/Closebutton.png" style="float: right" onclick="closeRequestWindow();"/><br/>
 			        	<div id="reasonheading" class="reasonheading"></div> 
 			        	<div id="reasonbox" class="reasonbox">
 			        	    <div class="form-group form-group-sm">
@@ -263,19 +263,7 @@ div.dt-buttons{
 			              	<br/><br/>
 			           	  	<input type="button" class="sbt_btn3"  onclick="Apply(event);" name="actn" value="Apply"/>
 			        	</div>                     
-			       </div>
-			       <div id="requestWindowPriority" class="requestWindow">
-    <img src="resources/images/Closebutton.png" style="float: right" onclick="closeRequestWindow('requestWindowPriority');" /><br/>
-    <div id="reasonheadingPriority" class="reasonheading"></div> 
-    <div id="reasonboxPriority" class="reasonbox">
-        <div class="form-group form-group-sm">
-            <label class="label-text">Focus List:</label>
-            <select class="form-control form-control-sm" id="priorityUpdt"></select>
-        </div>
-        <br/><br/>
-        <input type="button" class="sbt_btn3" onclick="update-FocusList(event);" name="actn" value="Update Priority" />
-    </div>
-</div>
+			       </div>			      
 			       <%-- Reason Div End --%> 
 			       <%--STAGE 4 Items Start --%>
 			       		<div class="modal fade" id="s4_items_modal" role="dialog" >					
@@ -526,7 +514,7 @@ div.dt-buttons{
 				               </c:forEach>
 					     </select>
 					 </div>
-	        		<label class="label-text">Remarks:</label> <textarea name="substatusremarks" rows="4" cols="50" id="substatusremarks" maxlength="200" style="width:18em;height: 6em" required></textarea>               
+	        		<label class="label-text">Remarks:</label> <textarea name="substatusremarks" rows="4" cols="50" id="substatusremarks" maxlength="200" style="width:18em;height: 6em" ></textarea>               
 	              	<br/><br/>
 	           	  	<input type="button" class="sbt_btn3"  onclick="Submit(this,'substatusremarks','substatus','SS');" name="actn" value="Apply"/>
 	        	</div>                     
@@ -817,6 +805,7 @@ function stage4Items(data){
 
 
 function getData(details){
+	
 	stage4List = [];stage23List=[];
 	 $('#laoding').show();  
 	$.ajax({
@@ -907,8 +896,8 @@ function getData(details){
 				}
 				 output +='<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn No.-Code</th><th>Consultant Win %</th> <th>Contractor Win %</th><th>Total Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Status</th><th>Focus List</th><th>Remark</th>'+	
-		 			'<th>Exp.PODate</th><th>Exp. InvDate</th><th width="100px">Lost/Hold  Status</th> <th>Follow-Up & Remarks</th><th>Reminders</th>'+      
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn No.-Code</th><th>Cons<br> Win %</th> <th>Cont <br> Win %</th><th>Total Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remark</th><th>Focus List</th>'+	
+		 			'<th>Exp.PODate</th><th>Exp. InvDate</th><th width="100px">Lost <br>Hold<br>  Status</th> <th>Follow-Up & Remarks</th><th>Reminders</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
 					 stage23List = data; 
@@ -925,31 +914,35 @@ function getData(details){
 					  if($.trim(data[i].sewinper) !== '')
 							 output += '% <br/>';
 						 if(showUpdateBtn){   
-							 output += '<input type="radio" id="SEWIN'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'SEWIN\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\'3\')>';
+							 output += '<input type="radio" id="SEWIN'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'SEWIN\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\'2\')>';
+						 
+
 						 }
 					  output +=  ' </td>'+
 					 '<td>'+$.trim(data[i].custName)+'</td>'+
 					 '<td>'+$.trim(data[i].projectName)+'</td>'+
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
 					 '<td  align ="right">'+$.trim(formatNumber(Math.round(data[i].qtnAmount)))+'</td>'+
-					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
-					 
-					 output += '<td id="priority' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].priority);
-
-					 if ($.trim(data[i].priority) !== '') {
-					     output += ' <i class="fa fa-circle" style="color:blue;" title="Update Priority"></i><br/>'; // Filled circle icon
-					 } else {
-					     output += ' <i class="fa fa-circle-o" style="color:blue;" title="Update Priority"></i><br/>'; // Empty circle icon
-					 }
-
-					 if (showUpdateBtn) {
-					     output += '<i class="fa fa-edit" style="cursor:pointer; color:red;" id="' + $.trim(data[i].cqhSysId) + '" onclick=openRequestWindow1({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})> Update</i>';
-					 }
-
-					 output += ' </td>'+
-					 
+					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+					 
+						/*  output +=  '<td>';	
+						    var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';					   
+						 if(showUpdateBtn){   
+							 output += ' <label style="color:green;text-transform: uppercase;"><input type="radio" name="focuslist'+$.trim(data[i].cqhSysId) + '" value="YES"  id="focuslist'+$.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick=updateIsInFocusList(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].seCode)+'\')> Yes'	 		 
+					 		   '</label>';				 		
+					 		  output += '<input type="hidden" id="focuslist'+$.trim(data[i].cqhSysId) + '" value="'+$.trim(data[i].priority) + '"/>';
+						 }
+						 output +=  ' </td>'+ */
+						 
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
+					 output += '<td>';
+					 var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';
+					 if (showUpdateBtn) {
+					     output += '<label style="color:green;text-transform: uppercase;"><input type="checkbox" name="focuslist' + $.trim(data[i].cqhSysId) + '" value="Focus List" id="focuslist' + $.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick="updateIsInFocusList(event, \'' + $.trim(data[i].cqhSysId) + '\', \'' + $.trim(data[i].seCode) + '\', \'FJT_SM_STG3_TBL\')"> Yes</label>';
+					     output += '<input type="hidden" id="focuslist' + $.trim(data[i].cqhSysId) + '" value="' + $.trim(data[i].priority) + '"/>';
+					 }
+					 output += '</td>';
 					 totalAmount = totalAmount + Math.round(data[i].qtnAmount);
+					 
 					 
 // 					 output +=  '<td>'+$.trim(data[i].expLOIDate)+'<br/>';					 
 // 					 if(showUpdateBtn){   
@@ -1008,8 +1001,8 @@ function getData(details){
 				 
 				 output +='<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn<br/> Code-No</th><th>Consultant<br/> Win %</th> <th>Contractor<br/> Win %</th><th>Total<br/> Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Product is Specified</th><th>Amount</th><th>Status</th><th>Focus List</th><th>Remarks</th>'+	
-		 			'<th>Exp.LOI Date</th><th>Follow-Up & Remarks</th><th width="200px">Lost <br> Hold <br> Status</th><th>Submittal Status</th><th>Reminder</th>'+      
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn<br/> Code-No</th><th>Cons<br/> Win %</th> <th>Cont<br/> Win %</th><th>Total<br/> Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Product is Specified</th><th>Amount</th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remarks</th><th>Focus List</th>'+	
+		 			'<th>Exp.LOI Date</th><th>Follow-Up & Remarks</th><th width="80px">Lost <br> Hold <br> Status</th><th>Submittal Status</th><th>Reminder</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
 					 stage23List = data; 
@@ -1048,22 +1041,26 @@ function getData(details){
 					 }
 					 output +=  ' </td>'+
 					 '<td  align ="right">'+formatNumber(Math.round(data[i].qtnAmount))+'</td>'+					 
-					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
-					 output += '<td id="priority' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].priority);
-
-					 if ($.trim(data[i].priority) !== '') {
-					     output += ' <i class="fa fa-circle" style="color:blue;" title="Update Priority"></i><br/>'; // Filled circle icon
-					 } else {
-					     output += ' <i class="fa fa-circle-o" style="color:blue;" title="Update Priority"></i><br/>'; // Empty circle icon
+					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+
+				/* 	 output +=  '<td>';	
+					    var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';					   
+					 if(showUpdateBtn){   
+						 output += ' <label style="color:green;text-transform: uppercase;"><input type="radio" name="focuslist'+$.trim(data[i].cqhSysId) + '" value="YES"  id="focuslist'+$.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick=updateIsInFocusList(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].seCode)+'\')> Yes'	 		 
+				 		   '</label>';				 		
+				 		  output += '<input type="hidden" id="focuslist'+$.trim(data[i].cqhSysId) + '" value="'+$.trim(data[i].priority) + '"/>';
 					 }
-
-					 if (showUpdateBtn) {
-					     output += '<i class="fa fa-edit" style="cursor:pointer; color:red;" id="' + $.trim(data[i].cqhSysId) + '" onclick=openRequestWindow1({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})> Update</i>';
-					 }
-
-					 output += ' </td>'+
+					 output +=  ' </td>'+ */
 					 
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
+
+					 output += '<td>';
+										 var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';
+										 if (showUpdateBtn) {
+										     output += '<label style="color:green;text-transform: uppercase;"><input type="checkbox" name="focuslist' + $.trim(data[i].cqhSysId) + '" value="Focus List" id="focuslist' + $.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick="updateIsInFocusList(event, \'' + $.trim(data[i].cqhSysId) + '\', \'' + $.trim(data[i].seCode) + '\', \'FJT_SM_STG2_TBL\')"> Yes</label>';
+										     output += '<input type="hidden" id="focuslist' + $.trim(data[i].cqhSysId) + '" value="' + $.trim(data[i].priority) + '"/>';
+										 }
+										 output += '</td>';
+
 					 totalAmount = totalAmount+Math.round(data[i].qtnAmount);
 					 
 					 output +=  '<td>'+$.trim(data[i].expLOIDate) +'<br/>';					 
@@ -1126,7 +1123,7 @@ function getData(details){
 				 
 				 output += '<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn Code-No</th><th>Customer</th><th width="20%">Project</th><th>Consultant</th><th>Amount</th><th>Status</th><th>Focus List</th><th>Remarks</th>'+	
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn Code-No</th><th>Customer</th><th width="20%">Project</th><th>Consultant</th><th>Amount</th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remarks</th><th>Focus List</th>'+	
 		 			'<th>Follow-Up & Remarks</th><th width="120px">Update Stage</th><th>Reminder</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
@@ -1151,21 +1148,31 @@ function getData(details){
 					 '<td>'+$.trim(data[i].projectName)+'</td>'+
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
 					 '<td  align ="right">'+formatNumber(Math.round(data[i].qtnAmount))+'</td>'+					 
-					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
-					 output += '<td id="priority' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].priority);
-
-					 if ($.trim(data[i].priority) !== '') {
-					     output += ' <i class="fa fa-circle" style="color:blue;" title="Update Priority"></i><br/>'; // Filled circle icon
-					 } else {
-					     output += ' <i class="fa fa-circle-o" style="color:blue;" title="Update Priority"></i><br/>'; // Empty circle icon
+					 '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+
+					/*   output +=  '<td>';	
+					    var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';					   
+					 if(showUpdateBtn){   
+						 output += ' <label style="color:green;text-transform: uppercase;"><input type="radio" name="focuslist'+$.trim(data[i].cqhSysId) + '" value="YES"  id="focuslist'+$.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick=updateIsInFocusList(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].seCode)+'\')> Yes'	 		 
+				 		   '</label>';				 		
+				 		  output += '<input type="hidden" id="focuslist'+$.trim(data[i].cqhSysId) + '" value="'+$.trim(data[i].priority) + '"/>';
 					 }
-
+					 output +=  ' </td>'+ */
+				/* 	 output += '<td>';
+					 var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';
 					 if (showUpdateBtn) {
-					     output += '<i class="fa fa-edit" style="cursor:pointer; color:red;" id="' + $.trim(data[i].cqhSysId) + '" onclick=openRequestWindow1({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})> Update</i>';
+					     output += '<label style="color:green;text-transform: uppercase;"><input type="checkbox" name="focuslist' + $.trim(data[i].cqhSysId) + '" value="Focus List" id="focuslist' + $.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick="updateIsInFocusList(event, \'' + $.trim(data[i].cqhSysId) + '\', \'' + $.trim(data[i].seCode) + '\', \'FJT_SM_STG1_TBL\')"> Yes</label>';
+					     output += '<input type="hidden" id="focuslist' + $.trim(data[i].cqhSysId) + '" value="' + $.trim(data[i].priority) + '"/>';
 					 }
+					 output += '</td>'+ */
 
-					 output += ' </td>'+
 					 '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
+					 output += '<td>';
+					 var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';
+					 if (showUpdateBtn) {
+					     output += '<label style="color:green;text-transform: uppercase;"><input type="checkbox" name="focuslist' + $.trim(data[i].cqhSysId) + '" value="Focus List" id="focuslist' + $.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick="updateIsInFocusList(event, \'' + $.trim(data[i].cqhSysId) + '\', \'' + $.trim(data[i].seCode) + '\', \'FJT_SM_STG1_TBL\')"> Yes</label>';
+					     output += '<input type="hidden" id="focuslist' + $.trim(data[i].cqhSysId) + '" value="' + $.trim(data[i].priority) + '"/>';
+					 }
+					 output += '</td>';
 					 totalAmount = totalAmount+Math.round(data[i].qtnAmount);
 					
 					 if(showUpdateBtn){   
@@ -1235,6 +1242,13 @@ function getData(details){
 			                        		 	else
 					  		            		return data.substr(0,10);
 					  		            	}
+			                        	       if (column === 9) { // Adjust the column index for "Focus List"
+				                                var checkbox = $(data).find('input[type="checkbox"]');
+				                                if (checkbox.length) {
+				                                    return checkbox.is(':checked') ? 'Yes' : 'No';
+				                                }
+				                                return '';
+				                            } 
 					  		            	else{
 					  		                  return data;
 					  		            	}
@@ -1246,182 +1260,137 @@ function getData(details){
 			         ]
 			     });
 			    
-			    table =	  $('#stage_detail_tbl').DataTable({
-			         dom: 'Bfrtip',
-			        'paging'      : true,
-			        //'lengthChange': false,
-			        'searching'   : true,
-			        'ordering'    : true,
-			        'info'        : true,			    
-			        //"dom": '<"top"if>rt<"bottom"lp><"clear">',
-			        "dom": '<"top"iBf>rt<"bottom"lp><"clear">',
-			        'autoWidth'   : false,
-			        "pageLength"  : 15, 
-			        "order": [[ 1, "desc" ]],
-			       
-			        "createdRow": function (row, data, dataIndex) {
-			            // Loop through each column
-			           //  var columnsToApplyLogic = [3, 4, 5];
+			    $('#stage_detail_tbl').DataTable({
+			        dom: 'Bfrtip',
+			        paging: true,
+			        searching: true,
+			        ordering: true,
+			        info: true,
+			        autoWidth: false,
+			        pageLength: 15,
+			        order: [[1, 'desc']],
+			        createdRow: function (row, data, dataIndex) {
+			            // Loop through each column to set full text and attributes
 			            for (var i = 0; i < 6; i++) {
 			                var cell = $('td', row).eq(i);
-			                var fullText = data[i];			               
-			                var shortText = fullText != null ? fullText.substring(0, 10) : " ";
-							
-			                // Set short text for display
-			               // cell.text(shortText);
-							cell.text(fullText);
-			                // Add a data attribute with full text for export
+			                var fullText = data[i];
+			                cell.text(fullText);
 			                cell.attr('data-export', fullText);
-			                
-			             // Add mouseover event listener to show full text on hover
-			               
 			                cell.attr('title', fullText);
 			            }
 			            for (var i = 7; i < 10; i++) {
 			                var cell = $('td', row).eq(i);
-			                var fullText = data[i];			               
-			                var shortText = fullText != null ? fullText.substring(0, 10) : " ";
-							
-			                // Set short text for display
-			                //cell.text(shortText);
-							cell.text(fullText);
-			                // Add a data attribute with full text for export
+			                var fullText = data[i];
+			                cell.text(fullText);
 			                cell.attr('data-export', fullText);
-			                
-			             // Add mouseover event listener to show full text on hover
-			               
 			                cell.attr('title', fullText);
 			            }
 			            for (var i = 11; i < 13; i++) {
 			                var cell = $('td', row).eq(i);
-			                var fullText = data[i];			               
-			                var shortText = fullText != null ? fullText.substring(0, 10) : " ";
-							
-			                // Set short text for display
-			                //cell.text(shortText);
-							cell.text(fullText);
-			                // Add a data attribute with full text for export
+			                var fullText = data[i];
+			                cell.text(fullText);
 			                cell.attr('data-export', fullText);
-			                
-			             // Add mouseover event listener to show full text on hover
-			               
 			                cell.attr('title', fullText);
 			            }
 			        },
-			        "buttons": [
-			        	 {
-			                 extend: 'excelHtml5',
-			                 text: '<i class="fa fa-file-excel-o" style="color: #1d4e6b; font-size: 1em;">Export</i>',
-			                 filename: 'STAGE-' + details.stage + ' Followup Details  ',
-			                 title: 'STAGE-' + details.stage + ' Followup Details   ',
-			                 messageTop: 'The information in this file is copyright to FJ Group.',
-			                 exportOptions: {
-			                     format: {
-			                         body: function (data, row, column, node) {
-			                             //return $(node).attr('data-export');
-			                        	 if( column === 6){
-			                        		 	if(data.startsWith("<"))
-			                        		 		return;
-			                        		 	else
-					  		            		return data.substr(0,3);
-					  		            	}else if (column === 10){
-					  		            		var hiddenInputValue = $(node).find('input[type="hidden"]').val();					  		            		
-					                             return hiddenInputValue || '';	
-					  		            	}else if (column === 14 || column === 15 || column === 16){
-					  		            		if(data.startsWith("<"))
-			                        		 		return;
-			                        		 	else
-					  		            		return data.substr(0,10);
-					  		            	}
-					  		            	else{
-					  		                  return data;
-					  		            	}
-			                         }
-			                     },			                    
-			                     columns: ':not(:last-child):not(:nth-last-child(2)):not(:nth-last-child(3)):not(:nth-last-child(4))'
-			                 }
-			             }
-			         ]
-			     });
-			    table =	  $('#stage_detail_tbl3').DataTable({
-			         dom: 'Bfrtip',
-			        'paging'      : true,
-			        //'lengthChange': false,
-			        'searching'   : true,
-			        'ordering'    : true,
-			        'info'        : true,			    
-			        //"dom": '<"top"if>rt<"bottom"lp><"clear">',
-			        "dom": '<"top"iBf>rt<"bottom"lp><"clear">',
-			        'autoWidth'   : false,
-			        "pageLength"  : 15, 
-			        "order": [[ 1, "desc" ]],
-			       
-			        "createdRow": function (row, data, dataIndex) {
-			            // Loop through each column
-			           //  var columnsToApplyLogic = [3, 4, 5];
+			        buttons: [
+			            {
+			                extend: 'excelHtml5',
+			                text: '<i class="fa fa-file-excel-o" style="color: #1d4e6b; font-size: 1em;">Export</i>',
+			                filename: 'STAGE-' + details.stage + ' Followup Details',
+			                title: 'STAGE-' + details.stage + ' Followup Details',
+			                messageTop: 'The information in this file is copyright to FJ Group.',
+			                exportOptions: {
+			                    format: {
+			                        body: function (data, row, column, node) {
+			                            if (column === 6) { // Handle SE WIN%
+			                                return data.startsWith("<") ? '' : data.substr(0, 3);
+			                            } 
+			                            
+			                            if (column === 14) { // Adjust the column index for "Focus List"
+			                                var checkbox = $(data).find('input[type="checkbox"]');
+			                                if (checkbox.length) {
+			                                    return checkbox.is(':checked') ? 'Yes' : 'No';
+			                                }
+			                                return '';
+			                            } 
+			                            
+			                            else if (column === 10) { // Handle hidden input column
+			                                var hiddenInputValue = $(node).find('input[type="hidden"]').val();
+			                                return hiddenInputValue || '';
+			                            } else if (column === 14 || column === 15 || column === 16) { // Handle date columns
+			                                return data.startsWith("<") ? '' : data.substr(0, 10);
+			                            } else {
+			                                return $(node).attr('data-export') || data;
+			                            }
+			                        }
+			                    },
+			                    columns: ':not(:last-child):not(:nth-last-child(2)):not(:nth-last-child(3)):not(:nth-last-child(4))'
+			                }
+			            }
+			        ]
+			    });
+
+			    table = $('#stage_detail_tbl3').DataTable({
+			        dom: 'Bfrtip',
+			        paging: true,
+			        searching: true,
+			        ordering: true,
+			        info: true,
+			        autoWidth: false,
+			        pageLength: 15,
+			        order: [[1, 'desc']],
+			        createdRow: function (row, data, dataIndex) {
 			            for (var i = 0; i < 6; i++) {
 			                var cell = $('td', row).eq(i);
-			                var fullText = data[i];			               
-			                var shortText = fullText != null ? fullText.substring(0, 10) : " ";
-							
-			                // Set short text for display
-			               // cell.text(shortText);
-							cell.text(fullText);
-			                // Add a data attribute with full text for export
+			                var fullText = data[i];
+			                cell.text(fullText);
 			                cell.attr('data-export', fullText);
-			                
-			             // Add mouseover event listener to show full text on hover
-			               
 			                cell.attr('title', fullText);
 			            }
 			            for (var i = 7; i < 12; i++) {
 			                var cell = $('td', row).eq(i);
-			                var fullText = data[i];			               
-			                var shortText = fullText != null ? fullText.substring(0, 10) : " ";
-							
-			                // Set short text for display
-			                //cell.text(shortText);
+			                var fullText = data[i];
 			                cell.text(fullText);
-			                // Add a data attribute with full text for export
 			                cell.attr('data-export', fullText);
-			                
-			             // Add mouseover event listener to show full text on hover
-			               
 			                cell.attr('title', fullText);
 			            }
 			        },
-			        "buttons": [
-			        	 {
-			                 extend: 'excelHtml5',
-			                 text: '<i class="fa fa-file-excel-o" style="color: #1d4e6b; font-size: 1em;">Export</i>',
-			                 filename: 'STAGE-' + details.stage + ' Followup Details  ',
-			                 title: 'STAGE-' + details.stage + ' Followup Details   ',
-			                 messageTop: 'The information in this file is copyright to FJ Group.',
-			                 exportOptions: {
-			                     format: {
-			                         body: function (data, row, column, node) {
-			                             //return $(node).attr('data-export');
-			                        	 if( column === 6 ){
-			                        		 	if(data.startsWith("<"))
-			                        		 		return;
-			                        		 	else
-					  		            		return data.substr(0,3);
-					  		            	}else if (column === 14 || column === 15 || column === 16){
-					  		            		if(data.startsWith("<"))
-			                        		 		return;
-			                        		 	else
-					  		            		return data.substr(0,10);
-					  		            	}
-					  		            	else{
-					  		                  return data;
-					  		            	}
-			                         }
-			                     },			                    
-			                     columns: ':not(:last-child):not(:nth-last-child(2)):not(:nth-last-child(3))'
-			                 }
-			             }
-			         ]
-			     });
+			        buttons: [
+			            {
+			                extend: 'excelHtml5',
+			                text: '<i class="fa fa-file-excel-o" style="color: #1d4e6b; font-size: 1em;">Export</i>',
+			                filename: 'STAGE-' + details.stage + ' Followup Details',
+			                title: 'STAGE-' + details.stage + ' Followup Details',
+			                messageTop: 'The information in this file is copyright to FJ Group.',
+			                exportOptions: {
+			                    format: {
+			                        body: function (data, row, column, node) {
+			                            // Handling the "Focus List" checkbox column
+			                            if (column === 13) { // Adjust the column index for "Focus List"
+			                                var checkbox = $(data).find('input[type="checkbox"]');
+			                                if (checkbox.length) {
+			                                    return checkbox.is(':checked') ? 'Yes' : 'No';
+			                                }
+			                                return '';
+			                            } 
+			                            
+			                            // Handle other columns
+			                            if (column === 6) { // SE WIN%
+			                                return data.startsWith("<") ? '' : data.substr(0, 3);
+			                            } else if (column === 14 || column === 15 || column === 16) { // Date columns
+			                                return data.startsWith("<") ? '' : data.substr(0, 10);
+			                            } else {
+			                                return $(node).attr('data-export') || data;
+			                            }
+			                        }
+			                    },
+			                    columns: ':not(:last-child):not(:nth-last-child(2)):not(:nth-last-child(3))'
+			                }
+			            }
+			        ]
+			    });
+
 				  $('#stage_detail_report').DataTable({
 			         dom: 'B', 
 			         'paging'      : true,
@@ -1467,20 +1436,9 @@ function getData(details){
 		$("#stage_detail").html("Something went wrong..!, Please try logout and login again");  }}); 
 	 						
 }
- 
-/* function closeRequestWindow(){	   
-    const msgbox = document.getElementById("requestWindow");
-    const reasonbox = document.getElementById("reasonbox");  	    		    
-    reasonbox.style.display="none";
-    msgbox.style.display="none"; 
-    selectedId = "";
-    selectedRow = -1;
-    selectedSeCode = "";
-} 
-  */
   
-  function closeRequestWindow(windowId) {
-	    const msgbox = document.getElementById(windowId);
+  function closeRequestWindow() {
+	    const msgbox = document.getElementById("requestWindow");
 	    if (msgbox) {
 	        msgbox.style.display = 'none';
 	    }
@@ -1620,6 +1578,71 @@ function updateIsApprovedYN(event,sysId,segSalesCode){
 			}); 
 	  	
 }
+/* function updateIsInFocusList(event,sysId,segSalesCode){
+	var approvalstatus = document.querySelector('input[name="focuslist'+sysId + '"]:checked').value;			
+		var topDimn = ''+event.clientY-60+'px';
+		$.ajax({
+		   	 	type: _method,
+			 	url: _url, 
+		   		data: {action: "isinfocuslist", id:sysId,sesaledcode:segSalesCode,approvalStatus:approvalstatus},
+		   		dataType: "json",
+		   		success: function(data) {	
+		   			$('#laoding').hide();						 
+				 if(parseInt(data)=== 1){
+					 var table = $('#stage_detail_tbl').DataTable();
+		                var row = table.row('#' + sysId);
+		                var cell = row.node().querySelector('td input[type="hidden"]');
+		                $(cell).val(approvalstatus);
+						alert("Updated!!");
+					 return true;					 
+				 }else{					 
+					// alert("Something went wrong, Please try later");
+				 }
+				},error:function(data,status,er) {
+				$('#laoding').hide();
+				alert("please click again");
+				return false;
+				}
+			}); 
+	  	
+} */
+function updateIsInFocusList(event, sysId, segSalesCode, stage) {
+    var approvalStatus = event.target.checked ? 'Focus List' : '';
+    
+    
+    var topDimn = '' + (event.clientY - 60) + 'px';
+    $.ajax({
+        type: _method,
+        url: _url,
+        data: {
+            action: "isinfocuslist",
+            id: sysId,
+            sesaledcode: segSalesCode,
+            approvalStatus: approvalStatus,
+            stage: stage
+        },
+        dataType: "json",
+        success: function(data) {
+            $('#laoding').hide();
+            if (parseInt(data) === 1) {
+                var table = $('#stage_detail_tbl').DataTable();
+                var row = table.row('#' + sysId);
+                var cell = row.node().querySelector('td input[type="hidden"]');
+                $(cell).val(approvalStatus);
+                
+                return true;
+            } else {
+                alert("Something went wrong, Please try later");
+            }
+        },
+        error: function(data, status, er) {
+            $('#laoding').hide();
+            alert("please click again");
+            return false;
+        }
+    });
+}
+
 function moveToStage2(event,sysId){
 	if ((confirm('Are You sure, do you Want to move this Quotation to Stage2?'))) {
 		$('#laoding').show(); 
@@ -1684,36 +1707,13 @@ function openRequestWindow(data){
 			    heading.innerHTML="Stage-"+selectedStage+" followup";
 				$("#requestWindow").css( {background:'#795548', opacity: 1,  display:'block', position:'absolute', top: topDimn, right:'6%'});	
 			    $("#reasonbox").css( {display:'block'});	
-			    setFilterSelectorSub(selectedStage, "statusUpdt", status, 'Status');
-			    setFilterSelectorSub(selectedStage,"priorityUpdt", priority, 'Priority');
+			    setFilterSelectorSub(selectedStage, "statusUpdt", status, 'Follow-up Status');
+			    setFilterSelectorSub(selectedStage,"priorityUpdt", priority, 'Focus List');
 				
 			//	document.getElementById("remarks").value =''+table.cell({row:data.row, column:9}).data()+'' ; 
 	}   
 }
-function openRequestWindow1(data){
-	if(data.event.target.id == data.id){ 
-		        selectedSeCode = data.seCode;
-		        selectedRow = data.row;
-				selectedId = data.event.target.id; 
-				const singleFilteredRowItem = stage23List.filter(item=> selectedId === item.cqhSysId)[0]
-				const status = checkValue(singleFilteredRowItem.status);
-				const priority = checkValue(singleFilteredRowItem.priority);
-			 	const remarks = checkValue(singleFilteredRowItem.remarks);
-				var topDimn = ''+data.event.clientY-60+'px';
-				var msgbox = document.getElementById("requestWindowPriority");
-				var reasonbox = document.getElementById("reasonboxPriority");
-				if(msgbox ==null) return;
-				document.getElementById("remarks").value = remarks;
-				var heading = document.getElementById("reasonheadingPriority");
-			    heading.innerHTML="Stage-"+selectedStage+" followup";
-				$("#requestWindowPriority").css( {background:'#795548', opacity: 1,  display:'block', position:'absolute', top: topDimn, right:'6%'});	
-			    $("#reasonboxPriority").css( {display:'block'});	
-			    setFilterSelectorSub(selectedStage, "statusUpdt", status, 'Status');
-			    setFilterSelectorSub(selectedStage,"priorityUpdt", priority, 'Priority');
-				
-			//	document.getElementById("remarks").value =''+table.cell({row:data.row, column:9}).data()+'' ; 
-	}   
-}
+
 function checkValue(value){
 	if(typeof value === 'undefined' || value == 'undefined' || value === null || value === '' || value == ''){
 		return "";
@@ -1749,7 +1749,7 @@ const data = {
 };
 
     updateStage(data);
-    closeRequestWindow('requestWindowPriority');
+   // closeRequestWindow('requestWindowPriority');
 }
 function setAttributes(el, attrs) {
 	  for(var key in attrs) {
@@ -1812,7 +1812,7 @@ function setFilterRemarksHTML(container){
 	  setAttributes(mainDiv, { "class":"fltr-slct"});
 	  setAttributes(subDiv, { "class":"form-group"});
 	  setAttributes(select, {"id": 'searchremarks',"name":"searchremarks","type": "text", "style":"font-size:10px","class":"form-control form-control-sm filter fltr-select-data"});	 
-	  label.innerText = "Remarks";	  
+	  label.innerText = "Follow-up Remarks";	  
 	  subDiv.appendChild(label);
 	  subDiv.appendChild(select);
 	  mainDiv.appendChild(subDiv);  
@@ -2210,8 +2210,6 @@ function Submit(button,thereason,rtyp,status){
 			    if( type.trim().length < 1){
 			    	alert("Please select the reason..");    	
 			        return false;
-			    }else if(reason.trim().length < 1){
-			    	alert("Please enter the remarks..");
 			    }else{		    	
 			    	updateSubmittalStatus(reason, type);
 			    	}	
@@ -2781,7 +2779,7 @@ function showRemindersForQtn(event,theQtncodeno){
 function showSubmittalStatusForQtn(event,theQtncodeno){
 
 	 var ttl ="Reminder Details for the Quotation "+theQtncodeno;
-		var output="<table id='cvDetails_tbl'><thead><tr><th>Reminder Date</th><th>Description</th>"+
+		var output="<table id='cvDetails_tbl'><thead><tr><th>Submittal Status</th><th>Remarks</th>"+
 					"</tr></thead><tbody>";
 	   		$.ajax({ type: 'POST', url: 'SipStageFollowUpController', 
 				 data: {action: "submittalstatusfortheqtn",theQtnCodeNo:theQtncodeno}, 

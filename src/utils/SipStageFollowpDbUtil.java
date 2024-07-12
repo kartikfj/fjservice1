@@ -154,7 +154,7 @@ public class SipStageFollowpDbUtil {
 			}
 			StringBuilder sqlQuery = new StringBuilder(
 					"SELECT  CQHSYSID, SALES_EGR_CODE, SALES_ENG_NAME, QTN_DT, QTN_CODE, QTN_NO, CUST_NAME, PROJECT_NAME, CONSULTANT, QTN_AMOUNT,  QTN_PRI, QTN_STAT, QTN_REMARKS, QTN_MOD_BY,  QTN_MOD_DT, CONSULTANTWIN, CONTRACTORWIN, TOTALWIN, (SELECT COUNT(1) FROM  SIP_REMINDER WHERE H_SYS_ID = ST2.CQHSYSID) REMINDERCNT,  "
-							+ " EXP_LOI_DT, SALESWIN,SUB_STATUS_CODE 	 FROM FJT_SM_STG2_TBL ST2 WHERE  SALES_EGR_CODE  IN ("
+							+ " EXP_LOI_DT, SALESWIN,SUB_STATUS_CODE,APPR_CONS 	 FROM FJT_SM_STG2_TBL ST2 WHERE  SALES_EGR_CODE  IN ("
 							+ seCode + ")  ");
 			int counter = 1;
 			if (!priority.equalsIgnoreCase("-")) {
@@ -179,7 +179,7 @@ public class SipStageFollowpDbUtil {
 				sqlQuery.append(" AND QTN_AMOUNT >= (?)  ");
 			}
 			sqlQuery.append(
-					" AND NVL(LH_STATUS,'W') <> 'L'  AND  CQHSYSID NOT IN ( SELECT DISTINCT CQHSYSID FROM FJT_SM_STG3_TBL)");
+					" AND NVL(LH_STATUS,'W') <> 'L'  AND  LOI_AMT IS NULL AND LOI_DT IS NULL AND CQHSYSID NOT IN ( SELECT DISTINCT CQHSYSID FROM FJT_SM_STG3_TBL)");
 
 			myStmt = myCon.prepareStatement(sqlQuery.toString());
 
@@ -259,9 +259,11 @@ public class SipStageFollowpDbUtil {
 				}
 				String sewinper = myRes.getString(21);
 				String submittalcode = myRes.getString(22);
+				String isApproved = myRes.getString(23);
 				SipStageFollowUp tempstageList = new SipStageFollowUp(id, se_code, se_name, qtnDt, qtnCode, qtnNo,
 						custName, projName, consultant, amount, priorityOrg, statusOrg, remarks, updatedBy, updatedOn,
-						reminderCount, consltWin, contractorWin, totalWin, expLOIDate, sewinper, submittalcode);
+						reminderCount, consltWin, contractorWin, totalWin, expLOIDate, sewinper, submittalcode,
+						isApproved);
 				stageList.add(tempstageList);
 			}
 			return stageList;
@@ -424,8 +426,10 @@ public class SipStageFollowpDbUtil {
 			String sql1 = "( "
 					+ " SELECT  SOH_SYS_ID, SOH_SM_CODE, SALES_ENG, SO_DT, SO_TXN_CODE, SO_NO, CUSTOMER, PROJECT, CONSULTANT, BALANCE_VALUE,  SOH_DEL_DT, ITEM_CODE, SO_ITEM_DESC, SO_UOM, BALANCE_QTY, "
 					+ " MATSTAT, PAYSTAT, READY, BILLSTAT, MODBY, MODDT, SOI_SYS_ID  ,HEADDET , (SELECT COUNT(1) FROM  SIP_REMINDER WHERE H_SYS_ID = ST4.SOH_SYS_ID) REMINDERCNT,EXP_BILL_DT  "
-					+ "  FROM FJT_SM_STG4_TBL ST4 WHERE SOH_SM_CODE IN ( " + seCode
-					+ "   )  AND NVL(BILLSTAT,'PENDING') <> 'COMPLETED' AND ( ";
+					+ "  FROM FJT_SM_STG4_TBL ST4 WHERE SOH_SM_CODE IN ( " + seCode + "   )  "
+					+ " AND SOH_SYS_ID IN ( SELECT SOH_SYS_ID FROM AKM_SUPP_PEND_SO_TBL) "// commenting as we not sure
+					// why this was put.bcz of this, data mismatch from stage details to here
+					+ "AND ( ";
 			String sql2 = "  ) AND (HEADDET = 'HEADER' OR HEADDET = 'DETAIL')"
 					+ " ) ORDER BY SOH_SYS_ID DESC, SO_ITEM_DESC DESC ";
 			String sqlCondition = " 1=1 ";
@@ -1877,4 +1881,156 @@ public class SipStageFollowpDbUtil {
 		}
 		return logCount;
 	}
+
+	public String getEmployeeCode(String segSalesCode) throws SQLException {
+		Connection myCon = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRes = null;
+		OrclDBConnectionPool orcl = new OrclDBConnectionPool();
+		String employeeCode = null;
+		try {
+			myCon = orcl.getOrclConn();
+			String sql = " SELECT SM_FLEX_08 from FJPORTAL.OM_SALESMAN WHERE SM_CODE = ? ";
+			myStmt = myCon.prepareStatement(sql);
+			myStmt.setString(1, segSalesCode);
+			myRes = myStmt.executeQuery();
+
+			while (myRes.next()) {
+				employeeCode = myRes.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+
+		} finally {
+			close(myStmt, myRes);
+			orcl.closeConnection();
+		}
+		return employeeCode;
+
+	}
+
+	public int updateApprovalStatusForConslt(String qtncodeno, String sesalescode, String approvalStatus,
+			fjtcouser fjtuser) throws SQLException {
+		int logType = -2;
+		Connection myCon = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRes = null;
+		OrclDBConnectionPool orcl = new OrclDBConnectionPool();
+		try {
+			myCon = orcl.getOrclConn();
+			String mailSubject = "FJPortal-Product is specified : NO/Not sure";
+
+			String sql = " UPDATE FJT_SM_STG2_TBL SET  APPR_CONS = ?, APPR_CONS_DT = SYSDATE "
+					+ " WHERE  SALES_EGR_CODE = ? AND CQHSYSID = ? ";
+			myStmt = myCon.prepareStatement(sql);
+			myStmt.setString(1, approvalStatus);
+			myStmt.setString(2, sesalescode);
+			myStmt.setString(3, qtncodeno);
+
+			logType = myStmt.executeUpdate();
+			if (approvalStatus.equals("NS")) {
+				SipJihDues sipJihdues = getJihDueDetailsForQuatation(sesalescode, qtncodeno);
+				SSLMail sslmail = new SSLMail();
+				String msg = getProductIsnotSpecifiedMailBody(fjtuser, sipJihdues, approvalStatus);
+				sslmail.setToaddr(getMarketingTeamEmailId());
+				sslmail.setMessageSub(mailSubject + " - " + fjtuser.getUname());
+				sslmail.setMessagebody(msg);
+				int status = sslmail.sendMail(fjtuser.getUrlAddress());
+				if (status != 1) {
+					System.out.print("Error in sending Email when product is not specified... to mkt");
+				} else {
+					System.out.print("sent when product is not specified...to mkt");
+
+				}
+			}
+			if (approvalStatus.equals("NO")) {
+				SipJihDues sipJihdues = getJihDueDetailsForQuatation(sesalescode, qtncodeno);
+				SSLMail sslmail1 = new SSLMail();
+				String msg = getProductIsnotSpecifiedMailBody(fjtuser, sipJihdues, approvalStatus);
+				sslmail1.setToaddr("ben.t@fjtco.com");
+				sslmail1.setMessageSub(mailSubject + " - " + fjtuser.getUname());
+				sslmail1.setMessagebody(msg);
+				int status = sslmail1.sendMail(fjtuser.getUrlAddress());
+				if (status != 1) {
+					System.out.print("Error in sending Email when product is not specified... to Ben");
+				} else {
+					System.out.print("sent when product is not specified... to ben");
+
+				}
+			}
+
+		} catch (SQLException ex) {
+			System.out.println(
+					"Exception in closing DB resources at the time of updateApprovalStatusForConslt for " + qtncodeno);
+		} finally {
+			// close jdbc objects
+			close(myStmt, myRes);
+			orcl.closeConnection();
+			// System.out.println("Updated and closed db Successfully ");
+		}
+		return logType;
+	}
+
+	public int updateFocusListStatus(String qtncodeno, String sesalescode, String approvalStatus, fjtcouser fjtuser,
+			String stage) throws SQLException {
+		int logType = -2;
+		Connection myCon = null;
+		PreparedStatement myStmt = null;
+		ResultSet myRes = null;
+		OrclDBConnectionPool orcl = new OrclDBConnectionPool();
+		String text = "Focus List";
+		try {
+			myCon = orcl.getOrclConn();
+			String sql = "UPDATE " + stage + " SET QTN_PRI = ? WHERE SALES_EGR_CODE = ? AND CQHSYSID = ?";
+			myStmt = myCon.prepareStatement(sql);
+			myStmt.setString(1, approvalStatus.equals("Focus List") ? "Focus List" : "");
+			myStmt.setString(2, sesalescode);
+			myStmt.setString(3, qtncodeno);
+
+			logType = myStmt.executeUpdate();
+
+		} catch (SQLException ex) {
+			System.out.println("Exception in updateFocusListStatus for " + qtncodeno + ": " + ex.getMessage());
+		} finally {
+			close(myStmt, myRes);
+			orcl.closeConnection();
+		}
+		return logType;
+	}
+
+	private String getProductIsnotSpecifiedMailBody(fjtcouser fjtuser, SipJihDues sipJihduesObj,
+			String approvalStatus) {
+		if (approvalStatus.equals("NS")) {
+			approvalStatus = "Not Sure";
+		}
+		String div = "<div style=\"width: auto;\n" + "padding: 5px 10px;\n"
+				+ "margin: 0 2px; font-family: Arial, Helvetica, sans-serif;\n" + "font-size: 15px;\n" + "\">";
+		StringBuilder mbody = new StringBuilder("");
+		mbody.append(div);
+		mbody.append("Dear Business Development Team, <br/><br/>");
+		mbody.append("A Quotation has been marked as PRODUCT IS SPECIFIED: NO/NOT SURE.<br/>");
+		mbody.append("Please take necessary action or follow up with salesman.<br/><br/>");
+		mbody.append(
+				"<table     role=\"presentation\" cellspacing=\"0\" cellpadding=\"0\" border=\"0\"  bgcolor=\"ffffff\" cellpadding=\"0\" cellspacing=\"0\">");
+		mbody.append("<tr><td><b>Salesman</b></td><td><b>&nbsp;:&nbsp;</b></td><td>" + fjtuser.getUname()
+				+ "</td></tr><tr><td><b>Email</b></td><td><b>&nbsp;:&nbsp; </b></td><td> " + fjtuser.getEmailid()
+				+ "</td></tr>");
+		mbody.append("<tr><td><b>Quotation Details </b></td><td><b>&nbsp;:&nbsp;</b></td><td>"
+				+ sipJihduesObj.getQtnCode() + " - " + sipJihduesObj.getQtnNo() + "</td></tr>");
+		mbody.append("<tr><td><b>Quotation Date </b></td><td><b>&nbsp;:&nbsp;</b></td><td>" + sipJihduesObj.getQtnDate()
+				+ "</td></tr>");
+		mbody.append(
+				"<tr><td><b>Quotation Stage </b></td><td><b>&nbsp;:&nbsp;</b></td><td>" + "Job In Hand" + "</td></tr>");
+		// mbody.append("<tr><td><b>Quotation Value
+		// </b></td><td><b>&nbsp;:&nbsp;</b></td><td>"
+		// + nf.format(sipJihduesObj.getQtnAMount()) + "</td></tr>");
+		mbody.append("<tr><td><b>Consultant </b></td><td><b>&nbsp;:&nbsp;</b></td><td>" + sipJihduesObj.getConsultant()
+				+ "</td></tr><tr><td><b>Project Name </b></td><td><b>&nbsp;:&nbsp; </b></td><td> "
+				+ sipJihduesObj.getProjectName() + "</td></tr>");
+		mbody.append("<tr><td><b>Product Specified </b></td><td><b>&nbsp;:&nbsp;</b></td><td>" + approvalStatus
+				+ "</td></tr>");
+		mbody.append("</table><br/></div>");
+		return mbody.toString();
+	}
+
 }

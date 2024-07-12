@@ -155,6 +155,12 @@ public class SipStageFollowUpController extends HttpServlet {
 			case "submittalstatusfortheqtn":
 				submittalstatusfortheqtn(request, response, sales_eng_Emp_code);
 				break;
+			case "isapprovedyn":
+				updateApprovalStatus(request, response, sales_eng_Emp_code, fjtuser);
+				break;
+			case "isinfocuslist":
+				updateFocusListStatus(request, response, sales_eng_Emp_code, fjtuser);
+				break;
 			default:
 				try {
 					goToView(request, response);
@@ -168,7 +174,7 @@ public class SipStageFollowUpController extends HttpServlet {
 	private void updateStage(HttpServletRequest request, HttpServletResponse response, String sales_eng_Emp_code)
 			throws JsonIOException, IOException {
 		int stage = 0;
-		System.out.println("Stage ");
+		// System.out.println("Stage "+request.getParameter("stage"));
 		if (!request.getParameter("stage").isEmpty() && request.getParameter("stage") != null) {
 			stage = Integer.parseInt(request.getParameter("stage"));
 		}
@@ -263,11 +269,11 @@ public class SipStageFollowUpController extends HttpServlet {
 		case 1:
 			try {
 
-				String status = request.getParameter("Status");
-				String priority = request.getParameter("Priority");
-				String consultantwinning = request.getParameter("Consultant Win %");
-				String contractorwinning = request.getParameter("Contractor Win %");
-				String totalwinning = request.getParameter("Total Win %");
+				String status = request.getParameter("Follow-up Status");
+				String priority = request.getParameter("Focus List");
+				String consultantwinning = request.getParameter("Cons Win %");
+				String contractorwinning = request.getParameter("Cont Win %");
+				String totalwinning = request.getParameter("Tot Win %");
 				String remarks = request.getParameter("searchremarks");
 				String amountgreaterthan = request.getParameter("amountgreaterthan");
 				System.out.println("seCode " + seCode + " status " + status + " priority " + priority + " stage "
@@ -282,11 +288,11 @@ public class SipStageFollowUpController extends HttpServlet {
 		case 2:
 			try {
 
-				String status = request.getParameter("Status");
-				String priority = request.getParameter("Priority");
-				String consultantwinning = request.getParameter("Consultant Win %");
-				String contractorwinning = request.getParameter("Contractor Win %");
-				String totalwinning = request.getParameter("Total Win %");
+				String status = request.getParameter("Follow-up Status");
+				String priority = request.getParameter("Focus List");
+				String consultantwinning = request.getParameter("Cons Win %");
+				String contractorwinning = request.getParameter("Cont Win %");
+				String totalwinning = request.getParameter("Tot Win %");
 				String remarks = request.getParameter("searchremarks");
 				String amountgreaterthan = request.getParameter("amountgreaterthan");
 				System.out.println("seCode " + seCode + " status " + status + " priority " + priority + " stage "
@@ -300,11 +306,11 @@ public class SipStageFollowUpController extends HttpServlet {
 			break;
 		case 3:
 			try {
-				String status = request.getParameter("Status");
-				String priority = request.getParameter("Priority");
-				String consultantwinning = request.getParameter("Consultant Win %");
-				String contractorwinning = request.getParameter("Contractor Win %");
-				String totalwinning = request.getParameter("Total Win %");
+				String status = request.getParameter("Follow-up Status");
+				String priority = request.getParameter("Focus List");
+				String consultantwinning = request.getParameter("Cons Win %");
+				String contractorwinning = request.getParameter("Cont Win %");
+				String totalwinning = request.getParameter("Tot Win %");
 				String amountgreaterthan = request.getParameter("amountgreaterthan");
 				// System.out.println("seCode "+seCode+" status "+status+" priority "+priority+"
 				// stage "+stage);
@@ -638,6 +644,7 @@ public class SipStageFollowUpController extends HttpServlet {
 		Date reminderDate;
 		java.util.Date dt;
 		java.sql.Date sqlDate = null;
+		String empcode = sipStageFollowpDbUtil.getEmployeeCode(segSalesCode);
 		try {
 			dt = formatter.parse(remDateStr);
 			reminderDate = new Date(dt.getTime());
@@ -646,7 +653,7 @@ public class SipStageFollowUpController extends HttpServlet {
 			System.out.println("movetoStage3" + ex);
 		}
 
-		int status = sipStageFollowpDbUtil.updateReminderDetails(sysId, sqlDate, sales_Egr_Code, segSalesCode, remDesc,
+		int status = sipStageFollowpDbUtil.updateReminderDetails(sysId, sqlDate, empcode, segSalesCode, remDesc,
 				projectName, qtnCodeNo);
 
 		response.setContentType("application/json");
@@ -668,6 +675,31 @@ public class SipStageFollowUpController extends HttpServlet {
 		List<CustomerVisit> details = sipStageFollowpDbUtil.getSubmittalStatusfortheqtnFortheQtn(qtnCodeNo);
 		response.setContentType("application/json");
 		new Gson().toJson(details, response.getWriter());
+	}
+
+	private void updateApprovalStatus(HttpServletRequest request, HttpServletResponse response, String empCode,
+			fjtcouser fjtuser) throws JsonIOException, IOException, SQLException, ServletException {
+		String sysId = request.getParameter("id");
+		String sesalescode = request.getParameter("sesaledcode");
+		String approvalStatus = request.getParameter("approvalStatus");
+		int status = sipStageFollowpDbUtil.updateApprovalStatusForConslt(sysId, sesalescode, approvalStatus, fjtuser);
+		response.setContentType("application/json");
+		new Gson().toJson(status, response.getWriter());
+	}
+
+	private void updateFocusListStatus(HttpServletRequest request, HttpServletResponse response, String empCode,
+			fjtcouser fjtuser) throws JsonIOException, IOException, SQLException, ServletException {
+		String sysId = request.getParameter("id");
+		String sesalescode = request.getParameter("sesaledcode");
+		String approvalStatus = request.getParameter("approvalStatus");
+//		int stage = 0;
+//		if (!request.getParameter("stage").isEmpty() && request.getParameter("stage") != null) {
+		String stage = request.getParameter("stage");
+//		}
+		System.out.println("new stage" + stage);
+		int status = sipStageFollowpDbUtil.updateFocusListStatus(sysId, sesalescode, approvalStatus, fjtuser, stage);
+		response.setContentType("application/json");
+		new Gson().toJson(status, response.getWriter());
 	}
 
 	/**
