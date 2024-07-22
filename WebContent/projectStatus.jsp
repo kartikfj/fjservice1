@@ -100,7 +100,14 @@
       </ol>
     </section>   
     <!-- Main content -->	    
-	  
+	  <style>
+.no-select {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* Internet Explorer/Edge */
+    user-select: none;         /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+}
+</style>
 	    <section class="content">  
 	  		   
 	  		  <%-- Notification start --%>
@@ -112,7 +119,7 @@
 	  		   <div class="row">
 	  		    <div class="col-md-12 col-xs-12"> 
 	  		      <div class="panel-body responsiveDtls"> 
-	  		      	  <table class="table table-bordered small bordered no-padding table-striped" id="emp-table">
+	  		      	  <table class="table table-bordered small bordered no-padding table-striped no-select" id="emp-table">
 		                <thead> 
 		                  <tr>  
 <!-- 		                   <th class="moreIcon"> </th> -->
@@ -229,98 +236,84 @@ function dispalyEmpDetails(){
       .clone(true)
       .addClass('filters')
       .appendTo('#emp-table thead');
-       $('#emp-table').DataTable( { 
-    	   responsive: true,
-    	  orderCellsTop: true,
-          fixedHeader: true,
-    	 "autoWidth": false,
-    	 dom: 'Bfrtip',  
-    	 "pageLength": 25, 
-    	 "dom": '<"top"iBf>rt<"bottom"lp><"clear">',
-    	  "createdRow": function (row, data, dataIndex) {
-	            // Loop through each column
-	           //  var columnsToApplyLogic = [3, 4, 5];
-	            for (var i = 0; i < 11; i++) {
-	                var cell = $('td', row).eq(i);
-	                var fullText = data[i];			               
-	                var shortText = fullText != null ? fullText.substring(0, 20) : " ";
+	  $('#emp-table').DataTable({
+		    responsive: true,
+		    orderCellsTop: true,
+		    fixedHeader: true,
+		    "autoWidth": false,
+		    "pageLength": 25,
+		    "dom": '<"top"if>rt<"bottom"lp><"clear">',
+		    "createdRow": function (row, data, dataIndex) {
+		        // Loop through each column
+		        for (var i = 0; i < 11; i++) {
+		            var cell = $('td', row).eq(i);
+		            var fullText = data[i];
+		            var shortText = fullText != null ? fullText.substring(0, 20) : " ";
 
-	                // Set short text for display
-	                cell.text(shortText);
+		            // Set short text for display
+		            cell.text(shortText);
 
-	                // Add a data attribute with full text for export
-	                cell.attr('data-export', fullText);
-	                
-	             // Add mouseover event listener to show full text on hover
-	               
-	                cell.attr('title', fullText);
-	            }
-	        },
-    	    buttons: [
-    	        {
-    	            extend: 'excelHtml5',
-    	            text:      '<i class="fa fa-file-excel-o" style="color: green; font-size: 1.5em;"> Export</i>',
-    	            filename: "Project Status Details",
-    	            title: "Project Status Details",
-    	            messageTop: 'File Processed on : ${currCal} ,The information in this file is copyright to Faisal Jassim Group.'	, 
-    	            exportOptions: { columns: ':not(:first-child)', }
-    	        }	            	      	            	       
-    	    ],
-    	    "columnDefs": [
-                {
-                    "targets": [   ],
-                    "visible": false,
-                    "searchable": true
-                } 
-            ],  
-    	       initComplete: function () {
-    	            var api = this.api();
-    	 
-    	            // For each column
-    	            api
-    	                .columns()
-    	                .eq(0)
-    	                .each(function (colIdx) {
-    	                    // Set the header cell to contain the input element
-    	                    var cell = $('.filters th').eq(
-    	                        $(api.column(colIdx).header()).index()
-    	                    );
-    	                    var title = $(cell).text();
-    	                    $(cell).html('<input type="text" style="color:Black" placeholder="' + title + '" />');
-    	 
-    	                    // On every keypress in this input
-    	                    $(
-    	                        'input',
-    	                        $('.filters th').eq($(api.column(colIdx).header()).index())
-    	                    )
-    	                        .off('keyup change')
-    	                        .on('keyup change', function (e) {
-    	                            e.stopPropagation();
-    	 
-    	                            // Get the search value
-    	                            $(this).attr('title', $(this).val());
-    	                            var regexr = '({search})'; //$(this).parents('th').find('select').val();
-    	 
-    	                            var cursorPosition = this.selectionStart;
-    	                            // Search the column for that value
-    	                            api
-    	                                .column(colIdx)
-    	                                .search(
-    	                                    this.value != ''
-    	                                        ? regexr.replace('{search}', '(((' + this.value + ')))')
-    	                                        : '',
-    	                                    this.value != '',
-    	                                    this.value == ''
-    	                                )
-    	                                .draw();
-    	 
-    	                            $(this)
-    	                                .focus()[0]
-    	                                .setSelectionRange(cursorPosition, cursorPosition);
-    	                        });
-    	                });
-    	        },    
-    	} );
+		            // Add a data attribute with full text for export
+		            cell.attr('data-export', fullText);
+
+		            // Add mouseover event listener to show full text on hover
+		            cell.attr('title', fullText);
+		        }
+		    },
+		    // Commenting out buttons configuration to remove export and print buttons
+		    /*buttons: [
+		        {
+		            extend: 'excelHtml5',
+		            text: '<i class="fa fa-file-excel-o" style="color: green; font-size: 1.5em;"> Export</i>',
+		            filename: "Project Status Details",
+		            title: "Project Status Details",
+		            messageTop: 'File Processed on : ${currCal} ,The information in this file is copyright to Faisal Jassim Group.',
+		            exportOptions: { columns: ':not(:first-child)' }
+		        }
+		    ],*/
+		    "columnDefs": [
+		        {
+		            "targets": [],
+		            "visible": false,
+		            "searchable": true
+		        }
+		    ],
+		    initComplete: function () {
+		        var api = this.api();
+
+		        // For each column
+		        api.columns().eq(0).each(function (colIdx) {
+		            // Set the header cell to contain the input element
+		            var cell = $('.filters th').eq($(api.column(colIdx).header()).index());
+		            var title = $(cell).text();
+		            $(cell).html('<input type="text" style="color:Black" placeholder="' + title + '" />');
+
+		            // On every keypress in this input
+		            $('input', $('.filters th').eq($(api.column(colIdx).header()).index()))
+		                .off('keyup change')
+		                .on('keyup change', function (e) {
+		                    e.stopPropagation();
+
+		                    // Get the search value
+		                    $(this).attr('title', $(this).val());
+		                    var regexr = '({search})'; //$(this).parents('th').find('select').val();
+
+		                    var cursorPosition = this.selectionStart;
+		                    // Search the column for that value
+		                    api.column(colIdx).search(
+		                        this.value != ''
+		                            ? regexr.replace('{search}', '(((' + this.value + ')))')
+		                            : '',
+		                        this.value != '',
+		                        this.value == ''
+		                    ).draw();
+
+		                    $(this).focus()[0].setSelectionRange(cursorPosition, cursorPosition);
+		                });
+		        });
+		    },
+		});
+
        $('#laoding').hide();
 }
 function validateDate(date){

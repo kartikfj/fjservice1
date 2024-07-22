@@ -248,7 +248,7 @@ color:#008ac1;
                 <option value="SECONDARY CONSULTANT">Secondary Consultant</option>
                 <option value="PRIMARY CLIENT">Primary Client</option>
                 <option value="SECONDARY CLIENT">Secondary Client</option>
-                <option value="OverSeas Cons&Clients">OverSeas Consultants & Clients</option>
+                <option value="OVERSEAS CONSULTANT">OverSeas Consultants & Clients</option>
                  <option value="PA">Not Any Type</option>
             </select>
         </div>

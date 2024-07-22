@@ -107,6 +107,9 @@ public class SipStageFollowUpController extends HttpServlet {
 					e.printStackTrace();
 				}
 				break;
+			case "updateStageRemarks":
+				updateStageRemarks(request, response, sales_eng_Emp_code);
+				break;
 			case "lost":
 				updateQtnToLost(request, response, sales_eng_Emp_code, fjtuser);
 				break;
@@ -257,6 +260,24 @@ public class SipStageFollowUpController extends HttpServlet {
 		new Gson().toJson(updateStatus, response.getWriter());
 	}
 
+	private void updateStageRemarks(HttpServletRequest request, HttpServletResponse response, String sales_eng_Emp_code)
+			throws JsonIOException, IOException {
+		String seCode = request.getParameter("seCode");
+		String remarks = request.getParameter("remarks");
+		String id = request.getParameter("id");
+		System.out.print("hi this is data" + remarks);
+		int updateStatus = 0;
+
+		try {
+			updateStatus = sipStageFollowpDbUtil.updateStageRemarks(seCode, remarks, id, sales_eng_Emp_code);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		response.setContentType("application/json");
+		new Gson().toJson(updateStatus, response.getWriter());
+	}
+
 	private void getStageData(HttpServletRequest request, HttpServletResponse response)
 			throws JsonIOException, IOException {
 		int stage = 0;
@@ -269,7 +290,7 @@ public class SipStageFollowUpController extends HttpServlet {
 		case 1:
 			try {
 
-				String status = request.getParameter("Follow-up Status");
+				String status = request.getParameter("Follow-up");
 				String priority = request.getParameter("Focus List");
 				String consultantwinning = request.getParameter("Cons Win %");
 				String contractorwinning = request.getParameter("Cont Win %");
@@ -378,6 +399,7 @@ public class SipStageFollowUpController extends HttpServlet {
 		String remarkType = request.getParameter("rtyp");
 		String statuschange = request.getParameter("tstuas");
 		String segSalesCode = request.getParameter("segsalescode");
+		System.out.println("kartik" + sysId);
 		int status = sipStageFollowpDbUtil.updateLOIQtnToLost(sysId, reason, sales_Egr_Code, remarkType, statuschange,
 				fjtuser, segSalesCode);
 
