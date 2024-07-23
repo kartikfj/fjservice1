@@ -347,7 +347,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 
           // Set chart options
           var options = {
-        		  title: 'Total Yearly Target : <c:forEach var="ytm_tmp" items="${YTM_BOOK}"> <fmt:formatNumber type="number" value="${ytm_tmp.yr_total_target}"/>\r\n YTD Target:<fmt:formatNumber type="number" value="${ytm_tmp.ytm_target}"/>\r\n YTD Actual:<fmt:formatNumber type="number" value="${ytm_tmp.ytm_actual}"/> </c:forEach>',
+        		  title: 'Total Target : <c:forEach var="ytm_tmp" items="${YTM_BOOK}"> <fmt:formatNumber type="number" value="${ytm_tmp.yr_total_target}"/>\r\n YTD Target:<fmt:formatNumber type="number" value="${ytm_tmp.ytm_target}"/>\r\n YTD Actual:<fmt:formatNumber type="number" value="${ytm_tmp.ytm_actual}"/> </c:forEach>',
         	        vAxis: {
         	            title: 'Amount booking (In Millions)',
         	            titleTextStyle: {italic: false},
@@ -406,7 +406,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 	    } 
 	 var data = google.visualization.arrayToDataTable(getSalesGraphRemoveYTD(billing,'${MTH}'));
      // Set chart options
-     var options = {'title':' Total Yearly  Billing Target : <c:forEach var="ytm_tmp" items="${YTM_BILL}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}" />\r\n YTD-Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/>\r\n YTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/> </c:forEach>  ',	
+     var options = {'title':' Total Target : <c:forEach var="ytm_tmp" items="${YTM_BILL}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}" />\r\n YTD-Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/>\r\n YTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/> </c:forEach>  ',	
    		  'vAxis': {title: 'Amount (In Millions)',titleTextStyle: {italic: false},format: 'short'}, 
    		
    		         'is3D':true,
@@ -512,7 +512,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
  ]);
 
      // Set chart options
-     var options = {'title':'Total Yearly  Billing Target : <c:forEach var="ytm_tmp" items="${BILLS4_SUMM}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}" />\r\n  YTD Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/>\r\nYTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/></c:forEach>  ',	
+     var options = {'title':'Total Target :               <c:forEach var="ytm_tmp" items="${BILLS4_SUMM}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}" />\r\n  YTD Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/>\r\nYTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/></c:forEach>  ',	
    		  'vAxis': {title: 'Amount (In Millions)',titleTextStyle: {italic: false},format: 'short'}, 
    		
    		   'is3D':true,
@@ -1267,10 +1267,10 @@ $('#s1dexport').DataTable( {
 	   <div class="row">
         <div class="col-md-6">
           <!-- AREA CHART -->
-          <div class="box box-primary" style="margin-bottom: 8px;border-color:#607d8b;">
+          <div class="box box-primary" style="margin-bottom: 9px;border-color:#607d8b;">
                       <div class="box-header with-border">						 
 						 <h3 class="box-title" id="jihlost-title">Job In Hand Volume Details</h3>                                          
-                  <ul class="nav nav-tabs pull-right" id="jihlostdiv" style=" margin-top: -10px;font-weight: bold;">
+                  <ul class="nav nav-tabs pull-right" id="jihlostdiv" style=" margin-top: -4px;font-weight: bold;">
          <li  class="active pull-right" onclick="changeTitle('Job In Hand Volume Details');"><a data-toggle="tab" href="#jih-dt"  style="border-right:transparent;" ><i class="fa fa-square text-green"> JIHV</i></a></li>
           <li class="pull-right"  onclick="changeTitle('JIH (All) Vs LOST DETAILS');"><a data-toggle="tab" href="#lost-dt" ><i class="fa fa-square text-red"> LOST</i></a></li>                   
           </ul>
@@ -1382,10 +1382,10 @@ $('#s1dexport').DataTable( {
            <div class="box-header with-border">
            <c:choose>
  				<c:when test="${syrtemp < CURR_YR}">
- 				 	 <h4 class="box-title" >Booking Analysis ${syrtemp},(FY)</h4> 
+ 				 	 <h4 class="box-title" >Booking Analysis ${syrtemp}(FY)</h4> 
  				</c:when>
  				<c:otherwise>
- 				  <h4 class="box-title" >Booking Analysis ${syrtemp},(YTD)</h4>  
+ 				  <h4 class="box-title" >Booking Analysis ${syrtemp}(YTD)</h4>  
  				</c:otherwise>
  			</c:choose>
 			<!-- <h3 class="box-title" >Booking Details  </h3> -->
@@ -1405,10 +1405,10 @@ $('#s1dexport').DataTable( {
                    <div class="box-header with-border">
            <c:choose>
  				<c:when test="${syrtemp < CURR_YR}">
- 				 	 <h4 class="box-title">Customer Visit Analysys - ${syrtemp},(FY)</h4> 
+ 				 	 <h4 class="box-title">Customer Visit Analysys - ${syrtemp}(FY)</h4> 
  				</c:when>
  				<c:otherwise>
- 				  <h4 class="box-title" >Customer Visit Analysys - ${syrtemp},(YTD)</h4>  
+ 				  <h4 class="box-title" >Customer Visit Analysys - ${syrtemp}(YTD)</h4>  
  				</c:otherwise>
  			</c:choose>
 			<!-- <h3 class="box-title" >Booking Details  </h3> -->
@@ -1433,10 +1433,10 @@ $('#s1dexport').DataTable( {
            <div class="box-header with-border">
 			   <c:choose>
 					<c:when test="${syrtemp < CURR_YR}">
-						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp},(FY)</h3>
+						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp}(FY)</h3>
 					</c:when>
 					<c:otherwise>
-						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp},(YTD)</h3>
+						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp}(YTD)</h3>
 					</c:otherwise>
 				</c:choose>
 			</div>
@@ -1619,15 +1619,15 @@ $('#s1dexport').DataTable( {
 
         
       <!-- BILLING CHART -->
-          <div class="box box-success" style="margin-bottom: 8px;border-color:#607d8b;right:5px;">
+          <div class="box box-success" style="margin-bottom: 15px;border-color:#607d8b;right:5px;">
                <div class="box-header with-border">
 						 
 							 <c:choose>
 							<c:when test="${syrtemp < CURR_YR}">
-								<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp},(FY)</h7> 
+								<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp}(FY)</h7> 
 							</c:when>
 							<c:otherwise>
-							 	<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp},(YTD)</h7>  
+							 	<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp}(YTD)</h7>  
 							</c:otherwise>
 						</c:choose>
               </div>
@@ -1639,7 +1639,7 @@ $('#s1dexport').DataTable( {
        
            <div id="blngs-dt" class="tab-pane fade  in active" >
               <div class="chart">
-                <div id="prf_summ_billing_ytd" style="height:225px;margin-top:-5px;"></div> 
+                <div id="prf_summ_billing_ytd" style="height:225px;margin-top:-4px;"></div> 
                  <br/>
                <div class="overlay">
 				<a href="#" data-toggle="modal" data-target="#billing_moreinfo_modal">More info
@@ -1675,7 +1675,7 @@ $('#s1dexport').DataTable( {
 			<h3 class="box-title" >Billing Last 2 Years Analysis of ${selected_salesman_code} -(YTD)</h3>
 			</div>
             <div class="box-body">
-              <div id="blng_sum_3_yr" style="height:260px;margin-top:-10px;"></div>  <br/>
+              <div id="blng_sum_3_yr" style="height:240px;margin-top:25px;"></div>  <br/>
                <div class="overlay">
 				<a href="#" data-toggle="modal" data-target="#blng3yr_moreinfo_modal">More info
 				 <i class="fa fa-arrow-circle-right"></i></a> </div>

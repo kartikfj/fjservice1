@@ -797,7 +797,7 @@ public class SipStageFollowpDbUtil {
 		return logType;
 	}
 
-	public int updateStageRemarks(String seCode, String remarks, String id, String sales_eng_Emp_code) {
+	public int updateStageRemarks(String seCode, String remarks, String id, String sales_eng_Emp_code, String stage) {
 		int logType = -2;
 		Connection myCon = null;
 		PreparedStatement myStmt = null;
@@ -806,11 +806,13 @@ public class SipStageFollowpDbUtil {
 
 		try {
 			myCon = orcl.getOrclConn();
-
-			String sql = "UPDATE FJT_SM_STG1_TBL "
-					+ "SET QTN_REMARKS = ?, QTN_MOD_BY = ?, QTN_MOD_DT = SYSDATE, UPD_DT = SYSDATE "
+			// "UPDATE FJT_SM_STG1_TBL "
+			// String sql = "UPDATE " + stage + "SET QTN_REMARKS = ?, QTN_MOD_BY = ?,
+			// QTN_MOD_DT = SYSDATE, UPD_DT = SYSDATE "+ "WHERE SALES_EGR_CODE = ? AND
+			// CQHSYSID = ?";
+			String sql = "UPDATE " + stage
+					+ " SET QTN_REMARKS = ?, QTN_MOD_BY = ?, QTN_MOD_DT = SYSDATE, UPD_DT = SYSDATE "
 					+ "WHERE SALES_EGR_CODE = ? AND CQHSYSID = ?";
-
 			myStmt = myCon.prepareStatement(sql);
 			myStmt.setString(1, remarks);
 			myStmt.setString(2, sales_eng_Emp_code);

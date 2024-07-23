@@ -265,11 +265,13 @@ public class SipStageFollowUpController extends HttpServlet {
 		String seCode = request.getParameter("seCode");
 		String remarks = request.getParameter("remarks");
 		String id = request.getParameter("id");
-		System.out.print("hi this is data" + remarks);
+		String stage = request.getParameter("stage");
+
+		System.out.print("hi this is data" + remarks + "this is my" + stage);
 		int updateStatus = 0;
 
 		try {
-			updateStatus = sipStageFollowpDbUtil.updateStageRemarks(seCode, remarks, id, sales_eng_Emp_code);
+			updateStatus = sipStageFollowpDbUtil.updateStageRemarks(seCode, remarks, id, sales_eng_Emp_code, stage);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -290,7 +292,7 @@ public class SipStageFollowUpController extends HttpServlet {
 		case 1:
 			try {
 
-				String status = request.getParameter("Follow-up");
+				String status = request.getParameter("Follow-up Status");
 				String priority = request.getParameter("Focus List");
 				String consultantwinning = request.getParameter("Cons Win %");
 				String contractorwinning = request.getParameter("Cont Win %");

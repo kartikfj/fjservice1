@@ -1,6 +1,4 @@
-<%-- 
-    Document   : SIP SALES PERFORM DASHBAORD FOR DM  
---%>
+
 <%@include file="sipHead.jsp" %>
  <c:set var="syrtemp" value="${selected_Year}" scope="page" />
 <!DOCTYPE html>
@@ -119,6 +117,7 @@ table.dataTable thead th,table.dataTable thead td {
  "<td>" + $.trim(data[i].d2)+ "</td><td>" + $.trim(data[i].d3) + "</td>"+ "<td>" +$.trim(data[i].d4.substring(0, 10)).split("-").reverse().join("/")+ "</td><td>"  + $.trim(data[i].d5 )+ "</td>"+
  "<td>" + $.trim(data[i].d6 )+ "</td><td>" +$.trim( data[i].d7 )+ "</td>"+ "<td>" + $.trim(data[i].d8 )+ "</td><td>" + $.trim(data[i].d9 )+ "</td>"+ "<td>" + $.trim(data[i].d10 )+ "</td><td>" + $.trim(data[i].d12 )+ "</td>"+
  "<td>" + $.trim(data[i].d13 )+ "</td><td>" + $.trim(data[i].d14 )+ "</td></tr>"; } 
+
  //output+="<tr><td colspan='16'><b>Total</b></td><td><b>"+val+"</b></td></tr>"; 
  output+="</tbody></table>";  $("#s5-modal-graph .modal-body").html(output);$("#s5-modal-graph").modal("show");
  $('#s5-excl').DataTable( {
@@ -314,7 +313,8 @@ $('#mrInfJihLstGrpTbl').DataTable( {
  	data.addColumn('string', 'Topping'); data.addColumn('number', 'Amount'); 
  	data.addColumn({type:'number', role:'annotation'});
  	data.addColumn({type:'string', role: 'style' });
- 	data.addRows([ <c:forEach var="JOBV" items="${JIHV}"> ['${JOBV.duration}', ${JOBV.amount},<fmt:formatNumber type='number' pattern='###.##' value='${JOBV.amount/1000000}' />,'#01b8aa'],  </c:forEach> ]);
+	data.addRows([ <c:forEach var="JOBV" items="${JIHV}"> ['${JOBV.duration}', ${JOBV.amount},<fmt:formatNumber type='number' pattern='###.##' value='${JOBV.amount/1000000}' />,'#01b8aa'],  </c:forEach> ]);
+
  	var options = {	
 				'title':'Job in hand volume for Last 2 Years from <%=iYear%> - (AED)', 
 				 titleTextStyle: {color: '#000',fontSize: 13, fontName: 'Arial',   bold: true},
@@ -524,7 +524,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
       ]);
 
           // Set chart options
-          var options = {'title':'Total Yearly  Billing Target : <c:forEach var="ytm_tmp" items="${BILLS4_SUMM}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}" />\r\n  YTD Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/>\r\nYTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/></c:forEach>  ',	
+          var options = {'title':'Total Target : <c:forEach var="ytm_tmp" items="${BILLS4_SUMM}"> <fmt:formatNumber type="number"   value="${ytm_tmp.yr_total_target}" />\r\n  YTD Target:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_target}"/>\r\nYTD Actual:<fmt:formatNumber type="number"   value="${ytm_tmp.ytm_actual}"/></c:forEach>  ',	
         	   			  'vAxis': {title: 'Amount (In Millions)',titleTextStyle: {italic: false},viewWindow:{ min:0},format: 'short'}, 
         		
         		   'is3D':true,
@@ -1406,10 +1406,10 @@ $('#mrInfJihLstGrpTbl').DataTable( {
            <div class="box-header with-border">			
 			<c:choose>
  				<c:when test="${syrtemp < CURR_YR}">
- 				 	 <h4 class="box-title" >Booking Analysis ${syrtemp},(FY)</h4> 
+ 				 	 <h4 class="box-title" >Booking Analysis ${syrtemp}(FY)</h4> 
  				</c:when>
  				<c:otherwise>
- 				  <h4 class="box-title" >Booking Analysis ${syrtemp},(YTD)</h4>  
+ 				  <h4 class="box-title" >Booking Analysis ${syrtemp}(YTD)</h4>  
  				</c:otherwise>
  			</c:choose>
 			<div class="help-right-lost" id="help-bkngvsblng">
@@ -1432,16 +1432,16 @@ $('#mrInfJihLstGrpTbl').DataTable( {
                          <div class="box-header with-border">
            <c:choose>
  				<c:when test="${syrtemp < CURR_YR}">
- 				 	 <h4 class="box-title">Customer Visit Analysys - ${syrtemp},(FY)</h4> 
+ 				 	 <h4 class="box-title">Customer Visit Analysys - ${syrtemp}(FY)</h4> 
  				</c:when>
  				<c:otherwise>
- 				  <h4 class="box-title" >Customer Visit Analysys - ${syrtemp},(YTD)</h4>  
+ 				  <h4 class="box-title" >Customer Visit Analysys - ${syrtemp}(YTD)</h4>  
  				</c:otherwise>
  			</c:choose>
  			</div>  
             <div class="box-body">
                 <div class="chart">
-                    <div id="cv_pfm_ytd" style="height:230px;margin-top:-10px;"></div>  <br/>
+                    <div id="cv_pfm_ytd" style="height:250px;margin-top:-10px;"></div>  <br/>
                <div class="overlay">
 				<a href="#" data-toggle="modal" data-target="#cvMoreInfoModal">More info
 				 <i class="fa fa-arrow-circle-right"></i></a> </div> 
@@ -1604,7 +1604,7 @@ $('#mrInfJihLstGrpTbl').DataTable( {
 	   			 <div class="col-lg-1 col-xs-0" ></div>
 	   			 
 	   			<div class="col-lg-5 col-xs-6 sep">
-    <div id="guage_test_booking" style="background-color: #ff9999;"></div>
+    <div id="guage_test_booking" style="background-color: #ff9999; padding: -10px 15px;"></div>
 </div>
 	   			
 	   		
@@ -1625,17 +1625,17 @@ $('#mrInfJihLstGrpTbl').DataTable( {
                <div class="box-header with-border">						 
 						 <c:choose>
 							<c:when test="${syrtemp < CURR_YR}">
-								<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp},(FY)</h7> 
+								<h1 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp}(FY)</h7> 
 							</c:when>
 							<c:otherwise>
-							 	<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp},(YTD)</h7>  
+							 	<h7 class="box-title" id="blng-graph-title">Billing Analysis - ${syrtemp}(YTD)</h7>  
 							</c:otherwise>
 						</c:choose>
               </div>
             <div class="box-body" id="blng_box_body">
 	           <div id="blngs-dt" class="tab-pane fade  in active" >
 	              <div class="chart">
-	                <div id="prf_summ_billing_ytd" style="height:220px;margin-top:-5px;"></div> 
+	                <div id="prf_summ_billing_ytd" style="height:230px;margin-top:-5px;"></div> 
 	                 <br/>
 	               <div class="overlay">
 					<a href="#" data-toggle="modal" data-target="#billing_moreinfo_modal">More info
@@ -1672,10 +1672,10 @@ $('#mrInfJihLstGrpTbl').DataTable( {
            <div class="box-header with-border">
 			 <c:choose>
 					<c:when test="${syrtemp < CURR_YR}">
-						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp},(FY)</h3>
+						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp}(FY)</h3>
 					</c:when>
 					<c:otherwise>
-						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp},(YTD)</h3>
+						<h3 class="box-title" id="blng-graph-title">Billing Target Vs Stage-4(SO) Amount - ${syrtemp}(YTD)</h3>
 					</c:otherwise>
 				</c:choose>
 			</div>

@@ -117,7 +117,11 @@ div.dt-buttons{
 #cvDetails_tbl thead th, #cvDetails_tbl tbody td{border: 1px solid #03a9f4 !important;padding: 7px; text-align: left;}
 .stg3requestWindow{display:none;padding:5px;border-radius:5px;border: rgb(121, 85, 72); 1px solid; border-radius:3px;font-size:0.8em; font-family:Arial, Helvetica, sans-serif; padding: 1em;width:20em;height:auto;background: rgb(121, 85, 72);}
 .stg3reasonheading{color:#ffffff;}.stg3reasonbox{display:none; }
-
+.thin-column {
+            width: 0.1px; /* Adjust this value as needed */
+            border: none; /* Remove border for this column */
+            padding: 0; /* Remove padding to make it as thin as possible */
+        }
 </style>
 <c:set var="sales_egr_code" value="0" scope="page" /> 
 </head>
@@ -908,8 +912,8 @@ function getData(details){
 				}
 				 output +='<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn No.-Code</th><th>Cons<br> Win %</th> <th>Cont <br> Win %</th><th>Total Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remark</th><th>Focus List</th>'+	
-		 			'<th>Exp.PODate</th><th>Exp. InvDate</th><th width="100px">Lost <br>Hold<br>  Status</th> <th>Follow-Up & Remarks</th><th>Reminders</th>'+      
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn No.-Code</th><th>Cons<br> Win %</th> <th>Cont <br> Win %</th><th>Total Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Amount</th><th style="display: none;"></th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remark</th><th>Focus List</th>'+	
+		 			'<th>Exp.PODate</th><th>Exp. InvDate</th><th width="100px">Lost <br>Hold<br>  Status</th><th>Reminders</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
 					 stage23List = data; 
@@ -935,18 +939,19 @@ function getData(details){
 					 '<td>'+$.trim(data[i].projectName)+'</td>'+
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
 					 '<td  align =""right>'+$.trim(formatNumber(Math.round(data[i].qtnAmount)))+'</td>';
-					 output += '<td id="status' + $.trim(data[i].cqhSysId) + '">';
-				          /*   if ($.trim(data[i].status) !== '') {
-				                output += $.trim(data[i].status);
-				            }
-				            if (showUpdateBtn) {
-				             output += ' <input type="checkbox" id="' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})"> ';
-				            } */
-				            output += '</td>';
+					 output += '<td style="display: none;"></td>';
+					 output += '<td id="status' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].status);
+					 if ($.trim(data[i].status) !== '') {
+					    // output += '% <br/>';
+					 }
+					 if (showUpdateBtn) {
+					     output += ' <input type="checkbox" id="' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})"> ';
+					 }
+					 output += '</td>';
 				
 					 	 output += '<td id="remarks' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].remarks);
 						 if (showUpdateBtn) {
-						     output += ' <input type="checkbox" id="remarksCheckbox' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow2({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:\'' + $.trim(data[i].cqhSysId) + '\',event: event})">';
+						     output += ' <input type="checkbox" id="remarksCheckbox' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow2({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:\'' + $.trim(data[i].cqhSysId) + '\' ,stage:\'FJT_SM_STG3_TBL\',event: event})">';
 						 }
 						output += '</td>';
  
@@ -988,12 +993,12 @@ function getData(details){
 						 }
 					 output += '</td>';
 					 
-			 		 if(showUpdateBtn){   
-						 output += '<td><button class="btn btn-xs btn-danger" id="'+$.trim(data[i].cqhSysId)+'" onclick=openRequestWindow({seCode:\''+$.trim(data[i].seCode)+'\',row:'+i+',id:'+$.trim(data[i].cqhSysId)+',event})>Update</button></td>';
+			 		/*  if(showUpdateBtn){   
+						 output += '<td> <input type="checkbox" id="' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})"> </td>';
 					 }else{
 						 const updatedOn = ($.trim(data[i].updatedOn)) ? $.trim(data[i].updatedOn.substring(0, 10)).split("-").reverse().join("/") : '-';
 						 output += '<td>'+updatedOn+'</td>'
-						 }
+						 } */
 			 		 output +=  ' <td>';
 					// if(showUpdateBtn){   
 						 output += ' <button class="btn btn-xs btn-success"  name="reminders" id="R'+$.trim(data[i].cqhSysId)+'" onClick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'R\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\''+encodeURIComponent($.trim(data[i].projectName))+'\',\''+$.trim(data[i].qtnCode)+-+$.trim(data[i].qtnNo)+'\',\''+encodeURIComponent($.trim(data[i].seName))+'\',\''+showUpdateBtn+'\')> Reminders </button>' 
@@ -1019,7 +1024,7 @@ function getData(details){
 				 
 				 output +='<thead>'+       		
 		 			'<tr>	'+	        			 
-		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn<br/> Code-No</th><th>Cons<br/> Win %</th> <th>Cont<br/> Win %</th><th>Total<br/> Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Product is Specified</th><th>Amount</th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remarks</th><th>Focus List</th>'+	
+		 			'<th>Sales Eng.</th><th>Qtn Dt.</th><th>Qtn<br/> Code-No</th><th>Cons<br/> Win %</th> <th>Cont<br/> Win %</th><th>Total<br/> Win % <a href= "#" data-toggle="modal" data-target="#help-modaltotalwinning"> <i class="fa fa-info-circle pull-right" style="color: #2196f3;font-size: 15px;margin-top: 4px;"></i></a></th><th>SE WIN%</th><th>Customer</th><th>Project</th><th>Consultant</th><th>Product is Specified</th><th>Amount</th><th style="width: 0.1px; border: none; padding: 0; display: none;"></th><th>Follow-Up <br> Status</th><th>Follow-Up <br> Remarks</th><th>Focus List</th>'+	
 		 			'<th>Exp.LOI Date</th><th width="80px">Lost <br> Hold <br> Status</th><th>Submittal Status</th><th>Reminder</th>'+      
 		 			'</tr></thead><tbody>'; 
 				 if(data){
@@ -1057,10 +1062,31 @@ function getData(details){
 				 		   '</label>';
 				 		  output += '<input type="hidden" id="isapprovedval'+$.trim(data[i].cqhSysId) + '" value="'+$.trim(data[i].isApproved) + '"/>';
 					 }
+					 
 					 output +=  ' </td>'+
 					 '<td  align ="right">'+formatNumber(Math.round(data[i].qtnAmount))+'</td>';
-					 output += '<td id="status' + $.trim(data[i].cqhSysId) + '">';
-			            if ($.trim(data[i].status) !== '') {
+					 output += '<td style="display: none;"></td>';
+					 output += '<td id="status' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].status);
+					 if ($.trim(data[i].status) !== '') {
+					     output += '% <br/>';
+					 }
+					 if (showUpdateBtn) {
+					     output += ' <input type="checkbox" id="' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})"> ';
+					 }
+					 output += '</td>';
+
+					// output += '<td id="remarks' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].remarks);
+					 output += '<td id="remarks' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].remarks);
+					 if (showUpdateBtn) {
+					     output += ' <input type="checkbox" id="remarksCheckbox' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow2({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:\'' + $.trim(data[i].cqhSysId) + '\',stage:\'FJT_SM_STG2_TBL\',event: event})">';
+					 }
+					// output += '</td>';
+
+					 output += '</td>';
+					 //'<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>';
+					 // output += '<td id="status' + $.trim(data[i].cqhSysId) + '">';
+					 //output += '</td>';
+			           /*  if ($.trim(data[i].status) !== '') {
 			                output += $.trim(data[i].status);
 			            }
 			            if (showUpdateBtn) {
@@ -1068,26 +1094,16 @@ function getData(details){
 			            	  //output += ' <input type="checkbox" id="' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})"> ';
 			            	   output += ' <input type="checkbox" id="' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:' + $.trim(data[i].cqhSysId) + ',event})"> ';
 			            }
-			            output += '</td>';
-			
-				 	 output += '<td id="remarks' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].remarks);
+			           
+			 */
+				 /* 	 output += '<td id="remarks' + $.trim(data[i].cqhSysId) + '">' + $.trim(data[i].remarks);
 					 if (showUpdateBtn) {
 					     output += ' <input type="checkbox" id="remarksCheckbox' + $.trim(data[i].cqhSysId) + '" onclick="openRequestWindow2({seCode:\'' + $.trim(data[i].seCode) + '\',row:' + i + ',id:\'' + $.trim(data[i].cqhSysId) + '\',event: event})">';
 					 }
 					// output += '</td>';
 
 					 output += '</td>'; 
-					// '<td id="status'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].status)+'</td>'+
-				/* 	 output +=  '<td>';	
-					    var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';					   
-					 if(showUpdateBtn){   
-						 output += ' <label style="color:green;text-transform: uppercase;"><input type="radio" name="focuslist'+$.trim(data[i].cqhSysId) + '" value="YES"  id="focuslist'+$.trim(data[i].cqhSysId) + '" ' + isInFocusListChecked + ' onClick=updateIsInFocusList(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].seCode)+'\')> Yes'	 		 
-				 		   '</label>';				 		
-				 		  output += '<input type="hidden" id="focuslist'+$.trim(data[i].cqhSysId) + '" value="'+$.trim(data[i].priority) + '"/>';
-					 }
-					 output +=  ' </td>'+ */
-					 
-					// '<td id="remarks'+$.trim(data[i].cqhSysId)+'">'+$.trim(data[i].remarks)+'</td>';
+				 */
 
 					 output += '<td>';
 										 var isInFocusListChecked = $.trim(data[i].priority) === 'Focus List' ? 'checked' : '';
@@ -1104,12 +1120,7 @@ function getData(details){
 						 output += '<input type="radio" id="ExpLOI'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'ExpLOI\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\')>';
 					 }
 					 output +=  ' </td>';					 
-					/*  if(showUpdateBtn){   
-						 output += '<td><button class="btn btn-xs btn-danger" id="'+$.trim(data[i].cqhSysId)+'" onclick=openRequestWindow({seCode:\''+$.trim(data[i].seCode)+'\',row:'+i+',id:'+$.trim(data[i].cqhSysId)+',event})>Update</button></td>';
-					 }else{
-						 const updatedOn = ($.trim(data[i].updatedOn)) ? $.trim(data[i].updatedOn.substring(0, 10)).split("-").reverse().join("/") : '-';
-						 output += '<td>'+updatedOn+'</td>'
-						 }  */
+					
 					 output +=  ' <td>';
 					 if(showUpdateBtn){   
 					 output += ' <label style="color:red;text-transform: uppercase;"><input type="radio" name="lostorhold" id="L'+$.trim(data[i].cqhSysId)+'" onClick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'L\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\')> Lost'	 		 
@@ -1170,16 +1181,7 @@ function getData(details){
 					  output += '<tr  id="'+$.trim(data[i].cqhSysId)+'"><td>'+$.trim(data[i].seCode)+'-'+$.trim(data[i].seName)+'</td>'+	 
 					 '<td>'+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'</td>'+	
 					 '<td>'+$.trim(data[i].qtnCode)+'-'+$.trim(data[i].qtnNo)+'</td>'+
-					// '<td>'+$.trim(data[i].consultWin)+'%</td>'+
-					 //'<td>'+$.trim(data[i].contractorWin)+'%</td>'+
-					 //'<td>'+$.trim(data[i].totalWin)+'%</td>';
-					// output +=  '<td>'+$.trim(data[i].sewinper);	
-// 					 if($.trim(data[i].sewinper) !== '')
-// 						 output += '% <br/>';
-// 						 if(showUpdateBtn){   
-// 							 output += '<input type="radio" id="SEWIN'+$.trim(data[i].cqhSysId)+'"onclick=openLostHoldStg3Window(event,\''+$.trim(data[i].cqhSysId)+'\',\''+$.trim(data[i].qtnCode)+'\',\''+$.trim(data[i].qtnNo)+'\',\'SEWIN\',\''+$.trim(data[i].qtnDt.substring(0, 10)).split("-").reverse().join("/")+'\',\''+$.trim(data[i].seCode)+'\',\'2\')>';
-// 						 }
-// 					 output +=  ' </td>'+
+					
 					 '<td>'+$.trim(data[i].custName)+'</td>'+
 					 '<td>'+$.trim(data[i].projectName)+'</td>'+
 					 '<td>'+$.trim(data[i].consultant)+'</td>'+
@@ -1210,12 +1212,7 @@ function getData(details){
 					 output += '</td>';
 					 totalAmount = totalAmount+Math.round(data[i].qtnAmount);
 					
-					/*  if(showUpdateBtn){   
-						 output += '<td><button class="btn btn-xs btn-danger" id="'+$.trim(data[i].cqhSysId)+'" onclick=openRequestWindow({seCode:\''+$.trim(data[i].seCode)+'\',row:'+i+',id:'+$.trim(data[i].cqhSysId)+',event})>Update</button></td>';
-					 }else{
-						 const updatedOn = ($.trim(data[i].updatedOn)) ? $.trim(data[i].updatedOn.substring(0, 10)).split("-").reverse().join("/") : '-';
-						 output += '<td>'+updatedOn+'</td>'
-						 }  */
+				
 					 output +=  ' <td>';
 					 if(showUpdateBtn){  
 					 output += '<label style="color:orange;text-transform: uppercase;"> <input type="radio" name="lostorhold" id="stg1'+$.trim(data[i].cqhSysId)+'" onClick=moveToStage2(event,\''+$.trim(data[i].cqhSysId)+'\')>Move to Stage-2'	 		 
@@ -1347,13 +1344,20 @@ function getData(details){
 			                            } 
 			                            var temp = document.createElement('div');
 			                            temp.innerHTML = data.trim();
-			                            
+			                            if (column === 11) {
+			                                // Return the text content of the element
+			                                return temp.textContent.trim();
+			                            } 
 			                            // Handle columns 7, 8, and 9 specifically for text content or checkboxes
 			                            if (column === 12) {
 			                                // Return the text content of the element
 			                                return temp.textContent.trim();
 			                            } 
-			                            if (column === 14) { // Adjust the column index for "Focus List"
+			                            if (column === 13) {
+			                                // Return the text content of the element
+			                                return temp.textContent.trim();
+			                            } 
+			                            if (column === 15) { // Adjust the column index for "Focus List"
 			                                var checkbox = $(data).find('input[type="checkbox"]');
 			                                if (checkbox.length) {
 			                                    return checkbox.is(':checked') ? 'Yes' : 'No';
@@ -1377,7 +1381,7 @@ function getData(details){
 			        ]
 			    });
 
-			    table = $('#stage_detail_tbl3').DataTable({
+			    var table = $('#stage_detail_tbl3').DataTable({
 			        dom: 'Bfrtip',
 			        paging: true,
 			        searching: true,
@@ -1412,26 +1416,25 @@ function getData(details){
 			                exportOptions: {
 			                    format: {
 			                        body: function (data, row, column, node) {
-			                            // Handling the "Focus List" checkbox column
-			                            if (column === 13) { // Adjust the column index for "Focus List"
+			                            if (column === 14) { // Focus List checkbox column
 			                                var checkbox = $(data).find('input[type="checkbox"]');
 			                                if (checkbox.length) {
 			                                    return checkbox.is(':checked') ? 'Yes' : 'No';
 			                                }
 			                                return '';
-			                            } 
+			                            }
+			                            
 			                            var temp = document.createElement('div');
 			                            temp.innerHTML = data.trim();
 			                            
-			                            // Handle columns 7, 8, and 9 specifically for text content or checkboxes
-			                            if (column === 12) {
-			                                // Return the text content of the element
+			                            // Specific handling for columns with HTML elements
+			                            if (column === 12 ||column === 13 || column === 14) {
 			                                return temp.textContent.trim();
-			                            } 
-			                            // Handle other columns
+			                            }
+			                            
 			                            if (column === 6) { // SE WIN%
 			                                return data.startsWith("<") ? '' : data.substr(0, 3);
-			                            } else if (column === 14 || column === 15 || column === 16) { // Date columns
+			                            } else if ([13, 14, 15, 16, 17].includes(column)) { // Date columns
 			                                return data.startsWith("<") ? '' : data.substr(0, 10);
 			                            } else {
 			                                return $(node).attr('data-export') || data;
@@ -1542,8 +1545,8 @@ function updateStage(details){
 					//	 document.getElementById("priority"+details.id).innerHTML = details.priority;
 				//	 if(details.remarks)
 					//	 document.getElementById("remarks"+details.id+"").innerHTML = details.remarks;
-				 const checkboxHTML = ' <input type="checkbox" id="' + details.id + '" onclick="openRequestWindow({seCode:\'' + details.seCode + '\',row:' + details.row + ',id:\'' + details.id + '\',event: event})">';
-                    document.getElementById("status" + details.id).innerHTML += checkboxHTML;
+			//	 const checkboxHTML = ' <input type="checkbox" id="' + details.id + '" onclick="openRequestWindow({seCode:\'' + details.seCode + '\',row:' + details.row + ',id:\'' + details.id + '\',event: event})">';
+              //      document.getElementById("status" + details.id).innerHTML += checkboxHTML;
 
                     
 					 return true;					 
@@ -1874,12 +1877,12 @@ function openRequestWindow2(data) {
     const expectedId = 'remarksCheckbox' + data.id;
     console.log("Event Target ID:", data.event.target.id);
     console.log("Expected ID:", expectedId);
-
+    console.log("Stage ID",data.stage);
     if (data.event.target.id === expectedId) {
         selectedSeCode = data.seCode;
         selectedRow = data.row;
         selectedId = data.id;
-
+        stage=data.stage;
         const singleFilteredRowItem = stage23List.find(item => selectedId == item.cqhSysId);
 
         if (!singleFilteredRowItem) {
@@ -1908,6 +1911,7 @@ function Remarks(event) {
     const data = {
         row: selectedRow,
         id: selectedId,
+        stage:stage,
         remarks: $.trim($('#remarks').val()),
         seCode: selectedSeCode
     };
@@ -1920,6 +1924,7 @@ function Remarks(event) {
 }
 function updateStageRemarks(details) {
     if (confirm('Are You sure, You Want to update these details!')) {
+    	//alert(details.stage);
         $('#laoding').show();
         $.ajax({
             type: _method,
@@ -1928,7 +1933,8 @@ function updateStageRemarks(details) {
                 action: "updateStageRemarks",
                 id: details.id,
                 seCode: details.seCode,
-                remarks: details.remarks
+                remarks: details.remarks,
+                stage:details.stage,
             },
             dataType: "json",
             success: function(data) {
